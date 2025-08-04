@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.http import JsonResponse
 from django.views.decorators.http import require_http_methods
 from django.core.paginator import Paginator
-from django.db.models import Count, Q
+from django.db.models import Count, Q, Avg
 
 from .models import User, Profile
 from .forms import (
@@ -106,7 +106,7 @@ def dashboard_view(request):
 
         quiz_attempts = QuizAttempt.objects.filter(student=user)
         avg_score = quiz_attempts.aggregate(
-            avg_score=models.Avg('score')
+            avg_score=Avg('score')
         )['avg_score'] or 0
 
         stats = {
