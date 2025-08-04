@@ -19,6 +19,7 @@ DJANGO_APPS = [
 THIRD_PARTY_APPS = []
 
 LOCAL_APPS = [
+   'apps.core',
    'apps.accounts',
    'apps.courses',
    'apps.lessons',
@@ -50,6 +51,18 @@ TEMPLATES = [
                'django.template.context_processors.request',
                'django.contrib.auth.context_processors.auth',
                'django.contrib.messages.context_processors.messages',
+
+                # Core context processors
+                'apps.core.context_processors.site_settings',
+                'apps.core.context_processors.social_networks',
+                'apps.core.context_processors.header_settings',
+                'apps.core.context_processors.footer_settings',
+                'apps.core.context_processors.navigation_menus',
+                'apps.core.context_processors.seo_context',
+                'apps.core.context_processors.user_context',
+                'apps.core.context_processors.maintenance_mode',
+                'apps.core.context_processors.breadcrumbs_context',
+                'apps.core.context_processors.global_counters',
            ],
        },
    },
