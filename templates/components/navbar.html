@@ -1,0 +1,379 @@
+{% load static %}
+{% load core_tags %}
+{% load user_tags %}
+
+<nav class="bg-white shadow-lg {% if header_settings.header_sticky %}sticky top-0 z-50{% endif %} {% if header_settings.header_transparent %}bg-opacity-95 backdrop-blur-sm{% endif %}">
+    <!-- Top Header Bar (Contact Info) -->
+    {% if header_settings.show_phone or header_settings.show_email %}
+    <div class="bg-gray-50 border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center py-2 text-sm">
+                <!-- Contact Info -->
+                <div class="flex items-center space-x-6">
+                    {% if header_settings.show_phone and site_settings.phone %}
+                        <a href="tel:{{ site_settings.phone }}" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+                            <i class="fas fa-phone text-xs mr-2"></i>
+                            {{ site_settings.phone }}
+                        </a>
+                    {% endif %}
+
+                    {% if header_settings.show_email and site_settings.email %}
+                        <a href="mailto:{{ site_settings.email }}" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+                            <i class="fas fa-envelope text-xs mr-2"></i>
+                            {{ site_settings.email }}
+                        </a>
+                    {% endif %}
+                </div>
+
+                <!-- Social Links & Language -->
+                <div class="flex items-center space-x-4">
+                    <!-- Social Networks -->
+                    {% if social_networks and social_networks.show_in_header %}
+                        <div class="flex items-center space-x-3">
+                            {% if social_networks.facebook_url %}
+                                <a href="{{ social_networks.facebook_url }}" target="_blank" class="text-gray-400 hover:text-blue-600 transition-colors">
+                                    <i class="fab fa-facebook-f text-sm"></i>
+                                </a>
+                            {% endif %}
+                            {% if social_networks.instagram_url %}
+                                <a href="{{ social_networks.instagram_url }}" target="_blank" class="text-gray-400 hover:text-pink-600 transition-colors">
+                                    <i class="fab fa-instagram text-sm"></i>
+                                </a>
+                            {% endif %}
+                            {% if social_networks.telegram_url %}
+                                <a href="{{ social_networks.telegram_url }}" target="_blank" class="text-gray-400 hover:text-blue-500 transition-colors">
+                                    <i class="fab fa-telegram text-sm"></i>
+                                </a>
+                            {% endif %}
+                            {% if social_networks.youtube_url %}
+                                <a href="{{ social_networks.youtube_url }}" target="_blank" class="text-gray-400 hover:text-red-600 transition-colors">
+                                    <i class="fab fa-youtube text-sm"></i>
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+
+                    <!-- Language Switcher -->
+                    {% if header_settings.show_language_switcher %}
+                        <div class="relative" x-data="{ open: false }">
+                            <button @click="open = !open" class="flex items-center text-gray-600 hover:text-blue-600 transition-colors">
+                                <i class="fas fa-globe text-xs mr-1"></i>
+                                UZ
+                                <i class="fas fa-chevron-down text-xs ml-1"></i>
+                            </button>
+                            <div x-show="open" @click.away="open = false" x-transition class="absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg py-1 z-10">
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">O'zbekcha</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Русский</a>
+                                <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">English</a>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Main Navigation -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center py-4">
+            <!-- Logo -->
+            <div class="flex items-center">
+                <a href="{% url 'core:home' %}" class="flex items-center">
+                    {% if site_settings.site_logo %}
+                        <img src="{{ site_settings.site_logo.url }}" alt="{% site_name %}" class="h-10 w-auto">
+                    {% else %}
+                        <div class="flex items-center">
+                            <div class="bg-blue-600 text-white rounded-lg p-2 mr-3">
+                                <i class="fas fa-graduation-cap text-xl"></i>
+                            </div>
+                            <span class="text-xl font-bold text-gray-800">{% site_name %}</span>
+                        </div>
+                    {% endif %}
+                </a>
+            </div>
+
+            <!-- Desktop Navigation Menu -->
+            <div class="hidden lg:block">
+                <div class="ml-10 flex items-baseline space-x-8">
+                    <!-- Home -->
+                    <a href="{% url 'core:home' %}" class="{% active_link 'core:home' 'text-blue-600 border-b-2 border-blue-600' %} text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+                        Bosh sahifa
+                    </a>
+
+                    <!-- Courses -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="{% active_link 'courses:list' 'text-blue-600' %} text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium flex items-center transition-colors">
+                            Kurslar
+                            <i class="fas fa-chevron-down text-xs ml-1"></i>
+                        </button>
+                        <div x-show="open" @click.away="open = false" x-transition class="absolute left-0 mt-2 w-56 bg-white rounded-md shadow-lg py-1 z-50">
+                            <a href="{% url 'courses:list' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-list mr-2"></i>
+                                Barcha kurslar
+                            </a>
+                            <a href="{% url 'courses:category' 'beginner' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-star mr-2"></i>
+                                Boshlang'ich
+                            </a>
+                            <a href="{% url 'courses:category' 'intermediate' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-star-half-alt mr-2"></i>
+                                O'rta
+                            </a>
+                            <a href="{% url 'courses:category' 'advanced' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                <i class="fas fa-star mr-2"></i>
+                                Yuqori
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- About -->
+                    <a href="{% url 'core:about' %}" class="{% active_link 'core:about' 'text-blue-600' %} text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+                        Biz haqimizda
+                    </a>
+
+                    <!-- Contact -->
+                    <a href="{% url 'core:contact' %}" class="{% active_link 'core:contact' 'text-blue-600' %} text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+                        Aloqa
+                    </a>
+
+                    <!-- Dynamic Menu Items -->
+                    {% for menu_item in navbar_menu %}
+                        {% if not menu_item.children.all %}
+                            <a href="{{ menu_item.url }}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+                                {% if menu_item.icon %}
+                                    <i class="{{ menu_item.icon }} mr-1"></i>
+                                {% endif %}
+                                {{ menu_item.title }}
+                            </a>
+                        {% else %}
+                            <div class="relative" x-data="{ open: false }">
+                                <button @click="open = !open" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium flex items-center transition-colors">
+                                    {% if menu_item.icon %}
+                                        <i class="{{ menu_item.icon }} mr-1"></i>
+                                    {% endif %}
+                                    {{ menu_item.title }}
+                                    <i class="fas fa-chevron-down text-xs ml-1"></i>
+                                </button>
+                                <div x-show="open" @click.away="open = false" x-transition class="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                                    {% for child in menu_item.children.all %}
+                                        <a href="{{ child.url }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                            {% if child.icon %}
+                                                <i class="{{ child.icon }} mr-2"></i>
+                                            {% endif %}
+                                            {{ child.title }}
+                                        </a>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Search Bar -->
+            {% if header_settings.show_search %}
+            <div class="hidden lg:block flex-1 max-w-xs mx-8">
+                <form action="{% url 'core:search' %}" method="GET" class="relative">
+                    <input type="text" name="q" placeholder="Kurs, dars qidiring..."
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                           value="{{ request.GET.q }}">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+
+            <!-- User Menu -->
+            <div class="flex items-center space-x-4">
+                {% if user.is_authenticated %}
+                    <!-- User Dropdown -->
+                    <div class="relative" x-data="{ open: false }">
+                        <button @click="open = !open" class="flex items-center text-sm rounded-full focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                {{ user.first_name|first|default:'U' }}{{ user.last_name|first|default:'' }}
+                            </div>
+                            <span class="ml-2 text-gray-700 font-medium hidden md:block">{{ user.get_full_name|default:user.username }}</span>
+                            <i class="fas fa-chevron-down text-xs ml-1 text-gray-500"></i>
+                        </button>
+
+                        <div x-show="open" @click.away="open = false" x-transition class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50">
+                            <div class="py-1">
+                                <!-- User Info -->
+                                <div class="px-4 py-2 text-sm text-gray-500 border-b border-gray-100">
+                                    <div class="font-medium text-gray-900">{{ user.get_full_name|default:user.username }}</div>
+                                    <div class="text-xs">{{ user.email }}</div>
+                                    <div class="mt-1">
+                                        <span class="px-2 py-1 text-xs font-medium rounded-full
+                                            {% if user.role == 'student' %}bg-blue-100 text-blue-800
+                                            {% elif user.role == 'teacher' %}bg-green-100 text-green-800
+                                            {% elif user.role == 'admin' %}bg-purple-100 text-purple-800
+                                            {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                            {% if user.role == 'student' %}Talaba
+                                            {% elif user.role == 'teacher' %}O'qituvchi
+                                            {% elif user.role == 'admin' %}Administrator
+                                            {% else %}{{ user.role }}{% endif %}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <!-- Dashboard -->
+                                <a href="{% url 'accounts:dashboard' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-tachometer-alt mr-2"></i>
+                                    Shaxsiy kabinet
+                                </a>
+
+                                <!-- My Courses -->
+                                {% if user.role == 'student' %}
+                                    <a href="{% url 'accounts:my_courses' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-book mr-2"></i>
+                                        Mening kurslarim
+                                    </a>
+                                {% elif user.role == 'teacher' %}
+                                    <a href="{% url 'courses:instructor_courses' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-chalkboard-teacher mr-2"></i>
+                                        Mening kurslarim
+                                    </a>
+                                    <a href="{% url 'courses:create' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                        <i class="fas fa-plus mr-2"></i>
+                                        Yangi kurs
+                                    </a>
+                                {% endif %}
+
+                                <!-- Profile -->
+                                <a href="{% url 'accounts:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-user mr-2"></i>
+                                    Profil
+                                </a>
+
+                                <!-- Notifications -->
+                                <a href="{% url 'accounts:notifications' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-bell mr-2"></i>
+                                    Bildirishnomalar
+                                    <span class="ml-2 bg-red-500 text-white text-xs px-1.5 py-0.5 rounded-full">3</span>
+                                </a>
+
+                                <!-- Settings -->
+                                <a href="{% url 'accounts:profile_edit' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    <i class="fas fa-cog mr-2"></i>
+                                    Sozlamalar
+                                </a>
+
+                                <!-- Become Teacher -->
+                                {% if user.role == 'student' %}
+                                    <a href="{% url 'accounts:become_teacher' %}" class="block px-4 py-2 text-sm text-blue-600 hover:bg-blue-50">
+                                        <i class="fas fa-graduation-cap mr-2"></i>
+                                        O'qituvchi bo'lish
+                                    </a>
+                                {% endif %}
+
+                                <div class="border-t border-gray-100"></div>
+
+                                <!-- Logout -->
+                                <a href="{% url 'accounts:logout' %}" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">
+                                    <i class="fas fa-sign-out-alt mr-2"></i>
+                                    Chiqish
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <!-- Guest Menu -->
+                    <a href="{% url 'accounts:login' %}" class="text-gray-700 hover:text-blue-600 px-3 py-2 text-sm font-medium transition-colors">
+                        Kirish
+                    </a>
+                    {% if registration_open %}
+                        <a href="{% url 'accounts:register' %}" class="bg-blue-600 text-white hover:bg-blue-700 px-4 py-2 rounded-lg text-sm font-medium transition-colors">
+                            Ro'yxatdan o'tish
+                        </a>
+                    {% endif %}
+                {% endif %}
+
+                <!-- Mobile menu button -->
+                <div class="lg:hidden">
+                    <button id="mobile-menu-button" class="text-gray-700 hover:text-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 p-2">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Navigation Menu -->
+    <div id="mobile-menu" class="lg:hidden hidden border-t border-gray-200">
+        <div class="px-4 pt-2 pb-3 space-y-1 bg-white">
+            <!-- Search Bar Mobile -->
+            {% if header_settings.show_search %}
+            <div class="mb-4">
+                <form action="{% url 'core:search' %}" method="GET" class="relative">
+                    <input type="text" name="q" placeholder="Qidiruv..."
+                           class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                           value="{{ request.GET.q }}">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center">
+                        <i class="fas fa-search text-gray-400"></i>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
+
+            <!-- Main Menu Items -->
+            <a href="{% url 'core:home' %}" class="{% active_link 'core:home' 'bg-blue-50 text-blue-600' %} text-gray-700 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
+                Bosh sahifa
+            </a>
+
+            <a href="{% url 'courses:list' %}" class="{% active_link 'courses:list' 'bg-blue-50 text-blue-600' %} text-gray-700 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
+                Kurslar
+            </a>
+
+            <a href="{% url 'core:about' %}" class="{% active_link 'core:about' 'bg-blue-50 text-blue-600' %} text-gray-700 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
+                Biz haqimizda
+            </a>
+
+            <a href="{% url 'core:contact' %}" class="{% active_link 'core:contact' 'bg-blue-50 text-blue-600' %} text-gray-700 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
+                Aloqa
+            </a>
+
+            <!-- User Menu Mobile -->
+            {% if user.is_authenticated %}
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <div class="flex items-center px-3 mb-3">
+                        <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center text-white font-medium">
+                            {{ user.first_name|first|default:'U' }}{{ user.last_name|first|default:'' }}
+                        </div>
+                        <div class="ml-3">
+                            <div class="text-base font-medium text-gray-800">{{ user.get_full_name|default:user.username }}</div>
+                            <div class="text-sm text-gray-500">{{ user.email }}</div>
+                        </div>
+                    </div>
+
+                    <a href="{% url 'accounts:dashboard' %}" class="text-gray-700 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
+                        <i class="fas fa-tachometer-alt mr-2"></i>
+                        Shaxsiy kabinet
+                    </a>
+
+                    <a href="{% url 'accounts:profile' %}" class="text-gray-700 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
+                        <i class="fas fa-user mr-2"></i>
+                        Profil
+                    </a>
+
+                    <a href="{% url 'accounts:logout' %}" class="text-red-600 hover:bg-red-50 block px-3 py-2 rounded-md text-base font-medium">
+                        <i class="fas fa-sign-out-alt mr-2"></i>
+                        Chiqish
+                    </a>
+                </div>
+            {% else %}
+                <div class="border-t border-gray-200 pt-4 mt-4">
+                    <a href="{% url 'accounts:login' %}" class="text-gray-700 hover:bg-gray-100 block px-3 py-2 rounded-md text-base font-medium">
+                        Kirish
+                    </a>
+                    {% if registration_open %}
+                        <a href="{% url 'accounts:register' %}" class="bg-blue-600 text-white block px-3 py-2 rounded-md text-base font-medium mt-2">
+                            Ro'yxatdan o'tish
+                        </a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</nav>

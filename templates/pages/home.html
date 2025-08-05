@@ -1,0 +1,499 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load core_tags %}
+{% load course_tags %}
+{% load user_tags %}
+
+{% block title %}Bosh sahifa{% endblock %}
+
+{% block meta_description %}Professional tibbiy ta'lim onlayn platformasi. Eng yaxshi o'qituvchilar, zamonaviy darslar va sertifikatlar.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-gradient {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .testimonial-card {
+        backdrop-filter: blur(10px);
+    }
+    
+    .stats-counter {
+        transition: all 0.3s ease;
+    }
+    
+    .course-card {
+        transition: all 0.3s ease;
+    }
+    
+    .course-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-gradient relative overflow-hidden">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.1"><circle cx="7" cy="7" r="1"/><circle cx="27" cy="7" r="1"/><circle cx="47" cy="7" r="1"/><circle cx="7" cy="27" r="1"/><circle cx="27" cy="27" r="1"/><circle cx="47" cy="27" r="1"/><circle cx="7" cy="47" r="1"/><circle cx="27" cy="47" r="1"/><circle cx="47" cy="47" r="1"/></g></g></svg>')"></div>
+    </div>
+    
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+            <!-- Hero Content -->
+            <div class="mb-12 lg:mb-0">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
+                    Professional
+                    <span class="text-yellow-300">Tibbiy Ta'lim</span>
+                    Platformasi
+                </h1>
+                
+                <p class="text-xl text-blue-100 mb-8 leading-relaxed">
+                    Eng yaxshi o'qituvchilar bilan zamonaviy tibbiy bilimlarni o'rganing. 
+                    Sertifikat oling va karyerangizni rivojlantiring.
+                </p>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-4 mb-12">
+                    <a href="{% url 'courses:list' %}" 
+                       class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg">
+                        <i class="fas fa-play mr-2"></i>
+                        Kurslarni Ko'rish
+                    </a>
+                    
+                    {% if not user.is_authenticated %}
+                        <a href="{% url 'accounts:register' %}" 
+                           class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-purple-600 transition-colors">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            Bepul Ro'yxatdan O'tish
+                        </a>
+                    {% endif %}
+                </div>
+                
+                <!-- Features List -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-white">
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-yellow-300 mr-3"></i>
+                        <span>Bepul sertifikat</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-yellow-300 mr-3"></i>
+                        <span>24/7 onlayn dostup</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-yellow-300 mr-3"></i>
+                        <span>Professional o'qituvchilar</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-check-circle text-yellow-300 mr-3"></i>
+                        <span>O'zbek tilida</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Hero Image/Video -->
+            <div class="relative">
+                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
+                    <!-- Video Preview or Image -->
+                    <div class="aspect-video bg-gray-800 rounded-lg overflow-hidden relative group cursor-pointer">
+                        <img src="{% static 'images/hero-video-preview.jpg' %}" 
+                             alt="Platform Preview" 
+                             class="w-full h-full object-cover">
+                        
+                        <!-- Play Button Overlay -->
+                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all">
+                            <div class="w-20 h-20 bg-white bg-opacity-90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
+                                <i class="fas fa-play text-purple-600 text-2xl ml-1"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="grid grid-cols-3 gap-4 mt-6">
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white">{{ counters.total_courses }}+</div>
+                            <div class="text-blue-200 text-sm">Kurslar</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white">{{ counters.total_students }}+</div>
+                            <div class="text-blue-200 text-sm">Talabalar</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-2xl font-bold text-white">{{ counters.total_teachers }}+</div>
+                            <div class="text-blue-200 text-sm">O'qituvchilar</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Scroll Down Indicator -->
+    <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
+        <i class="fas fa-chevron-down text-2xl"></i>
+    </div>
+</section>
+
+<!-- Featured Courses Section -->
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Mashhur Kurslar
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Eng ko'p tanlanayotgan va yuqori baholangan kurslarimiz bilan tanishing
+            </p>
+        </div>
+        
+        <!-- Courses Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
+            {% for course in featured_courses %}
+                <div class="course-card bg-white rounded-xl shadow-lg overflow-hidden">
+                    <!-- Course Image -->
+                    <div class="relative h-48 bg-gradient-to-br from-blue-500 to-purple-600">
+                        {% if course.image %}
+                            <img src="{{ course.image.url }}" alt="{{ course.title }}" class="w-full h-full object-cover">
+                        {% endif %}
+                        
+                        <!-- Level Badge -->
+                        <div class="absolute top-3 left-3">
+                            <span class="px-2 py-1 text-xs font-medium rounded-full 
+                                {% if course.level == 'beginner' %}bg-green-100 text-green-800
+                                {% elif course.level == 'intermediate' %}bg-yellow-100 text-yellow-800
+                                {% elif course.level == 'advanced' %}bg-red-100 text-red-800
+                                {% else %}bg-gray-100 text-gray-800{% endif %}">
+                                {% if course.level == 'beginner' %}Boshlang'ich
+                                {% elif course.level == 'intermediate' %}O'rta
+                                {% elif course.level == 'advanced' %}Yuqori
+                                {% else %}{{ course.level }}{% endif %}
+                            </span>
+                        </div>
+                        
+                        <!-- Price Badge -->
+                        <div class="absolute top-3 right-3 bg-white text-gray-900 px-3 py-1 rounded-full font-semibold text-sm">
+                            {% if course.price == 0 %}Bepul
+                            {% else %}{{ course.price|floatformat:0 }} UZS{% endif %}
+                        </div>
+                    </div>
+                    
+                    <!-- Course Content -->
+                    <div class="p-6">
+                        <!-- Instructor -->
+                        <div class="flex items-center mb-3">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                                {{ course.instructor.first_name|first }}{{ course.instructor.last_name|first }}
+                            </div>
+                            <div class="ml-3">
+                                <p class="text-sm font-medium text-gray-900">{{ course.instructor.get_full_name }}</p>
+                                <p class="text-xs text-gray-500">O'qituvchi</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Course Title -->
+                        <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                            {{ course.title }}
+                        </h3>
+                        
+                        <!-- Course Description -->
+                        <p class="text-gray-600 mb-4 line-clamp-3">
+                            {{ course.description|truncatewords:20 }}
+                        </p>
+                        
+                        <!-- Course Meta -->
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-users mr-1"></i>
+                                <span>{{ course.enrollment_set.count }} talaba</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-clock mr-1"></i>
+                                <span>{{ course.duration_weeks }} hafta</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-book mr-1"></i>
+                                <span>{{ course.lessons.count }} dars</span>
+                            </div>
+                        </div>
+                        
+                        <!-- Rating -->
+                        <div class="flex items-center mb-4">
+                            <div class="flex text-yellow-400 mr-2">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                            </div>
+                            <span class="text-gray-600 text-sm">(4.5)</span>
+                        </div>
+                        
+                        <!-- Action Button -->
+                        <a href="{% url 'courses:detail' course.id %}" 
+                           class="block w-full bg-blue-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
+                            Batafsil Ko'rish
+                        </a>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-span-full text-center py-12">
+                    <i class="fas fa-book text-6xl text-gray-300 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">Hozircha kurslar mavjud emas</h3>
+                    <p class="text-gray-500">Tez orada yangi kurslar qo'shiladi</p>
+                </div>
+            {% endfor %}
+        </div>
+        
+        <!-- View All Courses Button -->
+        <div class="text-center">
+            <a href="{% url 'courses:list' %}" 
+               class="inline-flex items-center px-8 py-3 bg-white border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
+                <i class="fas fa-th-large mr-2"></i>
+                Barcha Kurslarni Ko'rish
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Nima Uchun Bizni Tanlashadi?
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Zamonaviy texnologiyalar va professional yondashuv bilan ta'lim olish
+            </p>
+        </div>
+        
+        <!-- Features Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-graduation-cap text-2xl text-blue-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Professional O'qituvchilar</h3>
+                <p class="text-gray-600">
+                    Soha mutaxassislari va tajribali shifokorlar tomonidan tayyorlangan kurslar
+                </p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-certificate text-2xl text-green-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Rasmiy Sertifikat</h3>
+                <p class="text-gray-600">
+                    Kursni muvaffaqiyatli tugatganingizdan so'ng rasmiy sertifikat oling
+                </p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
+                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-clock text-2xl text-purple-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">24/7 Dostup</h3>
+                <p class="text-gray-600">
+                    Istalgan vaqtda, istalgan joydan darslarni ko'ring va o'rganing
+                </p>
+            </div>
+            
+            <!-- Feature 4 -->
+            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
+                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-mobile-alt text-2xl text-yellow-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Mobil Versiya</h3>
+                <p class="text-gray-600">
+                    Smartfon va planshetingizda ham qulay tarzda ta'lim oling
+                </p>
+            </div>
+            
+            <!-- Feature 5 -->
+            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
+                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-comments text-2xl text-red-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Qo'llab-quvvatlash</h3>
+                <p class="text-gray-600">
+                    Savollaringiz bo'lsa, bizning jamoamiz doimo yordamga tayyor
+                </p>
+            </div>
+            
+            <!-- Feature 6 -->
+            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
+                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                    <i class="fas fa-language text-2xl text-indigo-600"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">O'zbek Tilida</h3>
+                <p class="text-gray-600">
+                    Barcha darslar va materiallar ona tilingizda taqdim etiladi
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Statistics Section -->
+<section class="py-20 bg-gray-900 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+            <div class="stats-counter">
+                <div class="text-4xl md:text-5xl font-bold text-blue-400 mb-2" data-count="{{ counters.total_courses }}">0</div>
+                <div class="text-lg text-gray-300">Kurslar</div>
+            </div>
+            <div class="stats-counter">
+                <div class="text-4xl md:text-5xl font-bold text-green-400 mb-2" data-count="{{ counters.total_students }}">0</div>
+                <div class="text-lg text-gray-300">Talabalar</div>
+            </div>
+            <div class="stats-counter">
+                <div class="text-4xl md:text-5xl font-bold text-yellow-400 mb-2" data-count="{{ counters.total_teachers }}">0</div>
+                <div class="text-lg text-gray-300">O'qituvchilar</div>
+            </div>
+            <div class="stats-counter">
+                <div class="text-4xl md:text-5xl font-bold text-purple-400 mb-2" data-count="{{ counters.total_lessons }}">0</div>
+                <div class="text-lg text-gray-300">Darslar</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+{% if testimonials %}
+<section class="py-20 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+                Talabalar Fikri
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Bizning kurslarimizni tugatgan talabalar nima deyishadi
+            </p>
+        </div>
+        
+        <!-- Testimonials Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for testimonial in testimonials %}
+                <div class="testimonial-card bg-white rounded-xl p-8 shadow-lg">
+                    <!-- Rating -->
+                    <div class="flex items-center mb-4">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= testimonial.rating %}
+                                <i class="fas fa-star text-yellow-400"></i>
+                            {% else %}
+                                <i class="far fa-star text-gray-300"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    
+                    <!-- Testimonial Content -->
+                    <blockquote class="text-gray-700 mb-6 leading-relaxed">
+                        "{{ testimonial.content }}"
+                    </blockquote>
+                    
+                    <!-- Author -->
+                    <div class="flex items-center">
+                        {% if testimonial.avatar %}
+                            <img src="{{ testimonial.avatar.url }}" alt="{{ testimonial.name }}" class="w-12 h-12 rounded-full object-cover">
+                        {% else %}
+                            <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
+                                <span class="text-white font-semibold">{{ testimonial.name|first }}</span>
+                            </div>
+                        {% endif %}
+                        
+                        <div class="ml-4">
+                            <div class="font-semibold text-gray-900">{{ testimonial.name }}</div>
+                            {% if testimonial.position %}
+                                <div class="text-sm text-gray-500">{{ testimonial.position }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="py-20 bg-blue-600">
+    <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
+            Bugun O'qishni Boshlang!
+        </h2>
+        <p class="text-xl text-blue-100 mb-8">
+            Professional tibbiy ta'lim olish va karyerangizni rivojlantirish uchun bizga qo'shiling
+        </p>
+        
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'accounts:register' %}" 
+                   class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg">
+                    <i class="fas fa-user-plus mr-2"></i>
+                    Bepul Ro'yxatdan O'tish
+                </a>
+            {% endif %}
+            
+            <a href="{% url 'courses:list' %}" 
+               class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors">
+                <i class="fas fa-search mr-2"></i>
+                Kurslarni Ko'rish
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Animated counter for statistics
+function animateCounters() {
+    const counters = document.querySelectorAll('.stats-counter [data-count]');
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const counter = entry.target;
+                const target = parseInt(counter.getAttribute('data-count'));
+                let current = 0;
+                const increment = target / 50;
+                
+                const updateCounter = () => {
+                    if (current < target) {
+                        current += increment;
+                        counter.textContent = Math.floor(current);
+                        requestAnimationFrame(updateCounter);
+                    } else {
+                        counter.textContent = target;
+                    }
+                };
+                
+                updateCounter();
+                observer.unobserve(counter);
+            }
+        });
+    });
+    
+    counters.forEach(counter => observer.observe(counter));
+}
+
+// Initialize animations when page loads
+document.addEventListener('DOMContentLoaded', function() {
+    animateCounters();
+});
+</script>
+{% endblock %}

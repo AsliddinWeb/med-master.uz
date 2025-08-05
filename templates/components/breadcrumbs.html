@@ -1,0 +1,37 @@
+{% if breadcrumbs %}
+<nav class="bg-gray-50 border-b border-gray-200" aria-label="Breadcrumb">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center space-x-4 py-3">
+            <!-- Home Icon -->
+            <a href="{% url 'core:home' %}"
+               class="text-gray-400 hover:text-gray-600 transition-colors duration-200 flex items-center">
+                <i class="fas fa-home text-sm"></i>
+                <span class="sr-only">Bosh sahifa</span>
+            </a>
+
+            <!-- Breadcrumb Items -->
+            {% for crumb in breadcrumbs %}
+                <div class="flex items-center">
+                    <!-- Separator -->
+                    <i class="fas fa-chevron-right text-gray-300 text-xs mx-2"></i>
+
+                    <!-- Breadcrumb Link -->
+                    {% if not forloop.last %}
+                        <a href="{{ crumb.url }}"
+                           class="text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200 capitalize">
+                            {{ crumb.name }}
+                        </a>
+                    {% else %}
+                        <!-- Current Page (not clickable) -->
+                        <span class="text-sm font-medium text-gray-900 capitalize" aria-current="page">
+                            {{ crumb.name }}
+                        </span>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</nav>
+
+
+{% endif %}

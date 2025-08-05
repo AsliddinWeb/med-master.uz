@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="uz" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- SEO Meta Tags -->
+    <title>
+        {% block title %}
+            {% if page_title %}{{ page_title }} | {% endif %}
+            {% if site_settings.site_name %}{{ site_settings.site_name }}{% else %}Tibbiy Ta'lim Platformasi{% endif %}
+        {% endblock %}
+    </title>
+
+    <meta name="description" content="{% block meta_description %}{% if seo_page and seo_page.meta_description %}{{ seo_page.meta_description }}{% elif site_settings.site_description %}{{ site_settings.site_description }}{% else %}Professional tibbiy ta'lim onlayn platformasi. Eng yaxshi o'qituvchilar, zamonaviy darslar va rasmiy sertifikatlar.{% endif %}{% endblock %}">
+
+    <meta name="keywords" content="{% block meta_keywords %}{% if seo_page and seo_page.meta_keywords %}{{ seo_page.meta_keywords }}{% elif site_settings.site_keywords %}{{ site_settings.site_keywords }}{% else %}tibbiyot, ta'lim, kurs, onlayn, sertifikat, o'qituvchi, dars{% endif %}{% endblock %}">
+
+    <meta name="author" content="{% block meta_author %}{% if site_settings.meta_author %}{{ site_settings.meta_author }}{% else %}Tibbiy Ta'lim Platformasi{% endif %}{% endblock %}">
+
+    <!-- Open Graph Tags -->
+    <meta property="og:title" content="{% block og_title %}{% if seo_page and seo_page.og_title %}{{ seo_page.og_title }}{% else %}{% if page_title %}{{ page_title }} | {% endif %}{% if site_settings.site_name %}{{ site_settings.site_name }}{% else %}Tibbiy Ta'lim Platformasi{% endif %}{% endif %}{% endblock %}">
+
+    <meta property="og:description" content="{% block og_description %}{% if seo_page and seo_page.og_description %}{{ seo_page.og_description }}{% elif site_settings.site_description %}{{ site_settings.site_description }}{% else %}Professional tibbiy ta'lim onlayn platformasi{% endif %}{% endblock %}">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="{{ request.build_absolute_uri }}">
+    <meta property="og:site_name" content="{% if site_settings.site_name %}{{ site_settings.site_name }}{% else %}Tibbiy Ta'lim Platformasi{% endif %}">
+
+    {% if seo_page and seo_page.og_image %}
+        <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ seo_page.og_image.url }}">
+    {% elif site_settings.site_logo %}
+        <meta property="og:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.site_logo.url }}">
+    {% endif %}
+
+    <!-- Twitter Card Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{% block twitter_title %}{% if seo_page and seo_page.twitter_title %}{{ seo_page.twitter_title }}{% else %}{% if page_title %}{{ page_title }} | {% endif %}{% if site_settings.site_name %}{{ site_settings.site_name }}{% else %}Tibbiy Ta'lim Platformasi{% endif %}{% endif %}{% endblock %}">
+
+    <meta name="twitter:description" content="{% block twitter_description %}{% if seo_page and seo_page.twitter_description %}{{ seo_page.twitter_description }}{% elif site_settings.site_description %}{{ site_settings.site_description }}{% else %}Professional tibbiy ta'lim onlayn platformasi{% endif %}{% endblock %}">
+
+    {% if seo_page and seo_page.twitter_image %}
+        <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ seo_page.twitter_image.url }}">
+    {% elif site_settings.site_logo %}
+        <meta name="twitter:image" content="{{ request.scheme }}://{{ request.get_host }}{{ site_settings.site_logo.url }}">
+    {% endif %}
+
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+
+    <!-- Favicon -->
+    {% if site_settings.site_favicon %}
+        <link rel="icon" type="image/x-icon" href="{{ site_settings.site_favicon.url }}">
+        <link rel="apple-touch-icon" href="{{ site_settings.site_favicon.url }}">
+    {% else %}
+        {% load static %}
+        <link rel="icon" type="image/x-icon" href="{% static 'images/favicon.ico' %}">
+        <link rel="apple-touch-icon" href="{% static 'images/apple-touch-icon.png' %}">
+    {% endif %}
+
+    <!-- Theme Color -->
+    <meta name="theme-color" content="#3B82F6">
+    <meta name="msapplication-TileColor" content="#3B82F6">
+
+    <!-- CSS Framework -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Inter', 'system-ui', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': {
+                            50: '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
+                        'gray': {
+                            50: '#f9fafb',
+                            100: '#f3f4f6',
+                            200: '#e5e7eb',
+                            300: '#d1d5db',
+                            400: '#9ca3af',
+                            500: '#6b7280',
+                            600: '#4b5563',
+                            700: '#374151',
+                            800: '#1f2937',
+                            900: '#111827',
+                        }
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'slide-down': 'slideDown 0.3s ease-out',
+                        'scale-in': 'scaleIn 0.2s ease-out',
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        slideDown: {
+                            '0%': { transform: 'translateY(-10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                        scaleIn: {
+                            '0%': { transform: 'scale(0.95)', opacity: '0' },
+                            '100%': { transform: 'scale(1)', opacity: '1' },
+                        }
+                    },
+                    backdropBlur: {
+                        'xs': '2px',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer">
+
+    <!-- Custom CSS -->
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/custom.css' %}">
+
+    <!-- Custom Styles -->
+    <style>
+        /* Custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Selection color */
+        ::selection {
+            background-color: #3b82f6;
+            color: white;
+        }
+
+        /* Focus styles */
+        .focus-ring {
+            @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+        }
+
+        /* Glass effect */
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Dark glass effect */
+        .dark-glass-effect {
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        /* Loading skeleton */
+        .skeleton {
+            @apply animate-pulse bg-gray-200 rounded;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Card hover effect */
+        .hover-lift {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .hover-lift:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Button animations */
+        .btn-ripple {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-ripple::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+            transform: translate(-50%, -50%);
+            transition: width 0.6s, height 0.6s;
+        }
+
+        .btn-ripple:active::before {
+            width: 300px;
+            height: 300px;
+        }
+    </style>
+
+    {% block extra_css %}{% endblock %}
+
+    <!-- Analytics -->
+    {% if site_settings.google_analytics_id %}
+        <!-- Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ site_settings.google_analytics_id }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '{{ site_settings.google_analytics_id }}', {
+                page_title: '{{ page_title|default:"Home" }}',
+                page_location: window.location.href
+            });
+        </script>
+    {% endif %}
+
+    {% if site_settings.google_tag_manager_id %}
+        <!-- Google Tag Manager -->
+        <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+        new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+        j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+        'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+        })(window,document,'script','dataLayer','{{ site_settings.google_tag_manager_id }}');</script>
+    {% endif %}
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "{% if site_settings.site_name %}{{ site_settings.site_name }}{% else %}Tibbiy Ta'lim Platformasi{% endif %}",
+        "description": "{% if site_settings.site_description %}{{ site_settings.site_description }}{% else %}Professional tibbiy ta'lim onlayn platformasi{% endif %}",
+        "url": "{{ request.scheme }}://{{ request.get_host }}",
+        {% if site_settings.site_logo %}"logo": "{{ request.scheme }}://{{ request.get_host }}{{ site_settings.site_logo.url }}",{% endif %}
+        "sameAs": [
+            {% if social_networks.facebook_url %}"{{ social_networks.facebook_url }}"{% if social_networks.instagram_url or social_networks.telegram_url or social_networks.youtube_url %},{% endif %}{% endif %}
+            {% if social_networks.instagram_url %}"{{ social_networks.instagram_url }}"{% if social_networks.telegram_url or social_networks.youtube_url %},{% endif %}{% endif %}
+            {% if social_networks.telegram_url %}"{{ social_networks.telegram_url }}"{% if social_networks.youtube_url %},{% endif %}{% endif %}
+            {% if social_networks.youtube_url %}"{{ social_networks.youtube_url }}"{% endif %}
+        ]
+    }
+    </script>
+</head>
+
+<body class="{% block body_class %}bg-gray-50 text-gray-900 antialiased{% endblock %}" x-data="{ mobileMenuOpen: false, userMenuOpen: false }">
+    <!-- Google Tag Manager (noscript) -->
+    {% if site_settings.google_tag_manager_id %}
+        <noscript><iframe src="https://www.googletagmanager.com/ns.html?id={{ site_settings.google_tag_manager_id }}"
+        height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    {% endif %}
+
+    <!-- Skip to content -->
+    <a href="#main-content" class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 bg-primary-600 text-white px-4 py-2 rounded-lg z-50">
+        Asosiy kontentga o'tish
+    </a>
+
+    <!-- Maintenance Mode -->
+    {% if maintenance_mode and not request.user.is_staff %}
+        <div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center px-4">
+            <div class="max-w-md w-full">
+                <div class="bg-white rounded-2xl shadow-2xl p-8 text-center">
+                    <div class="w-20 h-20 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-tools text-3xl text-primary-600"></i>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-900 mb-4">Texnik ishlar</h1>
+                    <p class="text-gray-600 mb-6">
+                        Sayt hozirda texnik ishlar olib borilmoqda.
+                        Tez orada yangi imkoniyatlar bilan qaytamiz!
+                    </p>
+                    <div class="flex items-center justify-center space-x-2">
+                        <div class="w-2 h-2 bg-primary-500 rounded-full animate-bounce"></div>
+                        <div class="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style="animation-delay: 0.1s"></div>
+                        <div class="w-2 h-2 bg-primary-500 rounded-full animate-bounce" style="animation-delay: 0.2s"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <!-- Announcement Bar -->
+        {% if header_settings.announcement_active and header_settings.announcement_text %}
+            <div class="bg-gradient-to-r from-primary-600 to-primary-700 text-white">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex items-center justify-between py-3">
+                        <div class="flex-1 flex items-center justify-center">
+                            <div class="flex items-center">
+                                <i class="fas fa-bullhorn mr-2 text-primary-200"></i>
+                                {% if header_settings.announcement_url %}
+                                    <a href="{{ header_settings.announcement_url }}" class="text-sm font-medium hover:text-primary-100 transition-colors">
+                                        {{ header_settings.announcement_text }}
+                                    </a>
+                                {% else %}
+                                    <span class="text-sm font-medium">{{ header_settings.announcement_text }}</span>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <button class="text-primary-200 hover:text-white transition-colors" onclick="this.parentElement.parentElement.parentElement.style.display='none'">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        <!-- Navigation -->
+        {% include 'components/navbar.html' %}
+
+        <!-- Main Content -->
+        <main id="main-content" class="{% block main_class %}min-h-screen{% endblock %}">
+            <!-- Breadcrumbs -->
+            {% block breadcrumbs %}
+                {% if breadcrumbs %}
+                    {% include 'components/breadcrumbs.html' %}
+                {% endif %}
+            {% endblock %}
+
+            <!-- Messages -->
+            {% include 'components/messages.html' %}
+
+            <!-- Page Content -->
+            {% block content %}{% endblock %}
+        </main>
+
+        <!-- Footer -->
+        {% include 'components/footer.html' %}
+
+        <!-- Back to Top Button -->
+        <button id="backToTop"
+                class="fixed bottom-6 right-6 w-12 h-12 bg-primary-600 hover:bg-primary-700 text-white rounded-full shadow-lg hover:shadow-xl transition-all duration-300 transform translate-y-16 opacity-0 focus-ring z-40 group">
+            <i class="fas fa-arrow-up transition-transform group-hover:-translate-y-0.5"></i>
+        </button>
+
+        <!-- Loading Overlay -->
+        <div id="loadingOverlay"
+             class="fixed inset-0 dark-glass-effect flex items-center justify-center z-50 hidden">
+            <div class="bg-white rounded-2xl p-8 shadow-2xl max-w-sm mx-4 text-center">
+                <div class="w-16 h-16 border-4 border-primary-200 border-t-primary-600 rounded-full animate-spin mx-auto mb-4"></div>
+                <h3 class="text-lg font-semibold text-gray-900 mb-2">Yuklanmoqda</h3>
+                <p class="text-gray-600 text-sm">Iltimos biroz kuting...</p>
+            </div>
+        </div>
+
+        <!-- Toast Container -->
+        <div id="toastContainer"
+             class="fixed top-20 right-6 z-50 space-y-4 max-w-sm">
+        </div>
+
+        <!-- Modal Container -->
+        <div id="modalContainer" class="relative z-50"></div>
+
+        <!-- Progress Bar -->
+        <div id="progressBar"
+             class="fixed top-0 left-0 w-full h-1 bg-primary-600 transform scale-x-0 origin-left transition-transform duration-300 z-50 hidden">
+        </div>
+    {% endif %}
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+    {% load static %}
+    <script src="{% static 'js/main.js' %}"></script>
+
+    {% block extra_js %}{% endblock %}
+
+    <!-- Core JavaScript -->
+    <script>
+        // Global Configuration
+        window.AppConfig = {
+            csrfToken: '{{ csrf_token }}',
+            debug: {{ DEBUG|yesno:"true,false" }},
+            language: 'uz',
+            timezone: 'Asia/Tashkent',
+            urls: {
+                newsletterSubscribe: '{% url "core:newsletter_subscribe" %}'
+            }
+        };
+
+        // Enhanced UI Components
+        class UIComponents {
+            constructor() {
+                this.init();
+            }
+
+            init() {
+                this.initBackToTop();
+                this.initMessages();
+                this.initFormValidation();
+                this.initMobileMenu();
+                this.initNewsletter();
+                this.initScrollEffects();
+                this.initKeyboardNavigation();
+            }
+
+            // Back to top with smooth scroll
+            initBackToTop() {
+                const backToTopButton = document.getElementById('backToTop');
+                if (!backToTopButton) return;
+
+                let ticking = false;
+                const updateBackToTop = () => {
+                    const scrollY = window.pageYOffset;
+
+                    if (scrollY > 400) {
+                        backToTopButton.classList.remove('translate-y-16', 'opacity-0');
+                        backToTopButton.classList.add('translate-y-0', 'opacity-100');
+                    } else {
+                        backToTopButton.classList.add('translate-y-16', 'opacity-0');
+                        backToTopButton.classList.remove('translate-y-0', 'opacity-100');
+                    }
+                    ticking = false;
+                };
+
+                window.addEventListener('scroll', () => {
+                    if (!ticking) {
+                        requestAnimationFrame(updateBackToTop);
+                        ticking = true;
+                    }
+                });
+
+                backToTopButton.addEventListener('click', () => {
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+
+            // Enhanced messages with toast notifications
+            initMessages() {
+                // Auto-hide existing messages
+                const messages = document.querySelectorAll('.alert[data-auto-hide]');
+                messages.forEach(message => {
+                    const delay = parseInt(message.dataset.autoHide) || 6000;
+                    const progressBar = message.querySelector('.progress-bar');
+
+                    if (progressBar) {
+                        setTimeout(() => {
+                            progressBar.style.width = '0%';
+                            progressBar.style.transitionDuration = delay + 'ms';
+                        }, 100);
+                    }
+
+                    setTimeout(() => {
+                        this.hideMessage(message);
+                    }, delay);
+                });
+
+                // Close button handlers
+                document.addEventListener('click', (e) => {
+                    if (e.target.closest('.close-message')) {
+                        e.preventDefault();
+                        const message = e.target.closest('.alert');
+                        this.hideMessage(message);
+                    }
+                });
+            }
+
+            hideMessage(message) {
+                message.style.transition = 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)';
+                message.style.transform = 'translateX(100%)';
+                message.style.opacity = '0';
+                setTimeout(() => message.remove(), 300);
+            }
+
+            // Form validation with better UX
+            initFormValidation() {
+                const forms = document.querySelectorAll('form[data-validate="true"]');
+
+                forms.forEach(form => {
+                    const fields = form.querySelectorAll('input, textarea, select');
+
+                    // Real-time validation
+                    fields.forEach(field => {
+                        field.addEventListener('blur', () => this.validateField(field));
+                        field.addEventListener('input', () => {
+                            if (field.classList.contains('border-red-500')) {
+                                this.validateField(field);
+                            }
+                        });
+                    });
+
+                    // Form submission
+                    form.addEventListener('submit', (e) => {
+                        let isValid = true;
+                        const requiredFields = form.querySelectorAll('[required]');
+
+                        requiredFields.forEach(field => {
+                            if (!this.validateField(field)) {
+                                isValid = false;
+                            }
+                        });
+
+                        if (!isValid) {
+                            e.preventDefault();
+                            this.showToast('Iltimos, barcha majburiy maydonlarni to\'g\'ri to\'ldiring!', 'error');
+
+                            // Focus first invalid field
+                            const firstInvalid = form.querySelector('.border-red-500');
+                            if (firstInvalid) {
+                                firstInvalid.focus();
+                                firstInvalid.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                        }
+                    });
+                });
+            }
+
+            validateField(field) {
+                const value = field.value.trim();
+                const fieldType = field.type;
+                let isValid = true;
+                let errorMessage = '';
+
+                // Required validation
+                if (field.hasAttribute('required') && !value) {
+                    isValid = false;
+                    errorMessage = 'Bu maydon majburiy';
+                }
+                // Email validation
+                else if (fieldType === 'email' && value) {
+                    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                    if (!emailRegex.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Email formatini to\'g\'ri kiriting';
+                    }
+                }
+                // Phone validation
+                else if (field.name === 'phone' && value) {
+                    const phoneRegex = /^\+998\d{9}$/;
+                    if (!phoneRegex.test(value)) {
+                        isValid = false;
+                        errorMessage = 'Telefon raqami +998XXXXXXXXX formatida bo\'lishi kerak';
+                    }
+                }
+                // Password validation
+                else if (fieldType === 'password' && value && value.length < 8) {
+                    isValid = false;
+                    errorMessage = 'Parol kamida 8 ta belgidan iborat bo\'lishi kerak';
+                }
+
+                // Visual feedback
+                this.setFieldValidation(field, isValid, errorMessage);
+                return isValid;
+            }
+
+            setFieldValidation(field, isValid, errorMessage) {
+                const errorContainer = field.parentNode.querySelector('.field-error');
+
+                if (isValid) {
+                    field.classList.remove('border-red-500', 'focus:ring-red-500');
+                    field.classList.add('border-gray-300', 'focus:ring-primary-500');
+                    if (errorContainer) errorContainer.remove();
+                } else {
+                    field.classList.add('border-red-500', 'focus:ring-red-500');
+                    field.classList.remove('border-gray-300', 'focus:ring-primary-500');
+
+                    if (!errorContainer) {
+                        const errorDiv = document.createElement('p');
+                        errorDiv.className = 'field-error text-red-500 text-sm mt-1 animate-slide-down';
+                        errorDiv.textContent = errorMessage;
+                        field.parentNode.appendChild(errorDiv);
+                    } else {
+                        errorContainer.textContent = errorMessage;
+                    }
+                }
+            }
+
+            // Mobile menu with animations
+            initMobileMenu() {
+                const mobileMenuButton = document.getElementById('mobile-menu-button');
+                const mobileMenu = document.getElementById('mobile-menu');
+
+                if (!mobileMenuButton || !mobileMenu) return;
+
+                mobileMenuButton.addEventListener('click', () => {
+                    const isOpen = !mobileMenu.classList.contains('hidden');
+
+                    if (isOpen) {
+                        mobileMenu.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden');
+                    } else {
+                        mobileMenu.classList.remove('hidden');
+                        document.body.classList.add('overflow-hidden');
+                    }
+                });
+
+                // Close on outside click
+                document.addEventListener('click', (e) => {
+                    if (!mobileMenuButton.contains(e.target) && !mobileMenu.contains(e.target)) {
+                        mobileMenu.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden');
+                    }
+                });
+
+                // Close on escape key
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape' && !mobileMenu.classList.contains('hidden')) {
+                        mobileMenu.classList.add('hidden');
+                        document.body.classList.remove('overflow-hidden');
+                    }
+                });
+            }
+
+            // Newsletter with better UX
+            initNewsletter() {
+                const newsletterForms = document.querySelectorAll('#newsletter-form, .newsletter-form');
+
+                newsletterForms.forEach(form => {
+                    form.addEventListener('submit', async (e) => {
+                        e.preventDefault();
+
+                        const submitButton = form.querySelector('button[type="submit"]');
+                        const originalText = submitButton.innerHTML;
+                        const email = form.querySelector('input[name="email"]').value;
+
+                        if (!email || !email.includes('@')) {
+                            this.showToast('Iltimos, to\'g\'ri email manzil kiriting!', 'error');
+                            return;
+                        }
+
+                        // Loading state
+                        submitButton.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Yuborilmoqda...';
+                        submitButton.disabled = true;
+
+                        try {
+                            const response = await fetch(window.AppConfig.urls.newsletterSubscribe, {
+                                method: 'POST',
+                                body: new FormData(form),
+                                headers: {
+                                    'X-CSRFToken': window.AppConfig.csrfToken,
+                                    'X-Requested-With': 'XMLHttpRequest'
+                                }
+                            });
+
+                            const data = await response.json();
+
+                            if (data.success) {
+                                this.showToast(data.message, 'success');
+                                form.reset();
+                            } else {
+                                this.showToast(data.message || 'Xatolik yuz berdi!', 'error');
+                            }
+                        } catch (error) {
+                            console.error('Newsletter error:', error);
+                            this.showToast('Tarmoq xatoligi. Qaytadan urinib ko\'ring.', 'error');
+                        } finally {
+                            // Reset button
+                            submitButton.innerHTML = originalText;
+                            submitButton.disabled = false;
+                        }
+                    });
+                });
+            }
+
+            // Scroll effects for animations
+            initScrollEffects() {
+                const observerOptions = {
+                    threshold: 0.1,
+                    rootMargin: '0px 0px -50px 0px'
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('animate-fade-in');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, observerOptions);
+
+                // Observe elements with scroll animation
+                document.querySelectorAll('.scroll-animate').forEach(el => {
+                    observer.observe(el);
+                });
+            }
+
+            // Keyboard navigation support
+            initKeyboardNavigation() {
+                // Trap focus in modals
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Tab') {
+                        const modal = document.querySelector('.modal:not(.hidden)');
+                        if (modal) {
+                            this.trapFocus(e, modal);
+                        }
+                    }
+                });
+            }
+
+            trapFocus(e, container) {
+                const focusableElements = container.querySelectorAll(
+                    'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+                );
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (e.shiftKey) {
+                    if (document.activeElement === firstElement) {
+                        lastElement.focus();
+                        e.preventDefault();
+                    }
+                } else {
+                    if (document.activeElement === lastElement) {
+                        firstElement.focus();
+                        e.preventDefault();
+                    }
+                }
+            }
+
+            // Enhanced toast notifications
+            showToast(message, type = 'info', duration = 5000) {
+                const toastContainer = document.getElementById('toastContainer');
+                if (!toastContainer) return;
+
+                const toastTypes = {
+                    success: {
+                        bgClass: 'bg-green-50 border-green-200 text-green-800',
+                        iconClass: 'text-green-500',
+                        icon: 'fas fa-check-circle'
+                    },
+                    error: {
+                        bgClass: 'bg-red-50 border-red-200 text-red-800',
+                        iconClass: 'text-red-500',
+                        icon: 'fas fa-exclamation-circle'
+                    },
+                    warning: {
+                        bgClass: 'bg-yellow-50 border-yellow-200 text-yellow-800',
+                        iconClass: 'text-yellow-500',
+                        icon: 'fas fa-exclamation-triangle'
+                    },
+                    info: {
+                        bgClass: 'bg-blue-50 border-blue-200 text-blue-800',
+                        iconClass: 'text-blue-500',
+                        icon: 'fas fa-info-circle'
+                    }
+                };
+
+                const config = toastTypes[type] || toastTypes.info;
+
+                const toast = document.createElement('div');
+                toast.className = `${config.bgClass} border rounded-xl p-4 shadow-lg transform translate-x-full transition-all duration-300 max-w-sm`;
+
+                toast.innerHTML = `
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0">
+                            <i class="${config.icon} ${config.iconClass}"></i>
+                        </div>
+                        <div class="ml-3 flex-1">
+                            <p class="text-sm font-medium">${message}</p>
+                        </div>
+                        <button type="button" class="ml-4 text-gray-400 hover:text-gray-600 transition-colors">
+                            <i class="fas fa-times text-sm"></i>
+                        </button>
+                    </div>
+                `;
+
+                // Close button
+                toast.querySelector('button').addEventListener('click', () => {
+                    this.hideToast(toast);
+                });
+
+                toastContainer.appendChild(toast);
+
+                // Animate in
+                setTimeout(() => {
+                    toast.classList.remove('translate-x-full');
+                }, 100);
+
+                // Auto hide
+                setTimeout(() => {
+                    this.hideToast(toast);
+                }, duration);
+            }
+
+            hideToast(toast) {
+                toast.classList.add('translate-x-full');
+                setTimeout(() => toast.remove(), 300);
+            }
+
+            // Utility functions
+            showLoading() {
+                document.getElementById('loadingOverlay').classList.remove('hidden');
+            }
+
+            hideLoading() {
+                document.getElementById('loadingOverlay').classList.add('hidden');
+            }
+
+            showProgressBar(percentage = 0) {
+                const progressBar = document.getElementById('progressBar');
+                progressBar.classList.remove('hidden');
+                progressBar.style.transform = `scaleX(${percentage / 100})`;
+            }
+
+            hideProgressBar() {
+                const progressBar = document.getElementById('progressBar');
+                progressBar.classList.add('hidden');
+                progressBar.style.transform = 'scaleX(0)';
+            }
+        }
+
+        // Initialize when DOM is ready
+        document.addEventListener('DOMContentLoaded', () => {
+            window.UI = new UIComponents();
+
+            // Global functions for backward compatibility
+            window.showLoading = () => window.UI.showLoading();
+            window.hideLoading = () => window.UI.hideLoading();
+            window.showToast = (message, type, duration) => window.UI.showToast(message, type, duration);
+            window.showProgressBar = (percentage) => window.UI.showProgressBar(percentage);
+            window.hideProgressBar = () => window.UI.hideProgressBar();
+
+            console.log('🚀 Tibbiy Ta\'lim Platformasi - Professional UI/UX yuklandi!');
+        });
+
+        // Enhanced AJAX helper
+        window.makeRequest = async (url, options = {}) => {
+            const defaultOptions = {
+                headers: {
+                    'X-CSRFToken': window.AppConfig.csrfToken,
+                    'X-Requested-With': 'XMLHttpRequest',
+                    ...options.headers
+                }
+            };
+
+            if (options.showLoading !== false) {
+                window.UI.showLoading();
+            }
+
+            try {
+                const response = await fetch(url, { ...defaultOptions, ...options });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error('Request failed:', error);
+                if (options.showError !== false) {
+                    window.UI.showToast('So\'rov bajarilmadi. Qaytadan urinib ko\'ring.', 'error');
+                }
+                throw error;
+            } finally {
+                if (options.showLoading !== false) {
+                    window.UI.hideLoading();
+                }
+            }
+        };
+    </script>
+</body>
+</html>

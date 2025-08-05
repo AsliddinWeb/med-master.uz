@@ -1,0 +1,396 @@
+{% load static %}
+
+<footer class="bg-gray-900 text-white">
+    <!-- Newsletter Section -->
+    {% if not footer_settings or footer_settings.newsletter_active %}
+    <div class="bg-gray-800 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h3 class="text-2xl font-bold mb-2">
+                    {% if footer_settings.newsletter_title %}
+                        {{ footer_settings.newsletter_title }}
+                    {% else %}
+                        Yangiliklardan xabardor bo'ling
+                    {% endif %}
+                </h3>
+                <p class="text-gray-300 mb-6 max-w-2xl mx-auto">
+                    {% if footer_settings.newsletter_description %}
+                        {{ footer_settings.newsletter_description }}
+                    {% else %}
+                        Eng so'nggi kurslar, yangiliklar va maxsus takliflardan birinchi bo'lib xabardor bo'ling
+                    {% endif %}
+                </p>
+
+                <form id="newsletter-form" class="max-w-md mx-auto flex">
+                    {% csrf_token %}
+                    <input type="email" name="email" required
+                           placeholder="Email manzilingizni kiriting"
+                           class="flex-1 px-4 py-3 bg-white text-gray-900 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <button type="submit"
+                            class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-r-lg font-medium transition-colors duration-200">
+                        <i class="fas fa-paper-plane mr-2"></i>
+                        Obuna bo'lish
+                    </button>
+                </form>
+
+                <p class="text-xs text-gray-400 mt-3">
+                    Sizning email manzilingiz xavfsiz va spam jo'natilmaydi
+                </p>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Main Footer Content -->
+    <div class="py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+
+                <!-- Company Info -->
+                <div class="lg:col-span-1">
+                    <!-- Logo -->
+                    <div class="mb-6">
+                        {% if footer_settings.footer_logo %}
+                            <img src="{{ footer_settings.footer_logo.url }}" alt="Logo" class="h-12 w-auto">
+                        {% elif site_settings.site_logo %}
+                            <img src="{{ site_settings.site_logo.url }}" alt="Logo" class="h-12 w-auto">
+                        {% else %}
+                            <div class="flex items-center">
+                                <div class="bg-blue-600 text-white rounded-lg p-2 mr-3">
+                                    <i class="fas fa-graduation-cap text-xl"></i>
+                                </div>
+                                <span class="text-xl font-bold">
+                                    {% if site_settings.site_name %}{{ site_settings.site_name }}{% else %}Tibbiy Ta'lim Platformasi{% endif %}
+                                </span>
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Description -->
+                    <p class="text-gray-300 mb-6 leading-relaxed">
+                        {% if footer_settings.footer_description %}
+                            {{ footer_settings.footer_description }}
+                        {% elif site_settings.site_description %}
+                            {{ site_settings.site_description }}
+                        {% else %}
+                            Professional tibbiy ta'lim onlayn platformasi. Eng yaxshi o'qituvchilar bilan zamonaviy tibbiy bilimlarni o'rganing.
+                        {% endif %}
+                    </p>
+
+                    <!-- Social Links -->
+                    {% if social_networks and social_networks.show_in_footer %}
+                    <div class="flex space-x-4">
+                        {% if social_networks.facebook_url %}
+                            <a href="{{ social_networks.facebook_url }}" target="_blank"
+                               class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-200">
+                                <i class="fab fa-facebook-f"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if social_networks.instagram_url %}
+                            <a href="{{ social_networks.instagram_url }}" target="_blank"
+                               class="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition-colors duration-200">
+                                <i class="fab fa-instagram"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if social_networks.telegram_url %}
+                            <a href="{{ social_networks.telegram_url }}" target="_blank"
+                               class="w-10 h-10 bg-gray-800 hover:bg-blue-500 rounded-full flex items-center justify-center transition-colors duration-200">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if social_networks.youtube_url %}
+                            <a href="{{ social_networks.youtube_url }}" target="_blank"
+                               class="w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-200">
+                                <i class="fab fa-youtube"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if social_networks.linkedin_url %}
+                            <a href="{{ social_networks.linkedin_url }}" target="_blank"
+                               class="w-10 h-10 bg-gray-800 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors duration-200">
+                                <i class="fab fa-linkedin-in"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if social_networks.twitter_url %}
+                            <a href="{{ social_networks.twitter_url }}" target="_blank"
+                               class="w-10 h-10 bg-gray-800 hover:bg-blue-400 rounded-full flex items-center justify-center transition-colors duration-200">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        {% endif %}
+
+                        {% if social_networks.tiktok_url %}
+                            <a href="{{ social_networks.tiktok_url }}" target="_blank"
+                               class="w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors duration-200">
+                                <i class="fab fa-tiktok"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- Courses Column -->
+                {% if not footer_settings or footer_settings.show_courses_column %}
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Kurslar</h3>
+                    <ul class="space-y-3">
+                        {% if footer_links.courses %}
+                            {% for link in footer_links.courses %}
+                                <li>
+                                    <a href="{{ link.url }}"
+                                       class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center"
+                                       {% if link.open_new_tab %}target="_blank"{% endif %}>
+                                        <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                        {{ link.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>
+                                <a href="{% url 'courses:list' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Barcha kurslar
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Boshlang'ich
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    O'rta daraja
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Yuqori daraja
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Company Column -->
+                {% if not footer_settings or footer_settings.show_company_column %}
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Kompaniya</h3>
+                    <ul class="space-y-3">
+                        {% if footer_links.company %}
+                            {% for link in footer_links.company %}
+                                <li>
+                                    <a href="{{ link.url }}"
+                                       class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center"
+                                       {% if link.open_new_tab %}target="_blank"{% endif %}>
+                                        <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                        {{ link.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>
+                                <a href="{% url 'core:about' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Biz haqimizda
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'core:contact' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Aloqa
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    O'qituvchi bo'lish
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Support Column -->
+                {% if not footer_settings or footer_settings.show_support_column %}
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Yordam</h3>
+                    <ul class="space-y-3">
+                        {% if footer_links.support %}
+                            {% for link in footer_links.support %}
+                                <li>
+                                    <a href="{{ link.url }}"
+                                       class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center"
+                                       {% if link.open_new_tab %}target="_blank"{% endif %}>
+                                        <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                        {{ link.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li>
+                                <a href="{% url 'core:faq' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    FAQ
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'core:privacy_policy' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Maxfiylik siyosati
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'core:terms_of_service' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
+                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                    Foydalanish shartlari
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Contact Column -->
+                {% if not footer_settings or footer_settings.show_contact_column %}
+                <div>
+                    <h3 class="text-lg font-semibold mb-6">Aloqa</h3>
+                    <ul class="space-y-4">
+                        <!-- Custom Contact Links -->
+                        {% if footer_links.contact %}
+                            {% for link in footer_links.contact %}
+                                <li>
+                                    <a href="{{ link.url }}"
+                                       class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center"
+                                       {% if link.open_new_tab %}target="_blank"{% endif %}>
+                                        <i class="fas fa-angle-right mr-2 text-blue-500"></i>
+                                        {{ link.title }}
+                                    </a>
+                                </li>
+                            {% endfor %}
+                        {% endif %}
+
+                        <!-- Default Contact Info -->
+                        {% if site_settings.phone %}
+                            <li class="flex items-start">
+                                <i class="fas fa-phone text-blue-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-gray-300">Telefon:</p>
+                                    <a href="tel:{{ site_settings.phone }}" class="text-white hover:text-blue-400 transition-colors">
+                                        {{ site_settings.phone }}
+                                    </a>
+                                </div>
+                            </li>
+                        {% endif %}
+
+                        {% if site_settings.email %}
+                            <li class="flex items-start">
+                                <i class="fas fa-envelope text-blue-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-gray-300">Email:</p>
+                                    <a href="mailto:{{ site_settings.email }}" class="text-white hover:text-blue-400 transition-colors break-all">
+                                        {{ site_settings.email }}
+                                    </a>
+                                </div>
+                            </li>
+                        {% endif %}
+
+                        {% if site_settings.address %}
+                            <li class="flex items-start">
+                                <i class="fas fa-map-marker-alt text-blue-500 mt-1 mr-3"></i>
+                                <div>
+                                    <p class="text-gray-300">Manzil:</p>
+                                    <p class="text-white">{{ site_settings.address }}</p>
+                                </div>
+                            </li>
+                        {% endif %}
+
+                        <!-- Working Hours -->
+                        <li class="flex items-start">
+                            <i class="fas fa-clock text-blue-500 mt-1 mr-3"></i>
+                            <div>
+                                <p class="text-gray-300">Ish vaqti:</p>
+                                <p class="text-white">24/7 onlayn</p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Statistics Section -->
+    <div class="bg-gray-800 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+                <div>
+                    <div class="text-3xl font-bold text-blue-400 mb-2">{% if counters.total_courses %}{{ counters.total_courses }}{% else %}50{% endif %}+</div>
+                    <div class="text-gray-300">Kurslar</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-green-400 mb-2">{% if counters.total_students %}{{ counters.total_students }}{% else %}1000{% endif %}+</div>
+                    <div class="text-gray-300">Talabalar</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-yellow-400 mb-2">{% if counters.total_teachers %}{{ counters.total_teachers }}{% else %}25{% endif %}+</div>
+                    <div class="text-gray-300">O'qituvchilar</div>
+                </div>
+                <div>
+                    <div class="text-3xl font-bold text-purple-400 mb-2">{% if counters.total_lessons %}{{ counters.total_lessons }}{% else %}500{% endif %}+</div>
+                    <div class="text-gray-300">Darslar</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bottom Bar -->
+    <div class="bg-gray-950 py-6">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <!-- Copyright -->
+                <div class="text-center md:text-left">
+                    <p class="text-gray-400 text-sm">
+                        {% if footer_settings.copyright_text %}
+                            {{ footer_settings.copyright_text }}
+                        {% else %}
+                            © {% now "Y" %} Tibbiy Ta'lim Platformasi. Barcha huquqlar himoyalangan.
+                        {% endif %}
+                    </p>
+                </div>
+
+                <!-- Bottom Links -->
+                <div class="mt-4 md:mt-0">
+                    <div class="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
+                        <a href="{% url 'core:privacy_policy' %}" class="text-gray-400 hover:text-white transition-colors">
+                            Maxfiylik
+                        </a>
+                        <a href="{% url 'core:terms_of_service' %}" class="text-gray-400 hover:text-white transition-colors">
+                            Shartlar
+                        </a>
+                        <a href="{% url 'core:contact' %}" class="text-gray-400 hover:text-white transition-colors">
+                            Aloqa
+                        </a>
+                        <span class="text-gray-400">
+                            {% now "Y" %}
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Built with love -->
+            <div class="text-center mt-4 pt-4 border-t border-gray-800">
+                <p class="text-gray-500 text-xs">
+                    ❤️ bilan yaratildi - Professional ta'lim uchun
+                </p>
+            </div>
+        </div>
+    </div>
+</footer>
