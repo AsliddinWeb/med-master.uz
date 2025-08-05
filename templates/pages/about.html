@@ -1,0 +1,773 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load core_tags %}
+{% load user_tags %}
+
+{% block title %}Biz haqimizda{% endblock %}
+
+{% block meta_description %}Tibbiy Ta'lim Platformasi haqida to'liq ma'lumot. Bizning missiyamiz, viziyamiz va professional shifokorlar jamoasi.{% endblock %}
+
+{% block extra_css %}
+<style>
+    .medical-gradient {
+        background: linear-gradient(135deg, #0f766e 0%, #164e63 50%, #1e3a8a 100%);
+    }
+
+    .medical-pattern {
+        background-image:
+            radial-gradient(circle at 25% 25%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+            radial-gradient(circle at 75% 75%, rgba(15, 118, 110, 0.1) 0%, transparent 50%);
+    }
+
+    .team-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid rgba(6, 182, 212, 0.1);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    .team-card:hover {
+        transform: translateY(-12px);
+        box-shadow: 0 25px 50px -12px rgba(6, 182, 212, 0.25);
+        border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    .stats-card {
+        backdrop-filter: blur(16px);
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+
+    .pulse-ring {
+        animation: pulse-ring 3s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+    }
+
+    @keyframes pulse-ring {
+        0% {
+            transform: scale(0.8);
+            opacity: 1;
+        }
+        80%, 100% {
+            transform: scale(2.0);
+            opacity: 0;
+        }
+    }
+
+    .floating-medical {
+        animation: floating-medical 4s ease-in-out infinite;
+    }
+
+    @keyframes floating-medical {
+        0%, 100% { transform: translateY(0px) rotate(0deg); }
+        33% { transform: translateY(-10px) rotate(2deg); }
+        66% { transform: translateY(-5px) rotate(-1deg); }
+    }
+
+    .medical-timeline {
+        position: relative;
+    }
+
+    .medical-timeline::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: linear-gradient(to bottom, #0891b2, #0f766e, #1e40af);
+        transform: translateX(-50%);
+    }
+
+    .timeline-item {
+        position: relative;
+        margin-bottom: 3rem;
+    }
+
+    .timeline-item::before {
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 2rem;
+        width: 20px;
+        height: 20px;
+        background: linear-gradient(135deg, #0891b2 0%, #0f766e 100%);
+        border-radius: 50%;
+        transform: translateX(-50%);
+        border: 4px solid white;
+        box-shadow: 0 0 0 4px rgba(6, 182, 212, 0.2);
+    }
+
+    .value-card {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .value-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+        transition: left 0.7s ease;
+    }
+
+    .value-card:hover::before {
+        left: 100%;
+    }
+
+    .medical-icon-bounce {
+        animation: medical-bounce 2s infinite;
+    }
+
+    @keyframes medical-bounce {
+        0%, 20%, 50%, 80%, 100% {
+            transform: translateY(0);
+        }
+        40% {
+            transform: translateY(-10px);
+        }
+        60% {
+            transform: translateY(-5px);
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="medical-gradient relative overflow-hidden py-20 lg:py-32">
+    <!-- Medical Pattern Background -->
+    <div class="absolute inset-0 medical-pattern"></div>
+
+    <!-- Floating Medical Icons -->
+    <div class="absolute top-20 left-10 text-cyan-300 opacity-20 floating-medical" style="animation-delay: 0s;">
+        <i class="fas fa-stethoscope text-5xl"></i>
+    </div>
+    <div class="absolute top-32 right-20 text-teal-300 opacity-20 floating-medical" style="animation-delay: 1s;">
+        <i class="fas fa-heartbeat text-4xl"></i>
+    </div>
+    <div class="absolute bottom-32 left-32 text-blue-300 opacity-20 floating-medical" style="animation-delay: 2s;">
+        <i class="fas fa-user-md text-6xl"></i>
+    </div>
+    <div class="absolute bottom-20 right-16 text-indigo-300 opacity-20 floating-medical" style="animation-delay: 3s;">
+        <i class="fas fa-hospital text-4xl"></i>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <!-- Hero Icon -->
+            <div class="inline-block relative mb-8">
+                <div class="w-24 h-24 bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto shadow-2xl">
+                    <i class="fas fa-hospital text-4xl text-white"></i>
+                </div>
+                <div class="absolute inset-0 bg-white bg-opacity-10 rounded-2xl pulse-ring"></div>
+            </div>
+
+            <!-- Hero Title -->
+            <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight">
+                Tibbiy Ta'limda
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
+                    Peshqadam
+                </span>
+            </h1>
+
+            <!-- Hero Subtitle -->
+            <p class="text-xl md:text-2xl text-blue-100 mb-8 max-w-4xl mx-auto leading-relaxed">
+                Professional tibbiy ta'lim sohasida innovatsion yechimlar taklif etuvchi platforma. Bizning maqsadimiz - sifatli tibbiy bilimlarni har bir kishi uchun ochiq qilish.
+            </p>
+
+            <!-- Hero Stats -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                <div class="stats-card rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-teal-700 mb-2">5+</div>
+                    <div class="text-sm text-gray-600 font-medium">Yillik Tajriba</div>
+                </div>
+                <div class="stats-card rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-cyan-700 mb-2">{{ counters.total_courses }}+</div>
+                    <div class="text-sm text-gray-600 font-medium">Tibbiy Kurs</div>
+                </div>
+                <div class="stats-card rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-blue-700 mb-2">{{ counters.total_students }}+</div>
+                    <div class="text-sm text-gray-600 font-medium">Mamnun Talaba</div>
+                </div>
+                <div class="stats-card rounded-2xl p-6 text-center">
+                    <div class="text-3xl font-bold text-indigo-700 mb-2">{{ counters.total_teachers }}+</div>
+                    <div class="text-sm text-gray-600 font-medium">Tajribali Shifokor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Mission & Vision Section -->
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-16 items-center">
+            <!-- Mission Side -->
+            <div class="mb-12 lg:mb-0">
+                <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-3xl p-8 lg:p-12 border border-teal-100 shadow-lg">
+                    <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center mb-6 medical-icon-bounce">
+                        <i class="fas fa-bullseye text-2xl text-white"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Bizning Missiyamiz</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        Tibbiy ta'lim sohasida innovatsion texnologiyalar yordamida professional bilimlarni har bir kishi uchun ochiq va qulayroq qilish. Shifokorlar va tibbiyot talabalarini zamonaviy bilimlar bilan ta'minlash.
+                    </p>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <div class="w-6 h-6 bg-teal-500 rounded-full flex items-center justify-center mr-3 mt-1">
+                                <i class="fas fa-check text-white text-sm"></i>
+                            </div>
+                            <span class="text-gray-700">Sifatli va professional tibbiy ta'lim</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-6 h-6 bg-cyan-500 rounded-full flex items-center justify-center mr-3 mt-1">
+                                <i class="fas fa-check text-white text-sm"></i>
+                            </div>
+                            <span class="text-gray-700">Zamonaviy texnologiyalar orqali ta'lim</span>
+                        </li>
+                        <li class="flex items-start">
+                            <div class="w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center mr-3 mt-1">
+                                <i class="fas fa-check text-white text-sm"></i>
+                            </div>
+                            <span class="text-gray-700">Barcha uchun ochiq bilim manbai</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Vision Side -->
+            <div>
+                <div class="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-3xl p-8 lg:p-12 border border-blue-100 shadow-lg">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mb-6 medical-icon-bounce" style="animation-delay: 0.5s;">
+                        <i class="fas fa-eye text-2xl text-white"></i>
+                    </div>
+                    <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-6">Bizning Viziyamiz</h2>
+                    <p class="text-lg text-gray-700 leading-relaxed mb-6">
+                        O'zbekistonda va dunyoda tibbiy ta'lim sohasidagi eng yaxshi onlayn platforma sifatida tan olinish. Professional shifokorlar tayyorlashda yetakchi o'rin egallash.
+                    </p>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div class="text-center bg-white bg-opacity-50 rounded-xl p-4">
+                            <div class="text-2xl font-bold text-blue-700 mb-1">2030</div>
+                            <div class="text-sm text-gray-600">Yilgacha Maqsad</div>
+                        </div>
+                        <div class="text-center bg-white bg-opacity-50 rounded-xl p-4">
+                            <div class="text-2xl font-bold text-indigo-700 mb-1">10,000+</div>
+                            <div class="text-sm text-gray-600">Shifokor Tayyorlash</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Company Values Section -->
+<section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center bg-teal-50 text-teal-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-heart mr-2"></i>
+                Bizning Qadriyatlarimiz
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Tibbiy Ta'limda
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+                    Asosiy Tamoyillar
+                </span>
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                Bizning ishdagi har bir qadam ushbu qadriyatlar asosida amalga oshiriladi
+            </p>
+        </div>
+
+        <!-- Values Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Value 1: Professional -->
+            <div class="value-card bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center group">
+                <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-graduation-cap text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Professionallik</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Har bir kurs va materialimiz eng yuqori professional standartlarga mos keladi va tajribali mutaxassislar tomonidan tayyorlanadi.
+                </p>
+            </div>
+
+            <!-- Value 2: Innovation -->
+            <div class="value-card bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center group">
+                <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-lightb text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Innovatsiya</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Zamonaviy texnologiyalar va innovatsion yondashuvlar orqali tibbiy ta'limni yangi bosqichga olib chiqamiz.
+                </p>
+            </div>
+
+            <!-- Value 3: Accessibility -->
+            <div class="value-card bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center group">
+                <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-universal-access text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Ochiqlik</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Sifatli tibbiy ta'lim har bir kishi uchun ochiq va mavjud bo'lishi kerak deb hisoblaymiz.
+                </p>
+            </div>
+
+            <!-- Value 4: Quality -->
+            <div class="value-card bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center group">
+                <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-award text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Sifat</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Barcha xizmatlarimizda eng yuqori sifat standartlarini saqlash va doimiy yaxshilash.
+                </p>
+            </div>
+
+            <!-- Value 5: Support -->
+            <div class="value-card bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center group">
+                <div class="w-16 h-16 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-hands-helping text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Qo'llab-quvvatlash</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Har bir talabamizga individual yondashuv va doimiy qo'llab-quvvatlash ko'rsatamiz.
+                </p>
+            </div>
+
+            <!-- Value 6: Trust -->
+            <div class="value-card bg-white rounded-2xl p-8 shadow-lg border border-gray-100 text-center group">
+                <div class="w-16 h-16 bg-gradient-to-br from-pink-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300">
+                    <i class="fas fa-shield-alt text-2xl text-white"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Ishonch</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    O'quvchilarimiz va hamkorlarimiz ishonchini qozonish va uni asrab-avaylash bizning ustuvor vazifamiz.
+                </p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+{% if teachers %}
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center bg-cyan-50 text-cyan-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-user-md mr-2"></i>
+                Bizning Jamoamiz
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Professional
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+                    Shifokorlar
+                </span>
+            </h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
+                O'z sohasining tajribali mutaxassislari va tibbiy ta'lim ekspertlari
+            </p>
+        </div>
+
+        <!-- Team Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {% for teacher in teachers %}
+                <div class="team-card rounded-2xl overflow-hidden shadow-lg group">
+                    <!-- Doctor Image -->
+                    <div class="relative">
+                        {% if teacher.profile.avatar %}
+                            <img src="{{ teacher.profile.avatar.url }}" alt="Dr. {{ teacher.get_full_name }}" class="w-full h-64 object-cover group-hover:scale-105 transition-transform duration-300">
+                        {% else %}
+                            <div class="w-full h-64 bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center">
+                                <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center">
+                                    <span class="text-3xl font-bold text-white">{{ teacher.first_name|first }}{{ teacher.last_name|first }}</span>
+                                </div>
+                            </div>
+                        {% endif %}
+
+                        <!-- Medical Badge -->
+                        <div class="absolute top-4 left-4 bg-white bg-opacity-90 backdrop-blur-sm rounded-full px-3 py-1">
+                            <span class="text-xs font-bold text-teal-700 flex items-center">
+                                <i class="fas fa-stethoscope mr-1"></i>
+                                Shifokor
+                            </span>
+                        </div>
+
+                        <!-- Online Status -->
+                        <div class="absolute top-4 right-4 w-4 h-4 bg-green-400 rounded-full border-2 border-white shadow-lg"></div>
+                    </div>
+
+                    <!-- Doctor Info -->
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-900 mb-2">Dr. {{ teacher.get_full_name }}</h3>
+
+                        {% if teacher.profile.bio %}
+                            <p class="text-sm text-gray-600 mb-4 line-clamp-2">{{ teacher.profile.bio|truncatewords:15 }}</p>
+                        {% else %}
+                            <p class="text-sm text-gray-600 mb-4">Tajribali tibbiyot mutaxassisi va professional o'qituvchi</p>
+                        {% endif %}
+
+                        <!-- Medical Stats -->
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-book-medical text-teal-500 mr-1"></i>
+                                <span>{{ teacher.course_set.count }} kurs</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-users text-cyan-500 mr-1"></i>
+                                <span>{{ teacher.course_set.all|length }}+ talaba</span>
+                            </div>
+                        </div>
+
+                        <!-- Medical Rating -->
+                        <div class="flex items-center justify-between">
+                            <div class="flex text-yellow-400">
+                                <i class="fas fa-star text-sm"></i>
+                                <i class="fas fa-star text-sm"></i>
+                                <i class="fas fa-star text-sm"></i>
+                                <i class="fas fa-star text-sm"></i>
+                                <i class="fas fa-star text-sm"></i>
+                                <span class="ml-2 text-sm text-gray-500 font-medium">5.0</span>
+                            </div>
+                            <a href="{% url 'accounts:public_profile' teacher.id %}"
+                               class="text-teal-600 hover:text-teal-700 font-medium text-sm flex items-center group">
+                                Profil
+                                <i class="fas fa-arrow-right ml-1 group-hover:translate-x-1 transition-transform"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+
+        <!-- View All Teachers -->
+        <div class="text-center mt-12">
+            <a href="{% url 'courses:list' %}"
+               class="inline-flex items-center px-8 py-4 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-bold hover:from-teal-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <i class="fas fa-users mr-3"></i>
+                Barcha Shifokorlar Bilan Tanishing
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Company Timeline -->
+<section class="py-20 bg-gradient-to-b from-gray-50 to-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center bg-blue-50 text-blue-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-history mr-2"></i>
+                Bizning Tariximiz
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Rivojlanish
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+                    Bosqichlari
+                </span>
+            </h2>
+        </div>
+
+        <!-- Timeline -->
+        <div class="medical-timeline">
+            <!-- Timeline Item 1 -->
+            <div class="timeline-item">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                    <div class="lg:text-right mb-8 lg:mb-0">
+                        <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                            <div class="inline-flex items-center bg-teal-50 text-teal-700 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                                2020-yil
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Platforma Yaratilishi</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Tibbiy ta'lim sohasidagi muammolarni hal qilish maqsadida platformaning asoschilari birinchi onlayn tibbiy kurslarni yaratishni boshladi.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="hidden lg:block"></div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 2 -->
+            <div class="timeline-item">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                    <div class="hidden lg:block"></div>
+                    <div class="mb-8 lg:mb-0">
+                        <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                            <div class="inline-flex items-center bg-cyan-50 text-cyan-700 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                                2021-yil
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Birinchi Kurslar</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Professional shifokorlar bilan hamkorlikda birinchi tibbiy kurslar yaratildi va 100+ talaba platformaga qo'shildi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 3 -->
+            <div class="timeline-item">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                    <div class="lg:text-right mb-8 lg:mb-0">
+                        <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                            <div class="inline-flex items-center bg-blue-50 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                                2022-yil
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Tez Rivojlanish</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Platformaga 20+ shifokor qo'shildi va 1000+ talaba sertifikat oldi. Sertifikatlash tizimi joriy etildi.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="hidden lg:block"></div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 4 -->
+            <div class="timeline-item">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                    <div class="hidden lg:block"></div>
+                    <div class="mb-8 lg:mb-0">
+                        <div class="bg-white rounded-2xl p-8 shadow-lg border border-gray-100">
+                            <div class="inline-flex items-center bg-indigo-50 text-indigo-700 px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                                2023-yil
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Mintaqaviy Kengayish</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                O'zbekiston bo'ylab kengayish va boshqa mintaqalardagi tibbiyot institutlari bilan hamkorlik boshlandi.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Timeline Item 5 -->
+            <div class="timeline-item">
+                <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
+                    <div class="lg:text-right mb-8 lg:mb-0">
+                        <div class="bg-gradient-to-br from-teal-50 to-cyan-50 rounded-2xl p-8 shadow-lg border-2 border-teal-200">
+                            <div class="inline-flex items-center bg-gradient-to-r from-teal-600 to-cyan-600 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                                2024-2025
+                            </div>
+                            <h3 class="text-2xl font-bold text-gray-900 mb-4">Hozirgi Kun</h3>
+                            <p class="text-gray-700 leading-relaxed">
+                                {{ counters.total_courses }}+ kurs, {{ counters.total_students }}+ talaba va {{ counters.total_teachers }}+ professional shifokor bilan O'zbekistondagi yetakchi tibbiy ta'lim platformasi.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="hidden lg:block"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials Section -->
+{% if testimonials %}
+<section class="py-20 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <!-- Section Header -->
+        <div class="text-center mb-16">
+            <div class="inline-flex items-center bg-green-50 text-green-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-quote-left mr-2"></i>
+                Bizni Tanlagan Shifokorlar
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Muvaffaqiyat
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+                    Hikoyelari
+                </span>
+            </h2>
+        </div>
+
+        <!-- Testimonials Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {% for testimonial in testimonials %}
+                <div class="bg-gradient-to-br from-white to-gray-50 rounded-2xl p-8 shadow-lg border border-gray-100 relative">
+                    <!-- Quote Icon -->
+                    <div class="absolute top-6 right-6 w-8 h-8 bg-teal-100 rounded-full flex items-center justify-center">
+                        <i class="fas fa-quote-right text-teal-600"></i>
+                    </div>
+
+                    <!-- Rating -->
+                    <div class="flex mb-6">
+                        {% for i in "12345" %}
+                            {% if forloop.counter <= testimonial.rating %}
+                                <i class="fas fa-star text-yellow-400"></i>
+                            {% else %}
+                                <i class="far fa-star text-gray-300"></i>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+
+                    <!-- Testimonial Text -->
+                    <blockquote class="text-gray-700 mb-6 leading-relaxed">
+                        "{{ testimonial.content }}"
+                    </blockquote>
+
+                    <!-- Author -->
+                    <div class="flex items-center">
+                        {% if testimonial.avatar %}
+                            <img src="{{ testimonial.avatar.url }}" alt="{{ testimonial.name }}" class="w-12 h-12 rounded-full object-cover border-2 border-teal-200">
+                        {% else %}
+                            <div class="w-12 h-12 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-bold">{{ testimonial.name|first }}</span>
+                            </div>
+                        {% endif %}
+
+                        <div class="ml-4">
+                            <div class="font-bold text-gray-900">{{ testimonial.name }}</div>
+                            {% if testimonial.position %}
+                                <div class="text-sm text-teal-600 font-medium">{{ testimonial.position }}</div>
+                            {% endif %}
+                            {% if testimonial.company %}
+                                <div class="text-xs text-gray-500">{{ testimonial.company }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- CTA Section -->
+<section class="py-20 medical-gradient relative overflow-hidden">
+    <div class="absolute inset-0 medical-pattern"></div>
+
+    <div class="relative max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+        <div class="inline-block relative mb-8">
+            <div class="w-20 h-20 bg-white bg-opacity-20 backdrop-blur-sm rounded-2xl flex items-center justify-center mx-auto shadow-2xl">
+                <i class="fas fa-handshake text-3xl text-white"></i>
+            </div>
+            <div class="absolute inset-0 bg-white bg-opacity-10 rounded-2xl pulse-ring"></div>
+        </div>
+
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Bizga
+            <span class="text-cyan-300">Qo'shiling!</span>
+        </h2>
+        <p class="text-xl text-blue-100 mb-10 leading-relaxed max-w-2xl mx-auto">
+            Professional tibbiy ta'lim olish va o'z bilimingizni boshqalar bilan bo'lishish uchun bugun bizga qo'shiling
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
+            {% if not user.is_authenticated %}
+                <a href="{% url 'accounts:register' %}"
+                   class="group bg-white text-teal-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl">
+                    <span class="flex items-center justify-center">
+                        <i class="fas fa-user-plus mr-3 group-hover:animate-pulse"></i>
+                        Ro'yxatdan O'tish
+                    </span>
+                </a>
+            {% endif %}
+
+            <a href="{% url 'accounts:become_teacher' %}"
+               class="group border-2 border-white text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-teal-700 transition-all duration-300">
+                <span class="flex items-center justify-center">
+                    <i class="fas fa-chalkboard-teacher mr-3 group-hover:animate-pulse"></i>
+                    O'qituvchi Bo'ling
+                </span>
+            </a>
+        </div>
+
+        <!-- Contact Info -->
+        <div class="mt-12 grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
+            {% if site_settings.phone %}
+            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-4">
+                <i class="fas fa-phone text-cyan-300 text-xl mb-2"></i>
+                <div class="text-white font-medium">{{ site_settings.phone }}</div>
+                <div class="text-cyan-200 text-sm">24/7 Qo'llab-quvvatlash</div>
+            </div>
+            {% endif %}
+
+            {% if site_settings.email %}
+            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-4">
+                <i class="fas fa-envelope text-teal-300 text-xl mb-2"></i>
+                <div class="text-white font-medium">{{ site_settings.email }}</div>
+                <div class="text-teal-200 text-sm">Elektron Pochta</div>
+            </div>
+            {% endif %}
+
+            <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-xl p-4">
+                <i class="fas fa-map-marker-alt text-blue-300 text-xl mb-2"></i>
+                <div class="text-white font-medium">O'zbekiston</div>
+                <div class="text-blue-200 text-sm">Toshkent, Samarqand</div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Medical-themed animations
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate stats on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('animate-fade-in');
+
+                // Special animation for team cards
+                if (entry.target.classList.contains('team-card')) {
+                    setTimeout(() => {
+                        entry.target.style.transform = 'translateY(-5px)';
+                    }, Math.random() * 500);
+                }
+
+                observer.unobserve(entry.target);
+            }
+        });
+    }, observerOptions);
+
+    // Observe all animated elements
+    document.querySelectorAll('.team-card, .value-card, .stats-card').forEach(el => {
+        observer.observe(el);
+    });
+
+    // Medical heartbeat effect for icons
+    const medicalIcons = document.querySelectorAll('.fa-heartbeat, .fa-stethoscope');
+    medicalIcons.forEach(icon => {
+        setInterval(() => {
+            icon.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                icon.style.transform = 'scale(1)';
+            }, 150);
+        }, 3000 + Math.random() * 2000);
+    });
+
+    // Smooth scroll for timeline
+    const timelineItems = document.querySelectorAll('.timeline-item');
+    const timelineObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, { threshold: 0.3 });
+
+    timelineItems.forEach((item, index) => {
+        item.style.opacity = '0';
+        item.style.transform = 'translateY(30px)';
+        item.style.transition = `all 0.6s ease ${index * 0.1}s`;
+        timelineObserver.observe(item);
+    });
+});
+</script>
+{% endblock %}

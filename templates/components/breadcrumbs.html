@@ -128,14 +128,16 @@
         </button>
 
         {% if breadcrumbs %}
-            <div class="flex items-center text-gray-600 text-sm">
-                <i class="fas fa-location-arrow mr-2 text-teal-500"></i>
-                <span class="font-medium">{{ breadcrumbs|last.name|title|truncatechars:20 }}</span>
-            </div>
+            {% for crumb in breadcrumbs %}
+                {% if forloop.last %}
+                    <div class="flex items-center text-gray-600 text-sm">
+                        <i class="fas fa-location-arrow mr-2 text-teal-500"></i>
+                        <span class="font-medium">{{ crumb.name|title|truncatechars:20 }}</span>
+                    </div>
+                {% endif %}
+            {% endfor %}
         {% endif %}
     </div>
 </div>
-
-
 
 {% endif %}
