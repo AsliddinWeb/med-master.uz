@@ -234,6 +234,467 @@
             width: 300px;
             height: 300px;
         }
+
+
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+/* Medical Heartbeat Animation */
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+.animate-heartbeat {
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+/* Medical Pulse Ring */
+@keyframes pulse-ring {
+    0% {
+        transform: scale(0.8);
+        opacity: 1;
+    }
+    80%, 100% {
+        transform: scale(1.8);
+        opacity: 0;
+    }
+}
+
+.animate-pulse-ring {
+    animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+        /* Medical Message Animations */
+@keyframes medicalSlideIn {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes medicalSlideOut {
+    from {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: translateX(100%) scale(0.8);
+        opacity: 0;
+    }
+}
+
+@keyframes medicalPulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+}
+
+@keyframes medicalHeartbeat {
+    0%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    50% {
+        transform: scale(1);
+    }
+    75% {
+        transform: scale(1.05);
+    }
+}
+
+/* Medical Alert Styles */
+.medical-alert {
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-alert::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    transition: left 0.7s ease;
+}
+
+.medical-alert:hover::before {
+    left: 100%;
+}
+
+/* Medical Icon Animations */
+.medical-icon-success {
+    animation: medicalPulse 2s ease-in-out infinite;
+}
+
+.medical-icon-error {
+    animation: medicalHeartbeat 1.5s ease-in-out infinite;
+}
+
+.medical-icon-warning {
+    animation: medicalPulse 2.5s ease-in-out infinite;
+}
+
+.medical-icon-info {
+    animation: medicalPulse 3s ease-in-out infinite;
+}
+
+/* Medical Progress Bar */
+.medical-progress-bar {
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-progress-bar::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 20px;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.8), transparent);
+    animation: progressShimmer 2s linear infinite;
+}
+
+@keyframes progressShimmer {
+    0% {
+        transform: translateX(-20px);
+    }
+    100% {
+        transform: translateX(300px);
+    }
+}
+
+/* Medical Sound Wave */
+.medical-sound-wave {
+    transition: opacity 0.3s ease;
+}
+
+.medical-alert:hover .medical-sound-wave {
+    opacity: 1;
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+    .messages-container {
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        max-width: none;
+    }
+
+    .medical-alert {
+        transform: translateY(-100%);
+    }
+}
+
+        /* Medical Modal Animations */
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+}
+
+@keyframes medicalPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes medicalSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes medicalPulseRing {
+    0% { transform: scale(0.8); opacity: 1; }
+    80%, 100% { transform: scale(1.8); opacity: 0; }
+}
+
+@keyframes medicalDotPulse {
+    0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+    40% { transform: scale(1.2); opacity: 1; }
+}
+
+@keyframes medicalHeartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.05); }
+}
+
+@keyframes medicalShimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* Medical Modal Classes */
+.medical-icon-pulse {
+    animation: medicalPulse 2s ease-in-out infinite;
+}
+
+.medical-loading-pulse {
+    animation: medicalPulse 1.5s ease-in-out infinite;
+}
+
+.medical-warning-pulse {
+    animation: medicalHeartbeat 1.5s ease-in-out infinite;
+}
+
+.medical-spinner {
+    border: 4px solid rgba(13, 148, 136, 0.2);
+    border-top: 4px solid #0d9488;
+    border-radius: 50%;
+    animation: medicalSpin 1s linear infinite;
+}
+
+.medical-pulse-ring {
+    border: 2px solid rgba(6, 182, 212, 0.3);
+    border-radius: 50%;
+    animation: medicalPulseRing 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+}
+
+.medical-dot-pulse {
+    animation: medicalDotPulse 1.4s ease-in-out infinite;
+}
+
+.medical-close-btn:hover {
+    background: rgba(239, 68, 68, 0.2) !important;
+    transform: scale(1.1) rotate(90deg);
+}
+
+.medical-modal-dialog {
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-modal-dialog::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(6, 182, 212, 0.1), transparent);
+    animation: medicalShimmer 3s ease-in-out infinite;
+}
+
+/* Medical Responsive */
+@media (max-width: 640px) {
+    .medical-modal-dialog {
+        margin: 1rem;
+        max-width: calc(100vw - 2rem);
+    }
+
+    .medical-modal-header,
+    .medical-modal-body,
+    .medical-modal-footer {
+        padding-left: 1.5rem;
+        padding-right: 1.5rem;
+    }
+}
+
+/* Medical Focus Styles */
+.medical-modal-content:focus-within {
+    box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.5);
+}
+
+/* Medical Transitions */
+.medical-modal-enter {
+    opacity: 0;
+    transform: scale(0.9);
+}
+
+.medical-modal-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.3s ease-out;
+}
+
+.medical-modal-exit {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.medical-modal-exit-active {
+    opacity: 0;
+    transform: scale(0.9);
+    transition: all 0.3s ease-in;
+}
+
+        /* Medical Pagination Animations */
+@keyframes medicalPulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+@keyframes medicalHeartbeat {
+    0%, 100% { transform: scale(1); }
+    25% { transform: scale(1.1); }
+    50% { transform: scale(1); }
+    75% { transform: scale(1.05); }
+}
+
+@keyframes medicalShimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(200%); }
+}
+
+@keyframes medicalGlow {
+    0%, 100% { box-shadow: 0 0 5px rgba(6, 182, 212, 0.3); }
+    50% { box-shadow: 0 0 20px rgba(6, 182, 212, 0.6); }
+}
+
+@keyframes medicalFloat {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-3px); }
+}
+
+/* Medical Pagination Classes */
+.medical-icon-pulse {
+    animation: medicalPulse 2s ease-in-out infinite;
+}
+
+.medical-active-pulse {
+    animation: medicalHeartbeat 1.5s ease-in-out infinite;
+}
+
+.medical-heartbeat-ring {
+    border: 2px solid rgba(6, 182, 212, 0.4);
+    animation: medicalPulse 2s ease-in-out infinite;
+    pointer-events: none;
+}
+
+.medical-progress-shimmer {
+    background: linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.4) 50%, transparent 100%);
+    animation: medicalShimmer 2s ease-in-out infinite;
+}
+
+.medical-nav-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-nav-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.medical-nav-btn:hover::before {
+    left: 100%;
+}
+
+.medical-page-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-page-btn:hover {
+    animation: medicalFloat 0.6s ease-in-out;
+}
+
+.medical-select:focus {
+    animation: medicalGlow 2s ease-in-out infinite;
+}
+
+.medical-input:focus {
+    animation: medicalGlow 2s ease-in-out infinite;
+}
+
+.medical-jump-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.medical-jump-btn::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.3s ease, height 0.3s ease;
+}
+
+.medical-jump-btn:active::after {
+    width: 200px;
+    height: 200px;
+}
+
+/* Medical Responsive Styles */
+@media (max-width: 640px) {
+    .medical-pagination-container {
+        padding: 1rem;
+    }
+
+    .medical-nav-btn span {
+        display: none;
+    }
+
+    .medical-page-btn {
+        width: 2.5rem;
+        height: 2.5rem;
+    }
+}
+
+/* Medical Accessibility */
+.medical-nav-btn:focus,
+.medical-page-btn:focus,
+.medical-jump-btn:focus {
+    outline: 2px solid #06b6d4;
+    outline-offset: 2px;
+}
+
+/* Medical Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .medical-pagination-container {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        border-color: rgba(6, 182, 212, 0.3);
+    }
+}
+
+        @keyframes slideIn{from{transform:translateX(-100%)}to{transform:translateX(0)}}
+@keyframes slideOut{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+.sidebar-open{transform:translateX(0)!important}
+.sidebar-link:hover{background:rgba(255,255,255,0.1)!important}
+.sidebar-link:active{transform:scale(0.95)}
+#medicalSidebar::-webkit-scrollbar{width:4px}
+#medicalSidebar::-webkit-scrollbar-track{background:rgba(255,255,255,0.1)}
+#medicalSidebar::-webkit-scrollbar-thumb{background:rgba(6,182,212,0.5);border-radius:2px}
+@media (max-width:768px){#medicalSidebar{width:100vw}}
     </style>
 
     {% block extra_css %}{% endblock %}
@@ -954,6 +1415,1371 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+</script>
+
+<!-- Structured Data for Breadcrumbs (SEO) -->
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+        {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Bosh sahifa",
+            "item": "{{ request.scheme }}://{{ request.get_host }}{% url 'core:home' %}"
+        }
+        {% for crumb in breadcrumbs %}
+        ,{
+            "@type": "ListItem",
+            "position": {{ forloop.counter|add:1 }},
+            "name": "{{ crumb.name|title }}",
+            "item": "{{ request.scheme }}://{{ request.get_host }}{{ crumb.url }}"
+        }
+        {% endfor %}
+    ]
+}
+</script>
+
+<!-- Medical Loading JavaScript Functions -->
+<script>
+class MedicalLoading {
+    constructor() {
+        this.loadingTexts = [
+            'Tibbiy kurslar yuklanmoqda...',
+            'Professional ma\'lumotlar tayyorlanmoqda...',
+            'Shifokorlar tomonidan tasdiqlangan kontent...',
+            'Sertifikat tizimi faollashtirilmoqda...',
+            'Tibbiy ta\'lim platformasi tayyorlanmoqda...'
+        ];
+        this.currentTextIndex = 0;
+    }
+
+    // Show main loading overlay
+    show(message = 'Yuklanmoqda...') {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            overlay.querySelector('p').textContent = message;
+            overlay.classList.remove('hidden');
+            this.startHeartbeatAnimation();
+        }
+    }
+
+    // Hide main loading overlay
+    hide() {
+        const overlay = document.getElementById('loadingOverlay');
+        if (overlay) {
+            overlay.classList.add('hidden');
+        }
+    }
+
+    // Show page loading with progress
+    showPageLoading() {
+        const pageLoading = document.getElementById('pageLoading');
+        if (pageLoading) {
+            pageLoading.classList.remove('hidden');
+            this.animateProgress();
+            this.rotateLoadingText();
+        }
+    }
+
+    // Hide page loading
+    hidePageLoading() {
+        const pageLoading = document.getElementById('pageLoading');
+        if (pageLoading) {
+            pageLoading.classList.add('hidden');
+        }
+    }
+
+    // Show skeleton loading
+    showSkeleton(container) {
+        const target = typeof container === 'string' ? document.querySelector(container) : container;
+        const skeleton = document.querySelector('.medical-skeleton-loading');
+        if (target && skeleton) {
+            target.innerHTML = skeleton.innerHTML;
+            target.classList.remove('hidden');
+        }
+    }
+
+    // Animate progress bar
+    animateProgress() {
+        const progressBar = document.getElementById('loadingProgress');
+        if (progressBar) {
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 10;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                }
+                progressBar.style.width = progress + '%';
+            }, 200);
+        }
+    }
+
+    // Rotate loading text
+    rotateLoadingText() {
+        const statusElement = document.getElementById('loadingStatus');
+        if (statusElement) {
+            const interval = setInterval(() => {
+                this.currentTextIndex = (this.currentTextIndex + 1) % this.loadingTexts.length;
+                statusElement.textContent = this.loadingTexts[this.currentTextIndex];
+            }, 2000);
+
+            // Clear interval after 10 seconds
+            setTimeout(() => clearInterval(interval), 10000);
+        }
+    }
+
+    // Start heartbeat animation for medical elements
+    startHeartbeatAnimation() {
+        const medicalIcons = document.querySelectorAll('.fa-stethoscope, .fa-heartbeat, .fa-user-md');
+        medicalIcons.forEach(icon => {
+            icon.classList.add('animate-heartbeat');
+        });
+    }
+
+    // Show inline loading
+    showInline(container) {
+        const target = typeof container === 'string' ? document.querySelector(container) : container;
+        const inlineLoading = document.querySelector('.medical-inline-loading');
+        if (target && inlineLoading) {
+            target.innerHTML = inlineLoading.innerHTML;
+            target.classList.remove('hidden');
+        }
+    }
+
+    // Medical button loading states
+    setButtonLoading(button, state = 'loading') {
+        const btn = typeof button === 'string' ? document.querySelector(button) : button;
+        if (!btn) return;
+
+        const originalContent = btn.innerHTML;
+        btn.setAttribute('data-original-content', originalContent);
+
+        switch (state) {
+            case 'loading':
+                btn.disabled = true;
+                btn.innerHTML = `
+                    <div class="animate-spin rounded-full h-5 w-5 border-2 border-white border-t-transparent mr-2"></div>
+                    Yuklanmoqda...
+                `;
+                btn.className = btn.className.replace(/bg-\w+-\d+/g, '') + ' bg-gradient-to-r from-teal-600 to-cyan-600';
+                break;
+
+            case 'success':
+                btn.disabled = true;
+                btn.innerHTML = `
+                    <i class="fas fa-check mr-2"></i>
+                    Muvaffaqiyatli!
+                `;
+                btn.className = btn.className.replace(/bg-\w+-\d+/g, '') + ' bg-green-600';
+                setTimeout(() => this.resetButton(btn), 2000);
+                break;
+
+            case 'error':
+                btn.disabled = true;
+                btn.innerHTML = `
+                    <i class="fas fa-exclamation-triangle mr-2"></i>
+                    Xatolik yuz berdi
+                `;
+                btn.className = btn.className.replace(/bg-\w+-\d+/g, '') + ' bg-red-600';
+                setTimeout(() => this.resetButton(btn), 3000);
+                break;
+
+            default:
+                this.resetButton(btn);
+        }
+    }
+
+    // Reset button to original state
+    resetButton(button) {
+        const btn = typeof button === 'string' ? document.querySelector(button) : button;
+        if (btn) {
+            btn.disabled = false;
+            btn.innerHTML = btn.getAttribute('data-original-content') || btn.innerHTML;
+            btn.className = btn.className.replace(/bg-\w+-\d+/g, '') + ' bg-gradient-to-r from-teal-600 to-cyan-600';
+        }
+    }
+}
+
+// Initialize Medical Loading
+window.medicalLoading = new MedicalLoading();
+
+// Global functions for backward compatibility
+window.showMedicalLoading = (message) => window.medicalLoading.show(message);
+window.hideMedicalLoading = () => window.medicalLoading.hide();
+window.showPageLoading = () => window.medicalLoading.showPageLoading();
+window.hidePageLoading = () => window.medicalLoading.hidePageLoading();
+</script>
+
+<!-- Medical Messages JavaScript -->
+<script>
+class MedicalMessages {
+    constructor() {
+        this.container = document.getElementById('messagesContainer');
+        this.toastContainer = document.getElementById('medicalToastContainer');
+        this.autoHideTimers = new Map();
+        this.soundEnabled = true;
+        this.sounds = {
+            success: 'data:audio/wav;base64,UklGRo...', // Medical success sound
+            error: 'data:audio/wav;base64,UklGRo...', // Medical alert sound
+            warning: 'data:audio/wav;base64,UklGRo...', // Medical warning sound
+            info: 'data:audio/wav;base64,UklGRo...' // Medical info sound
+        };
+
+        this.init();
+    }
+
+    init() {
+        // Initialize existing messages
+        this.initExistingMessages();
+
+        // Setup event listeners
+        this.setupEventListeners();
+
+        // Setup keyboard shortcuts
+        this.setupKeyboardShortcuts();
+
+        // Start medical animations
+        this.startMedicalAnimations();
+    }
+
+    initExistingMessages() {
+        const messages = document.querySelectorAll('.medical-alert');
+
+        messages.forEach((message, index) => {
+            // Animate in with delay
+            setTimeout(() => {
+                message.style.transform = 'translateX(0)';
+                message.style.opacity = '1';
+
+                // Play medical sound
+                this.playMedicalSound(message.dataset.messageType);
+
+                // Setup auto-hide
+                this.setupAutoHide(message);
+
+                // Add medical entrance effect
+                this.addMedicalEntrance(message);
+
+            }, index * 200);
+        });
+    }
+
+    setupEventListeners() {
+        // Close button listeners
+        document.addEventListener('click', (e) => {
+            if (e.target.closest('.medical-close-btn')) {
+                const message = e.target.closest('.medical-alert');
+                this.hideMedicalMessage(message);
+            }
+        });
+
+        // Hover pause auto-hide
+        document.addEventListener('mouseenter', (e) => {
+            if (e.target.closest('.medical-alert')) {
+                const message = e.target.closest('.medical-alert');
+                this.pauseAutoHide(message);
+            }
+        }, true);
+
+        document.addEventListener('mouseleave', (e) => {
+            if (e.target.closest('.medical-alert')) {
+                const message = e.target.closest('.medical-alert');
+                this.resumeAutoHide(message);
+            }
+        }, true);
+    }
+
+    setupKeyboardShortcuts() {
+        document.addEventListener('keydown', (e) => {
+            // Escape key to close all messages
+            if (e.key === 'Escape') {
+                this.hideAllMessages();
+            }
+
+            // Ctrl+M to toggle sound
+            if (e.ctrlKey && e.key === 'm') {
+                e.preventDefault();
+                this.toggleSound();
+            }
+        });
+    }
+
+    startMedicalAnimations() {
+        // Animate medical icons
+        const medicalIcons = document.querySelectorAll('[class*="medical-icon-"]');
+        medicalIcons.forEach(icon => {
+            // Add heartbeat effect for medical theme
+            setInterval(() => {
+                icon.style.transform = 'scale(1.1)';
+                setTimeout(() => {
+                    icon.style.transform = 'scale(1)';
+                }, 150);
+            }, 3000 + Math.random() * 2000);
+        });
+    }
+
+    setupAutoHide(message) {
+        const autoHideTime = parseInt(message.dataset.autoHide) || 8000;
+        const progressBar = message.querySelector('.medical-progress-bar');
+
+        if (progressBar) {
+            // Animate progress bar
+            progressBar.style.transition = `width ${autoHideTime}ms linear`;
+            setTimeout(() => {
+                progressBar.style.width = '0%';
+            }, 100);
+        }
+
+        // Setup auto-hide timer
+        const timer = setTimeout(() => {
+            this.hideMedicalMessage(message);
+        }, autoHideTime);
+
+        this.autoHideTimers.set(message, timer);
+    }
+
+    pauseAutoHide(message) {
+        const timer = this.autoHideTimers.get(message);
+        if (timer) {
+            clearTimeout(timer);
+
+            // Pause progress bar
+            const progressBar = message.querySelector('.medical-progress-bar');
+            if (progressBar) {
+                const currentWidth = progressBar.offsetWidth;
+                progressBar.style.transition = 'none';
+                progressBar.style.width = currentWidth + 'px';
+            }
+        }
+    }
+
+    resumeAutoHide(message) {
+        const progressBar = message.querySelector('.medical-progress-bar');
+        const currentWidth = progressBar ? progressBar.offsetWidth : 0;
+        const totalWidth = progressBar ? progressBar.parentElement.offsetWidth : 0;
+        const remainingTime = totalWidth > 0 ? (currentWidth / totalWidth) * 8000 : 8000;
+
+        if (remainingTime > 0) {
+            // Resume progress bar
+            if (progressBar) {
+                progressBar.style.transition = `width ${remainingTime}ms linear`;
+                progressBar.style.width = '0%';
+            }
+
+            // Resume timer
+            const timer = setTimeout(() => {
+                this.hideMedicalMessage(message);
+            }, remainingTime);
+
+            this.autoHideTimers.set(message, timer);
+        }
+    }
+
+    hideMedicalMessage(message) {
+        // Clear timer
+        const timer = this.autoHideTimers.get(message);
+        if (timer) {
+            clearTimeout(timer);
+            this.autoHideTimers.delete(message);
+        }
+
+        // Medical exit animation
+        message.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        message.style.transform = 'translateX(100%) scale(0.8)';
+        message.style.opacity = '0';
+
+        // Remove from DOM
+        setTimeout(() => {
+            message.remove();
+        }, 500);
+    }
+
+    hideAllMessages() {
+        const messages = document.querySelectorAll('.medical-alert');
+        messages.forEach((message, index) => {
+            setTimeout(() => {
+                this.hideMedicalMessage(message);
+            }, index * 100);
+        });
+    }
+
+    playMedicalSound(type) {
+        if (!this.soundEnabled) return;
+
+        try {
+            // Create medical sound based on type
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            // Medical sound frequencies
+            const frequencies = {
+                success: [523.25, 659.25, 783.99], // C-E-G chord (positive)
+                error: [440, 415.3, 392], // A-G#-G (alert)
+                warning: [349.23, 415.3], // F-G# (caution)
+                info: [261.63, 329.63], // C-E (informative)
+                default: [440] // A (standard)
+            };
+
+            const freq = frequencies[type] || frequencies.default;
+
+            // Play medical chord progression
+            freq.forEach((f, i) => {
+                setTimeout(() => {
+                    oscillator.frequency.setValueAtTime(f, audioContext.currentTime);
+                    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+                }, i * 100);
+            });
+
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.5);
+        } catch (error) {
+            console.log('Medical sound not supported');
+        }
+    }
+
+    addMedicalEntrance(message) {
+        // Add medical entrance sparkle effect
+        const sparkle = document.createElement('div');
+        sparkle.className = 'absolute -top-2 -right-2 w-4 h-4 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full animate-ping';
+        sparkle.innerHTML = '<i class="fas fa-sparkles text-white text-xs"></i>';
+
+        message.appendChild(sparkle);
+
+        // Remove sparkle after animation
+        setTimeout(() => {
+            sparkle.remove();
+        }, 2000);
+    }
+
+    toggleSound() {
+        this.soundEnabled = !this.soundEnabled;
+
+        // Show sound toggle message
+        this.showToast(
+            this.soundEnabled ? 'Tibbiy tovushlar yoqildi' : 'Tibbiy tovushlar o\'chirildi',
+            'info'
+        );
+    }
+
+    // Public API for creating new messages
+    showToast(message, type = 'info', duration = 5000) {
+        const toast = this.createMedicalToast(message, type, duration);
+        this.toastContainer.appendChild(toast);
+
+        // Animate in
+        requestAnimationFrame(() => {
+            toast.style.transform = 'translateX(0)';
+            toast.style.opacity = '1';
+        });
+
+        // Play sound
+        this.playMedicalSound(type);
+
+        // Auto hide
+        setTimeout(() => {
+            this.hideMedicalMessage(toast);
+        }, duration);
+
+        return toast;
+    }
+
+    createMedicalToast(message, type, duration) {
+        const toast = document.createElement('div');
+        toast.className = `medical-alert medical-alert-${type} ${this.getMedicalToastClasses(type)} rounded-xl p-4 shadow-2xl border border-opacity-20 backdrop-blur-sm transform translate-x-full opacity-0 transition-all duration-500`;
+        toast.setAttribute('data-auto-hide', duration);
+        toast.setAttribute('data-message-type', type);
+
+        toast.innerHTML = this.getMedicalToastHTML(message, type);
+
+        return toast;
+    }
+
+    getMedicalToastClasses(type) {
+        const classes = {
+            success: 'bg-gradient-to-r from-emerald-50 to-green-50 border-l-4 border-emerald-500',
+            error: 'bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500',
+            warning: 'bg-gradient-to-r from-amber-50 to-yellow-50 border-l-4 border-amber-500',
+            info: 'bg-gradient-to-r from-cyan-50 to-teal-50 border-l-4 border-cyan-500'
+        };
+        return classes[type] || classes.info;
+    }
+
+    getMedicalToastHTML(message, type) {
+        const icons = {
+            success: 'fa-user-check',
+            error: 'fa-exclamation-circle',
+            warning: 'fa-shield-alt',
+            info: 'fa-info-circle'
+        };
+
+        const colors = {
+            success: 'emerald',
+            error: 'red',
+            warning: 'amber',
+            info: 'cyan'
+        };
+
+        const color = colors[type] || colors.info;
+        const icon = icons[type] || icons.info;
+
+        return `
+            <div class="flex items-center">
+                <div class="w-8 h-8 bg-gradient-to-br from-${color}-500 to-${color}-600 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fas ${icon} text-white text-sm"></i>
+                </div>
+                <div class="flex-1 text-sm font-medium text-${color}-800">
+                    ${message}
+                </div>
+                <button class="medical-close-btn ml-2 text-${color}-400 hover:text-${color}-600">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        `;
+    }
+
+    // Update timestamps
+    updateTimestamps() {
+        const timestamps = document.querySelectorAll('.medical-timestamp');
+        timestamps.forEach(timestamp => {
+            // Update with relative time
+            timestamp.textContent = 'Bir necha soniya oldin';
+        });
+    }
+}
+
+// Initialize Medical Messages System
+document.addEventListener('DOMContentLoaded', () => {
+    window.medicalMessages = new MedicalMessages();
+
+    // Update timestamps every minute
+    setInterval(() => {
+        window.medicalMessages.updateTimestamps();
+    }, 60000);
+});
+
+// Global functions for easy access
+window.showMedicalToast = (message, type = 'info', duration = 5000) => {
+    if (window.medicalMessages) {
+        return window.medicalMessages.showToast(message, type, duration);
+    }
+};
+
+window.hideMedicalMessages = () => {
+    if (window.medicalMessages) {
+        window.medicalMessages.hideAllMessages();
+    }
+};
+
+// Medical keyboard shortcuts info
+document.addEventListener('keydown', (e) => {
+    if (e.ctrlKey && e.shiftKey && e.key === 'H') {
+        showMedicalToast('Klaviatura yorliqlar: ESC - barcha xabarlar, Ctrl+M - tovush', 'info', 8000);
+    }
+});
+</script>
+
+<!-- Medical Modal JavaScript -->
+<script>
+class MedicalModal {
+    constructor() {
+        this.currentModal = null;
+        this.confirmCallback = null;
+        this.isOpen = false;
+        this.focusableElements = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+        this.firstFocusableElement = null;
+        this.lastFocusableElement = null;
+
+        this.init();
+    }
+
+    init() {
+        this.setupEventListeners();
+        this.createMedicalSounds();
+    }
+
+    setupEventListeners() {
+        // ESC key listener
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && this.isOpen) {
+                this.close();
+            }
+
+            // Tab trap for accessibility
+            if (e.key === 'Tab' && this.isOpen) {
+                this.trapFocus(e);
+            }
+        });
+
+        // Outside click listener
+        document.querySelectorAll('.medical-modal-overlay').forEach(overlay => {
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    this.close();
+                }
+            });
+        });
+    }
+
+    createMedicalSounds() {
+        this.sounds = {
+            open: this.createMedicalTone([523.25, 659.25, 783.99]), // C-E-G chord
+            close: this.createMedicalTone([783.99, 659.25, 523.25]), // G-E-C chord
+            confirm: this.createMedicalTone([440, 554.37, 659.25]), // A-C#-E chord
+            error: this.createMedicalTone([415.3, 369.99, 329.63]) // G#-F#-E chord
+        };
+    }
+
+    createMedicalTone(frequencies) {
+        return () => {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                frequencies.forEach((freq, i) => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+
+                    oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                    oscillator.type = 'sine';
+
+                    gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                    gainNode.gain.linearRampToValueAtTime(0.1, audioContext.currentTime + 0.01);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+                    oscillator.start(audioContext.currentTime + i * 0.1);
+                    oscillator.stop(audioContext.currentTime + 0.4 + i * 0.1);
+                });
+            } catch (error) {
+                console.log('Medical audio not supported');
+            }
+        };
+    }
+
+    open(options = {}) {
+        const {
+            title = 'Tibbiy Ma\'lumot',
+            subtitle = 'Professional tibbiy platforma',
+            content = '',
+            footer = '',
+            icon = 'fa-user-md',
+            size = 'normal',
+            closeOnOutside = true,
+            showClose = true
+        } = options;
+
+        this.currentModal = document.getElementById('medicalModalContainer');
+
+        // Set content
+        document.getElementById('medicalModalTitle').textContent = title;
+        document.getElementById('medicalModalSubtitle').textContent = subtitle;
+        document.getElementById('medicalModalIcon').className = `fas ${icon} text-white text-xl`;
+        document.getElementById('medicalModalBody').innerHTML = content;
+        document.getElementById('medicalModalFooter').innerHTML = footer;
+
+        // Handle close button visibility
+        const closeBtn = this.currentModal.querySelector('.medical-close-btn');
+        closeBtn.style.display = showClose ? 'block' : 'none';
+
+        // Handle outside click
+        const overlay = this.currentModal.querySelector('.medical-modal-overlay');
+        if (!closeOnOutside) {
+            overlay.style.pointerEvents = 'none';
+        }
+
+        // Set size
+        const dialog = this.currentModal.querySelector('.medical-modal-dialog');
+        this.setModalSize(dialog, size);
+
+        // Show modal
+        this.currentModal.classList.remove('hidden');
+        this.isOpen = true;
+
+        // Play medical sound
+        this.sounds.open();
+
+        // Animate in
+        requestAnimationFrame(() => {
+            const overlay = this.currentModal.querySelector('.medical-modal-overlay');
+            const content = this.currentModal.querySelector('.medical-modal-content');
+
+            overlay.style.opacity = '1';
+            content.style.opacity = '1';
+            content.style.transform = 'scale(1)';
+
+            // Setup focus trap
+            this.setupFocusTrap();
+        });
+
+        // Add medical entrance effect
+        this.addMedicalEntrance();
+
+        return this.currentModal;
+    }
+
+    setModalSize(dialog, size) {
+        const sizes = {
+            small: 'max-w-md',
+            normal: 'max-w-2xl',
+            large: 'max-w-4xl',
+            xlarge: 'max-w-6xl',
+            full: 'max-w-full mx-4'
+        };
+
+        // Remove existing size classes
+        Object.values(sizes).forEach(cls => {
+            dialog.classList.remove(cls);
+        });
+
+        // Add new size class
+        dialog.classList.add(sizes[size] || sizes.normal);
+    }
+
+    addMedicalEntrance() {
+        // Add medical sparkle effect
+        const dialog = this.currentModal.querySelector('.medical-modal-dialog');
+        const sparkles = document.createElement('div');
+        sparkles.className = 'absolute -top-2 -right-2 pointer-events-none';
+        sparkles.innerHTML = `
+            <div class="flex space-x-1">
+                <div class="w-3 h-3 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full animate-ping"></div>
+                <div class="w-2 h-2 bg-gradient-to-br from-cyan-400 to-teal-500 rounded-full animate-ping" style="animation-delay: 0.2s;"></div>
+                <div class="w-4 h-4 bg-gradient-to-br from-emerald-400 to-green-500 rounded-full animate-ping" style="animation-delay: 0.4s;"></div>
+            </div>
+        `;
+
+        dialog.appendChild(sparkles);
+
+        // Remove sparkles after animation
+        setTimeout(() => {
+            sparkles.remove();
+        }, 3000);
+    }
+
+    close() {
+        if (!this.isOpen || !this.currentModal) return;
+
+        // Play close sound
+        this.sounds.close();
+
+        // Animate out
+        const overlay = this.currentModal.querySelector('.medical-modal-overlay');
+        const content = this.currentModal.querySelector('.medical-modal-content');
+
+        overlay.style.opacity = '0';
+        content.style.opacity = '0';
+        content.style.transform = 'scale(0.9)';
+
+        // Hide modal after animation
+        setTimeout(() => {
+            this.currentModal.classList.add('hidden');
+            this.isOpen = false;
+            this.currentModal = null;
+
+            // Restore focus
+            if (this.previousActiveElement) {
+                this.previousActiveElement.focus();
+            }
+        }, 300);
+    }
+
+    setupFocusTrap() {
+        const focusableElements = this.currentModal.querySelectorAll(this.focusableElements);
+        this.firstFocusableElement = focusableElements[0];
+        this.lastFocusableElement = focusableElements[focusableElements.length - 1];
+
+        // Store previous active element
+        this.previousActiveElement = document.activeElement;
+
+        // Focus first element
+        if (this.firstFocusableElement) {
+            this.firstFocusableElement.focus();
+        }
+    }
+
+    trapFocus(e) {
+        if (e.shiftKey) {
+            if (document.activeElement === this.firstFocusableElement) {
+                this.lastFocusableElement.focus();
+                e.preventDefault();
+            }
+        } else {
+            if (document.activeElement === this.lastFocusableElement) {
+                this.firstFocusableElement.focus();
+                e.preventDefault();
+            }
+        }
+    }
+
+    // Medical Confirm Modal
+    confirm(options = {}) {
+        const {
+            title = 'Tibbiy Ogohlantirish',
+            message = 'Bu amalni bajarmoqchimisiz?',
+            confirmText = 'Tasdiqlash',
+            cancelText = 'Bekor qilish',
+            onConfirm = () => {},
+            onCancel = () => {}
+        } = options;
+
+        return new Promise((resolve) => {
+            const modal = document.getElementById('medicalConfirmModal');
+
+            document.getElementById('confirmModalTitle').textContent = title;
+            document.getElementById('confirmModalMessage').textContent = message;
+            document.getElementById('confirmModalButton').innerHTML = `<i class="fas fa-check mr-2"></i>${confirmText}`;
+
+            this.confirmCallback = (confirmed) => {
+                if (confirmed) {
+                    onConfirm();
+                    this.sounds.confirm();
+                } else {
+                    onCancel();
+                    this.sounds.close();
+                }
+                resolve(confirmed);
+                this.closeMedicalConfirm();
+            };
+
+            // Show modal
+            modal.classList.remove('hidden');
+            this.isOpen = true;
+
+            // Animate in
+            requestAnimationFrame(() => {
+                const overlay = modal.querySelector('.medical-modal-overlay');
+                const content = modal.querySelector('.medical-modal-content');
+
+                overlay.style.opacity = '1';
+                content.style.opacity = '1';
+                content.style.transform = 'scale(1)';
+            });
+        });
+    }
+
+    // Medical Loading Modal
+    loading(options = {}) {
+        const {
+            title = 'Tibbiy Amal Bajarilmoqda',
+            message = 'Iltimos, biroz kutib turing...'
+        } = options;
+
+        const modal = document.getElementById('medicalLoadingModal');
+
+        document.getElementById('loadingModalTitle').textContent = title;
+        document.getElementById('loadingModalMessage').textContent = message;
+
+        modal.classList.remove('hidden');
+        this.isOpen = true;
+
+        return {
+            close: () => {
+                modal.classList.add('hidden');
+                this.isOpen = false;
+            },
+            updateTitle: (newTitle) => {
+                document.getElementById('loadingModalTitle').textContent = newTitle;
+            },
+            updateMessage: (newMessage) => {
+                document.getElementById('loadingModalMessage').textContent = newMessage;
+            }
+        };
+    }
+
+    // Medical Alert Modal
+    alert(message, type = 'info') {
+        const icons = {
+            success: 'fa-check-circle',
+            error: 'fa-exclamation-triangle',
+            warning: 'fa-shield-alt',
+            info: 'fa-info-circle'
+        };
+
+        const colors = {
+            success: 'from-emerald-500 to-green-600',
+            error: 'from-red-500 to-rose-600',
+            warning: 'from-amber-500 to-yellow-600',
+            info: 'from-cyan-500 to-teal-600'
+        };
+
+        const titles = {
+            success: 'Tibbiy Muvaffaqiyat',
+            error: 'Tibbiy Xatolik',
+            warning: 'Tibbiy Ogohlantirish',
+            info: 'Tibbiy Ma\'lumot'
+        };
+
+        return this.open({
+            title: titles[type],
+            subtitle: 'Tibbiy platforma xabari',
+            content: `
+                <div class="text-center py-6">
+                    <div class="w-20 h-20 bg-gradient-to-br ${colors[type]} rounded-2xl flex items-center justify-center mx-auto mb-6 medical-icon-pulse">
+                        <i class="fas ${icons[type]} text-white text-3xl"></i>
+                    </div>
+                    <p class="text-lg text-gray-700 leading-relaxed">${message}</p>
+                </div>
+            `,
+            footer: `
+                <button type="button"
+                        class="px-8 py-3 bg-gradient-to-r ${colors[type]} text-white rounded-xl font-semibold hover:scale-105 transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2"
+                        onclick="closeMedicalModal()">
+                    <i class="fas fa-check mr-2"></i>
+                    Tushunarli
+                </button>
+            `,
+            icon: icons[type]
+        });
+    }
+}
+
+// Initialize Medical Modal System
+window.medicalModal = new MedicalModal();
+
+// Global Functions
+function openMedicalModal(options) {
+    return window.medicalModal.open(options);
+}
+
+function closeMedicalModal() {
+    window.medicalModal.close();
+}
+
+function confirmMedicalAction() {
+    if (window.medicalModal.confirmCallback) {
+        window.medicalModal.confirmCallback(true);
+    }
+}
+
+function closeMedicalConfirm() {
+    const modal = document.getElementById('medicalConfirmModal');
+    modal.classList.add('hidden');
+    window.medicalModal.isOpen = false;
+
+    if (window.medicalModal.confirmCallback) {
+        window.medicalModal.confirmCallback(false);
+    }
+}
+
+function showMedicalAlert(message, type = 'info') {
+    return window.medicalModal.alert(message, type);
+}
+
+function showMedicalConfirm(options) {
+    return window.medicalModal.confirm(options);
+}
+
+function showMedicalLoading(options) {
+    return window.medicalModal.loading(options);
+}
+
+// Medical Modal Usage Examples
+/*
+// Basic modal
+openMedicalModal({
+    title: 'Tibbiy Kurs Tafsilotlari',
+    content: '<p>Kurs haqida ma\'lumot...</p>',
+    footer: '<button onclick="closeMedicalModal()">Yopish</button>'
+});
+
+// Alert modal
+showMedicalAlert('Kurs muvaffaqiyatli yaratildi!', 'success');
+
+// Confirm modal
+showMedicalConfirm({
+    title: 'Kursni o\'chirish',
+    message: 'Bu kursni o\'chirmoqchimisiz?',
+    onConfirm: () => console.log('Kurs o\'chirildi')
+});
+
+// Loading modal
+const loading = showMedicalLoading({
+    title: 'Kurs yuklanmoqda...',
+    message: 'Tibbiy ma\'lumotlar tayyorlanmoqda'
+});
+
+setTimeout(() => loading.close(), 3000);
+*/
+</script>
+
+<!-- Medical Alpine.js Component Script -->
+<script>
+function medicalPagination(config) {
+    return {
+        // Core pagination data
+        currentPage: config.currentPage || 1,
+        totalPages: config.totalPages || 1,
+        hasNext: config.hasNext || false,
+        hasPrevious: config.hasPrevious || false,
+        startIndex: config.startIndex || 0,
+        endIndex: config.endIndex || 0,
+        totalCount: config.totalCount || 0,
+        perPage: config.perPage || 10,
+        quickJumpPage: config.currentPage || 1,
+
+        // Medical sound system
+        sounds: {
+            click: null,
+            success: null,
+            error: null
+        },
+
+        // Computed properties
+        get visiblePages() {
+            const pages = [];
+            const total = this.totalPages;
+            const current = this.currentPage;
+
+            if (total <= 7) {
+                // Show all pages if total is small
+                for (let i = 1; i <= total; i++) {
+                    pages.push(i);
+                }
+            } else {
+                // Smart pagination logic
+                if (current <= 4) {
+                    // Show first 5 pages + last page
+                    for (let i = 1; i <= 5; i++) pages.push(i);
+                    if (total > 6) pages.push('...', total);
+                } else if (current >= total - 3) {
+                    // Show first page + last 5 pages
+                    pages.push(1);
+                    if (total > 6) pages.push('...');
+                    for (let i = total - 4; i <= total; i++) pages.push(i);
+                } else {
+                    // Show first + current-1, current, current+1 + last
+                    pages.push(1, '...', current - 1, current, current + 1, '...', total);
+                }
+            }
+
+            return pages.filter(page => page !== '...' || true);
+        },
+
+        // Initialize component
+        init() {
+            this.createMedicalSounds();
+            this.setupKeyboardNavigation();
+            this.playMedicalWelcome();
+
+            // Update URL without page reload
+            this.updateURL();
+        },
+
+        // Create medical sound effects
+        createMedicalSounds() {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+
+                this.sounds.click = () => this.playMedicalTone(audioContext, [523.25], 0.1);
+                this.sounds.success = () => this.playMedicalTone(audioContext, [523.25, 659.25, 783.99], 0.2);
+                this.sounds.error = () => this.playMedicalTone(audioContext, [415.3, 369.99], 0.3);
+            } catch (error) {
+                console.log('Medical audio not supported');
+                // Fallback to silent operation
+                this.sounds = { click: () => {}, success: () => {}, error: () => {} };
+            }
+        },
+
+        // Play medical tone
+        playMedicalTone(audioContext, frequencies, duration) {
+            frequencies.forEach((freq, i) => {
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.setValueAtTime(freq, audioContext.currentTime);
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(0, audioContext.currentTime);
+                gainNode.gain.linearRampToValueAtTime(0.05, audioContext.currentTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioContext.currentTime + duration);
+
+                oscillator.start(audioContext.currentTime + i * 0.05);
+                oscillator.stop(audioContext.currentTime + duration + i * 0.05);
+            });
+        },
+
+        // Play welcome sound on init
+        playMedicalWelcome() {
+            setTimeout(() => {
+                this.sounds.success();
+            }, 500);
+        },
+
+        // Setup keyboard navigation
+        setupKeyboardNavigation() {
+            document.addEventListener('keydown', (e) => {
+                // Only handle if pagination is visible and no input focused
+                if (document.activeElement.tagName === 'INPUT') return;
+
+                switch (e.key) {
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        if (this.hasPrevious) this.goToPage(this.currentPage - 1);
+                        break;
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        if (this.hasNext) this.goToPage(this.currentPage + 1);
+                        break;
+                    case 'Home':
+                        e.preventDefault();
+                        this.goToPage(1);
+                        break;
+                    case 'End':
+                        e.preventDefault();
+                        this.goToPage(this.totalPages);
+                        break;
+                }
+            });
+        },
+
+        // Navigate to specific page
+        goToPage(page) {
+            if (page < 1 || page > this.totalPages || page === this.currentPage) {
+                this.sounds.error();
+                return;
+            }
+
+            // Play medical click sound
+            this.sounds.click();
+
+            // Add loading state
+            this.setLoadingState(true);
+
+            // Update current page
+            this.currentPage = page;
+            this.quickJumpPage = page;
+
+            // Update pagination data
+            this.updatePaginationData();
+
+            // Navigate to new page
+            this.navigateToPage(page);
+
+            // Play success sound after navigation
+            setTimeout(() => {
+                this.sounds.success();
+                this.setLoadingState(false);
+            }, 300);
+        },
+
+        // Update pagination data based on new page
+        updatePaginationData() {
+            // Recalculate pagination stats
+            this.startIndex = (this.currentPage - 1) * this.perPage + 1;
+            this.endIndex = Math.min(this.currentPage * this.perPage, this.totalCount);
+            this.hasPrevious = this.currentPage > 1;
+            this.hasNext = this.currentPage < this.totalPages;
+        },
+
+        // Set loading state
+        setLoadingState(loading) {
+            const container = this.$el;
+            if (loading) {
+                container.style.opacity = '0.7';
+                container.style.pointerEvents = 'none';
+                container.classList.add('medical-loading');
+            } else {
+                container.style.opacity = '1';
+                container.style.pointerEvents = 'auto';
+                container.classList.remove('medical-loading');
+            }
+        },
+
+        // Navigate to page (URL manipulation)
+        navigateToPage(page) {
+            const url = new URL(window.location);
+            if (page === 1) {
+                url.searchParams.delete('page');
+            } else {
+                url.searchParams.set('page', page);
+            }
+
+            // Update URL without page reload
+            window.history.pushState({}, '', url);
+
+            // Trigger page reload or AJAX call
+            if (typeof window.medicalPaginationCallback === 'function') {
+                window.medicalPaginationCallback(page);
+            } else {
+                window.location.href = url;
+            }
+        },
+
+        // Update URL without navigation
+        updateURL() {
+            const url = new URL(window.location);
+            if (this.currentPage === 1) {
+                url.searchParams.delete('page');
+            } else {
+                url.searchParams.set('page', this.currentPage);
+            }
+            window.history.replaceState({}, '', url);
+        },
+
+        // Quick jump to page
+        quickJump() {
+            const page = parseInt(this.quickJumpPage);
+            if (page && page >= 1 && page <= this.totalPages) {
+                this.goToPage(page);
+            } else {
+                this.sounds.error();
+                // Show error animation
+                const input = this.$el.querySelector('input[type="number"]');
+                if (input) {
+                    input.classList.add('animate-pulse', 'border-red-500');
+                    setTimeout(() => {
+                        input.classList.remove('animate-pulse', 'border-red-500');
+                    }, 1000);
+                }
+            }
+        },
+
+        // Change items per page
+        changePerPage(newPerPage) {
+            this.perPage = parseInt(newPerPage);
+
+            // Recalculate total pages
+            this.totalPages = Math.ceil(this.totalCount / this.perPage);
+
+            // Adjust current page if necessary
+            if (this.currentPage > this.totalPages) {
+                this.currentPage = this.totalPages;
+            }
+
+            // Update URL with new per_page parameter
+            const url = new URL(window.location);
+            url.searchParams.set('per_page', this.perPage);
+
+            this.sounds.success();
+
+            // Navigate with new per_page setting
+            if (typeof window.medicalPaginationCallback === 'function') {
+                window.medicalPaginationCallback(this.currentPage, this.perPage);
+            } else {
+                window.location.href = url;
+            }
+        },
+
+        // Medical animation effects
+        addMedicalEffect(element, effectType) {
+            const effects = {
+                pulse: 'animate-pulse',
+                bounce: 'animate-bounce',
+                float: 'medical-float-animation'
+            };
+
+            const effectClass = effects[effectType] || effects.pulse;
+            element.classList.add(effectClass);
+
+            setTimeout(() => {
+                element.classList.remove(effectClass);
+            }, 1000);
+        },
+
+        // Get page info for templates
+        getPageInfo() {
+            return {
+                currentPage: this.currentPage,
+                totalPages: this.totalPages,
+                hasNext: this.hasNext,
+                hasPrevious: this.hasPrevious,
+                startIndex: this.startIndex,
+                endIndex: this.endIndex,
+                totalCount: this.totalCount,
+                perPage: this.perPage
+            };
+        }
+    }
+}
+
+// Global callback for AJAX pagination
+window.medicalPaginationCallback = function(page, perPage = null) {
+    console.log(`Medical pagination: navigating to page ${page}${perPage ? ` with ${perPage} items per page` : ''}`);
+
+    // Example AJAX implementation
+    /*
+    fetch(`/api/data?page=${page}${perPage ? `&per_page=${perPage}` : ''}`)
+        .then(response => response.json())
+        .then(data => {
+            // Update page content
+            updatePageContent(data);
+        })
+        .catch(error => {
+            console.error('Medical pagination error:', error);
+        });
+    */
+};
+
+// Medical pagination utility functions
+window.MedicalPaginationUtils = {
+    // Create pagination from Django context
+    fromDjango: (pageObj) => {
+        return {
+            currentPage: pageObj.number,
+            totalPages: pageObj.paginator.num_pages,
+            hasNext: pageObj.has_next,
+            hasPrevious: pageObj.has_previous,
+            nextPageNumber: pageObj.next_page_number,
+            previousPageNumber: pageObj.previous_page_number,
+            startIndex: pageObj.start_index,
+            endIndex: pageObj.end_index,
+            totalCount: pageObj.paginator.count,
+            perPage: pageObj.paginator.per_page
+        };
+    },
+
+    // Create pagination for API data
+    fromAPI: (data, page = 1, perPage = 10) => {
+        const totalPages = Math.ceil(data.count / perPage);
+        return {
+            currentPage: page,
+            totalPages: totalPages,
+            hasNext: page < totalPages,
+            hasPrevious: page > 1,
+            nextPageNumber: page < totalPages ? page + 1 : null,
+            previousPageNumber: page > 1 ? page - 1 : null,
+            startIndex: (page - 1) * perPage + 1,
+            endIndex: Math.min(page * perPage, data.count),
+            totalCount: data.count,
+            perPage: perPage
+        };
+    }
+};
+
+// Initialize medical sounds on page load
+document.addEventListener('DOMContentLoaded', function() {
+    // Enable audio context on first user interaction
+    document.addEventListener('click', function enableAudio() {
+        if (window.AudioContext || window.webkitAudioContext) {
+            new (window.AudioContext || window.webkitAudioContext)();
+        }
+        document.removeEventListener('click', enableAudio);
+    }, { once: true });
+});
+</script>
+
+<!-- Minimal Inline Script -->
+<script>
+let audioCtx,isOpen=false;
+function initAudio(){try{audioCtx=new(window.AudioContext||window.webkitAudioContext)()}catch(e){audioCtx=null}}
+function playTone(freq,dur=0.1){if(!audioCtx)return;const osc=audioCtx.createOscillator(),gain=audioCtx.createGain();osc.connect(gain);gain.connect(audioCtx.destination);osc.frequency.value=freq;gain.gain.setValueAtTime(0.1,audioCtx.currentTime);gain.gain.exponentialRampToValueAtTime(0.01,audioCtx.currentTime+dur);osc.start();osc.stop(audioCtx.currentTime+dur)}
+function playClick(){playTone(523.25)}
+function openSidebar(){const sidebar=document.getElementById('medicalSidebar'),overlay=document.getElementById('sidebarOverlay'),toggle=document.getElementById('sidebarToggle');sidebar.classList.add('sidebar-open');overlay.classList.remove('hidden');toggle.style.display='none';isOpen=true;playTone(659.25);document.body.style.overflow='hidden'}
+function closeSidebar(){const sidebar=document.getElementById('medicalSidebar'),overlay=document.getElementById('sidebarOverlay'),toggle=document.getElementById('sidebarToggle');sidebar.classList.remove('sidebar-open');overlay.classList.add('hidden');toggle.style.display='flex';isOpen=false;playTone(523.25);document.body.style.overflow='auto'}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen)closeSidebar()});
+document.addEventListener('click',()=>{if(!audioCtx)initAudio()},{once:true});
+window.addEventListener('resize',()=>{if(window.innerWidth>768&&isOpen)closeSidebar()});
 </script>
 </body>
 </html>

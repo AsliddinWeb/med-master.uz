@@ -1,0 +1,159 @@
+
+<!-- Medical Modal Container -->
+<div id="medicalModalContainer" class="fixed inset-0 z-50 hidden">
+    <!-- Medical Modal Overlay -->
+    <div class="medical-modal-overlay fixed inset-0 transition-opacity duration-300 ease-out opacity-0"
+         style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(30, 58, 138, 0.8) 50%, rgba(6, 182, 212, 0.7) 100%); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);">
+
+        <!-- Medical Background Pattern -->
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-20 left-20 animate-pulse">
+                <i class="fas fa-stethoscope text-6xl text-white" style="animation: float 3s ease-in-out infinite;"></i>
+            </div>
+            <div class="absolute top-40 right-32 animate-pulse" style="animation-delay: 1s;">
+                <i class="fas fa-heartbeat text-4xl text-cyan-300" style="animation: float 3s ease-in-out infinite;"></i>
+            </div>
+            <div class="absolute bottom-32 left-40 animate-pulse" style="animation-delay: 2s;">
+                <i class="fas fa-microscope text-5xl text-teal-300" style="animation: float 3s ease-in-out infinite;"></i>
+            </div>
+            <div class="absolute bottom-20 right-20 animate-pulse" style="animation-delay: 3s;">
+                <i class="fas fa-user-md text-7xl text-blue-300" style="animation: float 3s ease-in-out infinite;"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medical Modal Content -->
+    <div class="medical-modal-content fixed inset-0 flex items-center justify-center p-4 transition-all duration-300 ease-out transform scale-95 opacity-0">
+        <div class="medical-modal-dialog bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden transform transition-all duration-300 ease-out scale-95"
+             style="border: 2px solid rgba(6, 182, 212, 0.2); box-shadow: 0 25px 50px -12px rgba(6, 182, 212, 0.25);">
+
+            <!-- Medical Modal Header -->
+            <div class="medical-modal-header px-8 py-6 border-b border-gray-100"
+                 style="background: linear-gradient(135deg, #f0fdfa 0%, #ecfeff 100%);">
+                <div class="flex items-center justify-between">
+                    <div class="flex items-center">
+                        <!-- Medical Icon -->
+                        <div class="w-12 h-12 rounded-xl flex items-center justify-center mr-4 medical-icon-pulse"
+                             style="background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%); box-shadow: 0 8px 25px -8px rgba(13, 148, 136, 0.5);">
+                            <i class="fas fa-user-md text-white text-xl" id="medicalModalIcon"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-2xl font-bold text-gray-900" id="medicalModalTitle">Tibbiy Ma'lumot</h3>
+                            <p class="text-sm text-teal-600 font-medium" id="medicalModalSubtitle">Professional tibbiy platforma</p>
+                        </div>
+                    </div>
+
+                    <!-- Medical Close Button -->
+                    <button type="button"
+                            class="medical-close-btn p-3 rounded-xl transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500"
+                            style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.2);"
+                            onclick="closeMedicalModal()"
+                            title="Oynani yopish">
+                        <i class="fas fa-times text-lg"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Medical Modal Body -->
+            <div class="medical-modal-body px-8 py-6 overflow-y-auto"
+                 style="max-height: calc(90vh - 200px);"
+                 id="medicalModalBody">
+                <!-- Content will be dynamically inserted here -->
+                <div class="text-center py-12">
+                    <div class="w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-6 medical-loading-pulse"
+                         style="background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);">
+                        <i class="fas fa-stethoscope text-white text-2xl"></i>
+                    </div>
+                    <h4 class="text-xl font-bold text-gray-900 mb-3">Tibbiy Ma'lumotlar Yuklanmoqda...</h4>
+                    <p class="text-gray-600">Iltimos, biroz kutib turing</p>
+                </div>
+            </div>
+
+            <!-- Medical Modal Footer -->
+            <div class="medical-modal-footer px-8 py-6 border-t border-gray-100 flex items-center justify-end space-x-4"
+                 style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);"
+                 id="medicalModalFooter">
+                <!-- Footer buttons will be dynamically inserted here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Medical Confirmation Modal Template -->
+<div id="medicalConfirmModal" class="fixed inset-0 z-50 hidden">
+    <div class="medical-modal-overlay fixed inset-0 transition-opacity duration-300 ease-out opacity-0"
+         style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(239, 68, 68, 0.8) 50%, rgba(220, 38, 38, 0.7) 100%); backdrop-filter: blur(8px);">
+    </div>
+
+    <div class="medical-modal-content fixed inset-0 flex items-center justify-center p-4 transition-all duration-300 transform scale-95 opacity-0">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-md w-full transform transition-all duration-300 scale-95"
+             style="border: 2px solid rgba(239, 68, 68, 0.2); box-shadow: 0 25px 50px -12px rgba(239, 68, 68, 0.25);">
+
+            <!-- Medical Confirmation Header -->
+            <div class="px-6 py-6 text-center"
+                 style="background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);">
+                <div class="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 medical-warning-pulse"
+                     style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); box-shadow: 0 8px 25px -8px rgba(239, 68, 68, 0.5);">
+                    <i class="fas fa-exclamation-triangle text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2" id="confirmModalTitle">Tibbiy Ogohlantirish</h3>
+                <p class="text-gray-600" id="confirmModalMessage">Bu amalni bajarmoqchimisiz?</p>
+            </div>
+
+            <!-- Medical Confirmation Footer -->
+            <div class="px-6 py-4 flex items-center justify-center space-x-4"
+                 style="background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);">
+                <button type="button"
+                        class="px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-500"
+                        style="background: #6b7280; color: white; box-shadow: 0 4px 14px 0 rgba(107, 114, 128, 0.3);"
+                        onclick="closeMedicalConfirm()">
+                    <i class="fas fa-times mr-2"></i>
+                    Bekor qilish
+                </button>
+                <button type="button"
+                        class="px-6 py-3 rounded-xl font-semibold transition-all duration-200 hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                        style="background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%); color: white; box-shadow: 0 4px 14px 0 rgba(239, 68, 68, 0.3);"
+                        id="confirmModalButton"
+                        onclick="confirmMedicalAction()">
+                    <i class="fas fa-check mr-2"></i>
+                    Tasdiqlash
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Medical Loading Modal Template -->
+<div id="medicalLoadingModal" class="fixed inset-0 z-50 hidden">
+    <div class="medical-modal-overlay fixed inset-0"
+         style="background: linear-gradient(135deg, rgba(15, 23, 42, 0.7) 0%, rgba(6, 182, 212, 0.8) 100%); backdrop-filter: blur(8px);">
+    </div>
+
+    <div class="fixed inset-0 flex items-center justify-center p-4">
+        <div class="bg-white rounded-3xl shadow-2xl p-8 text-center max-w-sm w-full"
+             style="border: 2px solid rgba(6, 182, 212, 0.2); box-shadow: 0 25px 50px -12px rgba(6, 182, 212, 0.25);">
+
+            <!-- Medical Loading Animation -->
+            <div class="relative w-20 h-20 mx-auto mb-6">
+                <div class="absolute inset-0 medical-spinner"></div>
+                <div class="absolute inset-0 flex items-center justify-center">
+                    <div class="w-12 h-12 rounded-full flex items-center justify-center medical-icon-pulse"
+                         style="background: linear-gradient(135deg, #0d9488 0%, #06b6d4 100%);">
+                        <i class="fas fa-stethoscope text-white text-lg"></i>
+                    </div>
+                </div>
+                <div class="absolute inset-0 medical-pulse-ring"></div>
+            </div>
+
+            <h3 class="text-xl font-bold text-gray-900 mb-2" id="loadingModalTitle">Tibbiy Amal Bajarilmoqda</h3>
+            <p class="text-gray-600 mb-4" id="loadingModalMessage">Iltimos, biroz kutib turing...</p>
+
+            <!-- Medical Progress Dots -->
+            <div class="flex justify-center space-x-1">
+                <div class="w-2 h-2 rounded-full medical-dot-pulse" style="background: #0d9488; animation-delay: 0s;"></div>
+                <div class="w-2 h-2 rounded-full medical-dot-pulse" style="background: #06b6d4; animation-delay: 0.1s;"></div>
+                <div class="w-2 h-2 rounded-full medical-dot-pulse" style="background: #3b82f6; animation-delay: 0.2s;"></div>
+            </div>
+        </div>
+    </div>
+</div>

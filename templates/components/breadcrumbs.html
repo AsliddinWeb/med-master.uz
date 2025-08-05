@@ -1,37 +1,141 @@
 {% if breadcrumbs %}
-<nav class="bg-gray-50 border-b border-gray-200" aria-label="Breadcrumb">
+<!-- Medical Professional Breadcrumbs -->
+<nav class="bg-gradient-to-r from-gray-50 to-cyan-50 border-b border-cyan-100 sticky top-16 z-40 backdrop-blur-sm" aria-label="Breadcrumb">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center space-x-4 py-3">
-            <!-- Home Icon -->
+        <div class="flex items-center space-x-1 py-4">
+
+            <!-- Medical Home Icon -->
             <a href="{% url 'core:home' %}"
-               class="text-gray-400 hover:text-gray-600 transition-colors duration-200 flex items-center">
-                <i class="fas fa-home text-sm"></i>
+               class="group flex items-center text-gray-500 hover:text-teal-700 transition-all duration-300 rounded-lg p-2 hover:bg-white hover:shadow-sm"
+               title="Bosh sahifaga qaytish">
+                <div class="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center mr-2 group-hover:scale-110 transition-transform">
+                    <i class="fas fa-home text-white text-sm"></i>
+                </div>
+                <span class="hidden sm:block text-sm font-medium">Bosh sahifa</span>
                 <span class="sr-only">Bosh sahifa</span>
             </a>
 
-            <!-- Breadcrumb Items -->
+            <!-- Medical Breadcrumb Items -->
             {% for crumb in breadcrumbs %}
                 <div class="flex items-center">
-                    <!-- Separator -->
-                    <i class="fas fa-chevron-right text-gray-300 text-xs mx-2"></i>
+                    <!-- Medical Separator -->
+                    <div class="mx-2 text-gray-300">
+                        <i class="fas fa-chevron-right text-xs"></i>
+                    </div>
 
-                    <!-- Breadcrumb Link -->
+                    <!-- Medical Breadcrumb Link -->
                     {% if not forloop.last %}
                         <a href="{{ crumb.url }}"
-                           class="text-sm font-medium text-gray-500 hover:text-gray-700 transition-colors duration-200 capitalize">
-                            {{ crumb.name }}
+                           class="group flex items-center text-gray-600 hover:text-teal-700 transition-all duration-300 rounded-lg px-3 py-2 hover:bg-white hover:shadow-sm max-w-xs">
+
+                            <!-- Dynamic Medical Icons based on breadcrumb name -->
+                            <div class="w-6 h-6 rounded-md flex items-center justify-center mr-2 text-teal-600 group-hover:scale-110 transition-transform">
+                                {% if 'kurs' in crumb.name|lower or 'course' in crumb.name|lower %}
+                                    <i class="fas fa-stethoscope text-xs"></i>
+                                {% elif 'dars' in crumb.name|lower or 'lesson' in crumb.name|lower %}
+                                    <i class="fas fa-book-medical text-xs"></i>
+                                {% elif 'test' in crumb.name|lower or 'quiz' in crumb.name|lower %}
+                                    <i class="fas fa-clipboard-check text-xs"></i>
+                                {% elif 'profil' in crumb.name|lower or 'profile' in crumb.name|lower %}
+                                    <i class="fas fa-user-md text-xs"></i>
+                                {% elif 'kabinet' in crumb.name|lower or 'dashboard' in crumb.name|lower %}
+                                    <i class="fas fa-tachometer-alt text-xs"></i>
+                                {% elif 'aloqa' in crumb.name|lower or 'contact' in crumb.name|lower %}
+                                    <i class="fas fa-envelope-medical text-xs"></i>
+                                {% elif 'haqida' in crumb.name|lower or 'about' in crumb.name|lower %}
+                                    <i class="fas fa-hospital text-xs"></i>
+                                {% else %}
+                                    <i class="fas fa-folder text-xs"></i>
+                                {% endif %}
+                            </div>
+
+                            <span class="text-sm font-medium capitalize truncate group-hover:text-teal-700">
+                                {{ crumb.name|title }}
+                            </span>
                         </a>
                     {% else %}
-                        <!-- Current Page (not clickable) -->
-                        <span class="text-sm font-medium text-gray-900 capitalize" aria-current="page">
-                            {{ crumb.name }}
-                        </span>
+                        <!-- Current Medical Page (not clickable) -->
+                        <div class="flex items-center bg-white rounded-lg px-3 py-2 shadow-sm border border-teal-100">
+
+                            <!-- Current Page Medical Icon -->
+                            <div class="w-6 h-6 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-md flex items-center justify-center mr-2">
+                                {% if 'kurs' in crumb.name|lower or 'course' in crumb.name|lower %}
+                                    <i class="fas fa-stethoscope text-white text-xs"></i>
+                                {% elif 'dars' in crumb.name|lower or 'lesson' in crumb.name|lower %}
+                                    <i class="fas fa-book-medical text-white text-xs"></i>
+                                {% elif 'test' in crumb.name|lower or 'quiz' in crumb.name|lower %}
+                                    <i class="fas fa-clipboard-check text-white text-xs"></i>
+                                {% elif 'profil' in crumb.name|lower or 'profile' in crumb.name|lower %}
+                                    <i class="fas fa-user-md text-white text-xs"></i>
+                                {% elif 'kabinet' in crumb.name|lower or 'dashboard' in crumb.name|lower %}
+                                    <i class="fas fa-tachometer-alt text-white text-xs"></i>
+                                {% elif 'aloqa' in crumb.name|lower or 'contact' in crumb.name|lower %}
+                                    <i class="fas fa-envelope-medical text-white text-xs"></i>
+                                {% elif 'haqida' in crumb.name|lower or 'about' in crumb.name|lower %}
+                                    <i class="fas fa-hospital text-white text-xs"></i>
+                                {% else %}
+                                    <i class="fas fa-location-arrow text-white text-xs"></i>
+                                {% endif %}
+                            </div>
+
+                            <span class="text-sm font-semibold text-teal-700 capitalize truncate max-w-xs" aria-current="page">
+                                {{ crumb.name|title }}
+                            </span>
+                        </div>
                     {% endif %}
                 </div>
             {% endfor %}
+
+            <!-- Medical Quick Actions (if on certain pages) -->
+            <div class="ml-auto flex items-center space-x-2">
+                {% if 'course' in request.path %}
+                    <button onclick="window.print()"
+                            class="hidden md:flex items-center text-gray-500 hover:text-teal-600 text-sm bg-white rounded-lg px-3 py-2 hover:shadow-sm transition-all"
+                            title="Sahifani chop etish">
+                        <i class="fas fa-print mr-1"></i>
+                        <span class="text-xs">Chop etish</span>
+                    </button>
+                {% endif %}
+
+                {% if user.is_authenticated %}
+                    <button onclick="window.history.back()"
+                            class="flex items-center text-gray-500 hover:text-teal-600 text-sm bg-white rounded-lg px-3 py-2 hover:shadow-sm transition-all"
+                            title="Orqaga qaytish">
+                        <i class="fas fa-arrow-left mr-1"></i>
+                        <span class="hidden sm:block text-xs">Orqaga</span>
+                    </button>
+                {% endif %}
+            </div>
         </div>
     </div>
+
+    <!-- Medical Progress Bar (for course/lesson pages) -->
+    {% if 'course' in request.path or 'lesson' in request.path %}
+        <div class="h-1 bg-gray-200">
+            <div class="h-1 bg-gradient-to-r from-teal-500 to-cyan-600 transition-all duration-500"
+                 style="width: {% if user.is_authenticated and course %}{{ course_progress|default:0 }}%{% else %}0%{% endif %}"></div>
+        </div>
+    {% endif %}
 </nav>
+
+<!-- Medical Mobile Breadcrumbs (Simplified for small screens) -->
+<div class="md:hidden bg-white border-b border-gray-100 px-4 py-2">
+    <div class="flex items-center justify-between">
+        <button onclick="window.history.back()"
+                class="flex items-center text-teal-600 font-medium">
+            <i class="fas fa-arrow-left mr-2"></i>
+            <span class="text-sm">Orqaga</span>
+        </button>
+
+        {% if breadcrumbs %}
+            <div class="flex items-center text-gray-600 text-sm">
+                <i class="fas fa-location-arrow mr-2 text-teal-500"></i>
+                <span class="font-medium">{{ breadcrumbs|last.name|title|truncatechars:20 }}</span>
+            </div>
+        {% endif %}
+    </div>
+</div>
+
 
 
 {% endif %}

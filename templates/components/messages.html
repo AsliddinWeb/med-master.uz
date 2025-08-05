@@ -1,92 +1,154 @@
 {% if messages %}
-<div class="messages-container max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+<!-- Medical Messages Container -->
+<div class="messages-container fixed top-20 right-6 z-50 max-w-md space-y-3" id="messagesContainer">
     {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}
-                    {% if message.tags == 'success' %}bg-green-50 border border-green-200 text-green-800{% endif %}
-                    {% if message.tags == 'error' %}bg-red-50 border border-red-200 text-red-800{% endif %}
-                    {% if message.tags == 'warning' %}bg-yellow-50 border border-yellow-200 text-yellow-800{% endif %}
-                    {% if message.tags == 'info' %}bg-blue-50 border border-blue-200 text-blue-800{% endif %}
-                    {% if message.tags == 'debug' %}bg-gray-50 border border-gray-200 text-gray-800{% endif %}
-                    rounded-lg p-4 mb-4 shadow-sm transition-all duration-300 transform"
-             data-auto-hide="6000"
-             role="alert">
+        <div class="medical-alert medical-alert-{{ message.tags }}
+                    {% if message.tags == 'success' %}bg-gradient-to-r from-emerald-50 to-green-50 border-l-4 border-emerald-500 shadow-emerald-100{% endif %}
+                    {% if message.tags == 'error' %}bg-gradient-to-r from-red-50 to-rose-50 border-l-4 border-red-500 shadow-red-100{% endif %}
+                    {% if message.tags == 'warning' %}bg-gradient-to-r from-amber-50 to-yellow-50 border-l-4 border-amber-500 shadow-amber-100{% endif %}
+                    {% if message.tags == 'info' %}bg-gradient-to-r from-cyan-50 to-teal-50 border-l-4 border-cyan-500 shadow-cyan-100{% endif %}
+                    {% if message.tags == 'debug' %}bg-gradient-to-r from-slate-50 to-gray-50 border-l-4 border-slate-500 shadow-slate-100{% endif %}
+                    rounded-xl p-5 shadow-2xl border border-opacity-20 backdrop-blur-sm transform translate-x-full transition-all duration-500 ease-out"
+             data-auto-hide="8000"
+             data-message-type="{{ message.tags }}"
+             role="alert"
+             aria-live="polite">
 
             <div class="flex items-start">
-                <!-- Icon -->
-                <div class="flex-shrink-0 mr-3">
+                <!-- Medical Icon -->
+                <div class="flex-shrink-0 mr-4">
                     {% if message.tags == 'success' %}
-                        <div class="w-6 h-6 bg-green-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-check text-green-600 text-sm"></i>
+                        <div class="w-10 h-10 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center shadow-lg medical-icon-success">
+                            <i class="fas fa-user-check text-white text-lg"></i>
                         </div>
                     {% elif message.tags == 'error' %}
-                        <div class="w-6 h-6 bg-red-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-times text-red-600 text-sm"></i>
+                        <div class="w-10 h-10 bg-gradient-to-br from-red-500 to-rose-600 rounded-xl flex items-center justify-center shadow-lg medical-icon-error">
+                            <i class="fas fa-exclamation-circle text-white text-lg"></i>
                         </div>
                     {% elif message.tags == 'warning' %}
-                        <div class="w-6 h-6 bg-yellow-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-exclamation-triangle text-yellow-600 text-sm"></i>
+                        <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg medical-icon-warning">
+                            <i class="fas fa-shield-alt text-white text-lg"></i>
                         </div>
                     {% elif message.tags == 'info' %}
-                        <div class="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-info text-blue-600 text-sm"></i>
+                        <div class="w-10 h-10 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl flex items-center justify-center shadow-lg medical-icon-info">
+                            <i class="fas fa-info-circle text-white text-lg"></i>
                         </div>
                     {% else %}
-                        <div class="w-6 h-6 bg-gray-100 rounded-full flex items-center justify-center">
-                            <i class="fas fa-bell text-gray-600 text-sm"></i>
+                        <div class="w-10 h-10 bg-gradient-to-br from-slate-500 to-gray-600 rounded-xl flex items-center justify-center shadow-lg medical-icon-default">
+                            <i class="fas fa-bell text-white text-lg"></i>
                         </div>
                     {% endif %}
                 </div>
 
-                <!-- Message Content -->
+                <!-- Medical Message Content -->
                 <div class="flex-1 min-w-0">
-                    <!-- Message Title (optional) -->
+                    <!-- Medical Title with Context -->
                     {% if message.tags == 'success' %}
-                        <h4 class="text-sm font-semibold mb-1">Muvaffaqiyat!</h4>
+                        <div class="flex items-center mb-2">
+                            <h4 class="text-lg font-bold text-emerald-800">Tibbiy Amal Muvaffaqiyatli!</h4>
+                            <i class="fas fa-stethoscope text-emerald-600 ml-2 animate-pulse"></i>
+                        </div>
                     {% elif message.tags == 'error' %}
-                        <h4 class="text-sm font-semibold mb-1">Xatolik!</h4>
+                        <div class="flex items-center mb-2">
+                            <h4 class="text-lg font-bold text-red-800">Tibbiy Xatolik!</h4>
+                            <i class="fas fa-heartbeat text-red-600 ml-2 animate-pulse"></i>
+                        </div>
                     {% elif message.tags == 'warning' %}
-                        <h4 class="text-sm font-semibold mb-1">Diqqat!</h4>
+                        <div class="flex items-center mb-2">
+                            <h4 class="text-lg font-bold text-amber-800">Tibbiy Ogohlantirish!</h4>
+                            <i class="fas fa-user-md text-amber-600 ml-2 animate-pulse"></i>
+                        </div>
                     {% elif message.tags == 'info' %}
-                        <h4 class="text-sm font-semibold mb-1">Ma'lumot</h4>
+                        <div class="flex items-center mb-2">
+                            <h4 class="text-lg font-bold text-cyan-800">Tibbiy Ma'lumot</h4>
+                            <i class="fas fa-clipboard-check text-cyan-600 ml-2 animate-pulse"></i>
+                        </div>
                     {% endif %}
 
-                    <!-- Message Text -->
-                    <p class="text-sm leading-5">
+                    <!-- Medical Message Text -->
+                    <div class="text-sm leading-relaxed
+                               {% if message.tags == 'success' %}text-emerald-700{% endif %}
+                               {% if message.tags == 'error' %}text-red-700{% endif %}
+                               {% if message.tags == 'warning' %}text-amber-700{% endif %}
+                               {% if message.tags == 'info' %}text-cyan-700{% endif %}
+                               {% if message.tags == 'debug' %}text-slate-700{% endif %}">
                         {{ message|safe }}
-                    </p>
+                    </div>
+
+                    <!-- Medical Action Timestamp -->
+                    <div class="mt-2 flex items-center text-xs
+                               {% if message.tags == 'success' %}text-emerald-600{% endif %}
+                               {% if message.tags == 'error' %}text-red-600{% endif %}
+                               {% if message.tags == 'warning' %}text-amber-600{% endif %}
+                               {% if message.tags == 'info' %}text-cyan-600{% endif %}
+                               {% if message.tags == 'debug' %}text-slate-600{% endif %}">
+                        <i class="fas fa-clock mr-1"></i>
+                        <span class="medical-timestamp">Hozir</span>
+                    </div>
                 </div>
 
-                <!-- Close Button -->
-                <div class="flex-shrink-0 ml-4">
+                <!-- Medical Close Button -->
+                <div class="flex-shrink-0 ml-3">
                     <button type="button"
-                            class="close-message inline-flex rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2
-                                   {% if message.tags == 'success' %}text-green-400 hover:text-green-600 focus:ring-green-500{% endif %}
-                                   {% if message.tags == 'error' %}text-red-400 hover:text-red-600 focus:ring-red-500{% endif %}
-                                   {% if message.tags == 'warning' %}text-yellow-400 hover:text-yellow-600 focus:ring-yellow-500{% endif %}
-                                   {% if message.tags == 'info' %}text-blue-400 hover:text-blue-600 focus:ring-blue-500{% endif %}
-                                   {% if message.tags == 'debug' %}text-gray-400 hover:text-gray-600 focus:ring-gray-500{% endif %}
-                                   transition-colors duration-200">
-                        <span class="sr-only">Yopish</span>
+                            class="medical-close-btn p-2 rounded-lg transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-offset-2
+                                   {% if message.tags == 'success' %}text-emerald-400 hover:text-emerald-600 hover:bg-emerald-100 focus:ring-emerald-500{% endif %}
+                                   {% if message.tags == 'error' %}text-red-400 hover:text-red-600 hover:bg-red-100 focus:ring-red-500{% endif %}
+                                   {% if message.tags == 'warning' %}text-amber-400 hover:text-amber-600 hover:bg-amber-100 focus:ring-amber-500{% endif %}
+                                   {% if message.tags == 'info' %}text-cyan-400 hover:text-cyan-600 hover:bg-cyan-100 focus:ring-cyan-500{% endif %}
+                                   {% if message.tags == 'debug' %}text-slate-400 hover:text-slate-600 hover:bg-slate-100 focus:ring-slate-500{% endif %}"
+                            data-message-id="{{ forloop.counter }}"
+                            title="Xabarni yopish">
+                        <span class="sr-only">Tibbiy xabarni yopish</span>
                         <i class="fas fa-times text-lg"></i>
                     </button>
                 </div>
             </div>
 
-            <!-- Progress Bar (auto-hide indicator) -->
-            <div class="mt-3">
-                <div class="w-full bg-white bg-opacity-30 rounded-full h-1">
-                    <div class="progress-bar h-1 rounded-full transition-all duration-100 ease-linear
-                                {% if message.tags == 'success' %}bg-green-400{% endif %}
-                                {% if message.tags == 'error' %}bg-red-400{% endif %}
-                                {% if message.tags == 'warning' %}bg-yellow-400{% endif %}
-                                {% if message.tags == 'info' %}bg-blue-400{% endif %}
-                                {% if message.tags == 'debug' %}bg-gray-400{% endif %}"
+            <!-- Medical Progress Bar with Heartbeat -->
+            <div class="mt-4">
+                <div class="flex items-center justify-between mb-1">
+                    <span class="text-xs font-medium
+                                {% if message.tags == 'success' %}text-emerald-600{% endif %}
+                                {% if message.tags == 'error' %}text-red-600{% endif %}
+                                {% if message.tags == 'warning' %}text-amber-600{% endif %}
+                                {% if message.tags == 'info' %}text-cyan-600{% endif %}
+                                {% if message.tags == 'debug' %}text-slate-600{% endif %}">
+                        Avtomatik yopiladi
+                    </span>
+                    <i class="fas fa-heartbeat text-xs
+                             {% if message.tags == 'success' %}text-emerald-500{% endif %}
+                             {% if message.tags == 'error' %}text-red-500{% endif %}
+                             {% if message.tags == 'warning' %}text-amber-500{% endif %}
+                             {% if message.tags == 'info' %}text-cyan-500{% endif %}
+                             {% if message.tags == 'debug' %}text-slate-500{% endif %}
+                             animate-pulse"></i>
+                </div>
+                <div class="w-full bg-white bg-opacity-50 rounded-full h-2 overflow-hidden">
+                    <div class="medical-progress-bar h-2 rounded-full transition-all duration-100 ease-linear
+                                {% if message.tags == 'success' %}bg-gradient-to-r from-emerald-500 to-green-500{% endif %}
+                                {% if message.tags == 'error' %}bg-gradient-to-r from-red-500 to-rose-500{% endif %}
+                                {% if message.tags == 'warning' %}bg-gradient-to-r from-amber-500 to-yellow-500{% endif %}
+                                {% if message.tags == 'info' %}bg-gradient-to-r from-cyan-500 to-teal-500{% endif %}
+                                {% if message.tags == 'debug' %}bg-gradient-to-r from-slate-500 to-gray-500{% endif %}"
                          style="width: 100%"></div>
+                </div>
+            </div>
+
+            <!-- Medical Sound Indicator -->
+            <div class="medical-sound-wave absolute -right-1 top-1/2 transform -translate-y-1/2 opacity-0">
+                <div class="flex items-center space-x-1">
+                    <div class="w-1 h-2 bg-current rounded-full animate-pulse"></div>
+                    <div class="w-1 h-4 bg-current rounded-full animate-pulse" style="animation-delay: 0.1s"></div>
+                    <div class="w-1 h-3 bg-current rounded-full animate-pulse" style="animation-delay: 0.2s"></div>
                 </div>
             </div>
         </div>
     {% endfor %}
 </div>
+
+<!-- Medical Toast Notification Area (for JavaScript messages) -->
+<div id="medicalToastContainer" class="fixed top-20 right-6 z-50 max-w-md space-y-3"></div>
+
 
 
 {% endif %}
