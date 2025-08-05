@@ -6,419 +6,594 @@
 
 {% block title %}Bosh sahifa{% endblock %}
 
-{% block meta_description %}Professional tibbiy ta'lim onlayn platformasi. Eng yaxshi o'qituvchilar, zamonaviy darslar va sertifikatlar.{% endblock %}
+{% block meta_description %}Professional tibbiy ta'lim onlayn platformasi. Eng yaxshi shifokor va mutaxassislar bilan tibbiy bilimlarni o'rganing.{% endblock %}
 
 {% block extra_css %}
 <style>
-    .hero-gradient {
-        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    .medical-gradient {
+        background: linear-gradient(135deg, #0f766e 0%, #164e63 50%, #1e3a8a 100%);
     }
-    
-    .feature-card:hover {
-        transform: translateY(-10px);
+
+    .medical-card {
+        background: linear-gradient(145deg, #ffffff 0%, #f8fafc 100%);
+        border: 1px solid rgba(6, 182, 212, 0.1);
+        transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-    
+
+    .medical-card:hover {
+        transform: translateY(-8px);
+        box-shadow: 0 25px 50px -12px rgba(6, 182, 212, 0.25);
+        border-color: rgba(6, 182, 212, 0.3);
+    }
+
+    .pulse-ring {
+        animation: pulse-ring 2s cubic-bezier(0.455, 0.03, 0.515, 0.955) infinite;
+    }
+
+    @keyframes pulse-ring {
+        0% {
+            transform: scale(0.8);
+            opacity: 1;
+        }
+        80%, 100% {
+            transform: scale(1.8);
+            opacity: 0;
+        }
+    }
+
+    .stats-counter {
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stats-counter::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s;
+    }
+
+    .stats-counter:hover::before {
+        left: 100%;
+    }
+
+    .medical-icon {
+        background: linear-gradient(135deg, #0891b2 0%, #0f766e 100%);
+        box-shadow: 0 8px 25px -8px rgba(8, 145, 178, 0.5);
+    }
+
+    .feature-icon {
+        transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+        transform: scale(1.1) rotate(5deg);
+    }
+
     .testimonial-card {
         backdrop-filter: blur(10px);
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid rgba(6, 182, 212, 0.1);
     }
-    
-    .stats-counter {
-        transition: all 0.3s ease;
+
+    .course-image-overlay {
+        background: linear-gradient(45deg, rgba(8, 145, 178, 0.9) 0%, rgba(15, 118, 110, 0.9) 100%);
     }
-    
-    .course-card {
-        transition: all 0.3s ease;
+
+    .medical-badge {
+        background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+        border: 1px solid rgba(6, 182, 212, 0.2);
+        color: #0e7490;
     }
-    
-    .course-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+
+    .video-preview {
+        background: linear-gradient(135deg, #1e40af 0%, #0f766e 50%, #0891b2 100%);
+    }
+
+    .floating {
+        animation: floating 3s ease-in-out infinite;
+    }
+
+    @keyframes floating {
+        0% { transform: translate(0,  0px); }
+        50%  { transform: translate(0, -10px); }
+        100%   { transform: translate(0, -0px); }
     }
 </style>
 {% endblock %}
 
 {% block content %}
 <!-- Hero Section -->
-<section class="hero-gradient relative overflow-hidden">
-    <!-- Background Pattern -->
+<section class="medical-gradient relative overflow-hidden min-h-screen flex items-center">
+    <!-- Medical Pattern Background -->
     <div class="absolute inset-0 opacity-10">
-        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.1"><circle cx="7" cy="7" r="1"/><circle cx="27" cy="7" r="1"/><circle cx="47" cy="7" r="1"/><circle cx="7" cy="27" r="1"/><circle cx="27" cy="27" r="1"/><circle cx="47" cy="27" r="1"/><circle cx="7" cy="47" r="1"/><circle cx="27" cy="47" r="1"/><circle cx="47" cy="47" r="1"/></g></g></svg>')"></div>
+        <div class="absolute inset-0" style="background-image: url('data:image/svg+xml,<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><g fill="%23ffffff" fill-opacity="0.1"><path d="M40 0c22.091 0 40 17.909 40 40s-17.909 40-40 40S0 62.091 0 40 17.909 0 40 0zm0 8c-17.673 0-32 14.327-32 32s14.327 32 32 32 32-14.327 32-32S57.673 8 40 8zm0 8c13.255 0 24 10.745 24 24s-10.745 24-24 24-24-10.745-24-24 10.745-24 24-24z"/></g></g></svg>')"></div>
     </div>
-    
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div class="lg:grid lg:grid-cols-2 lg:gap-8 items-center">
+
+    <!-- Floating Medical Icons -->
+    <div class="absolute top-20 left-10 text-cyan-300 opacity-20 floating" style="animation-delay: 0s;">
+        <i class="fas fa-stethoscope text-4xl"></i>
+    </div>
+    <div class="absolute top-40 right-20 text-teal-300 opacity-20 floating" style="animation-delay: 1s;">
+        <i class="fas fa-heartbeat text-3xl"></i>
+    </div>
+    <div class="absolute bottom-40 left-20 text-blue-300 opacity-20 floating" style="animation-delay: 2s;">
+        <i class="fas fa-microscope text-3xl"></i>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+        <div class="lg:grid lg:grid-cols-2 lg:gap-12 items-center">
             <!-- Hero Content -->
             <div class="mb-12 lg:mb-0">
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6">
-                    Professional
-                    <span class="text-yellow-300">Tibbiy Ta'lim</span>
-                    Platformasi
-                </h1>
-                
-                <p class="text-xl text-blue-100 mb-8 leading-relaxed">
-                    Eng yaxshi o'qituvchilar bilan zamonaviy tibbiy bilimlarni o'rganing. 
-                    Sertifikat oling va karyerangizni rivojlantiring.
+                <div class="flex items-center mb-6">
+                    <div class="medical-icon w-16 h-16 rounded-xl flex items-center justify-center mr-4">
+                        <i class="fas fa-user-md text-2xl text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight">
+                            Tibbiy
+                            <span class="text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-teal-400">
+                                Ta'lim
+                            </span>
+                        </h1>
+                        <p class="text-xl text-cyan-100 mt-2 font-medium">Professional Platformasi</p>
+                    </div>
+                </div>
+
+                <p class="text-xl text-blue-100 mb-8 leading-relaxed max-w-xl">
+                    Tajribali shifokorlar va tibbiyot mutaxassislari bilan zamonaviy tibbiy bilimlarni o'rganing.
+                    Rasmiy sertifikat oling va tibbiy karyerangizni rivojlantiring.
                 </p>
-                
+
+                <!-- Medical Features List -->
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-white mb-10">
+                    <div class="flex items-center bg-white bg-opacity-10 rounded-lg p-3 backdrop-blur-sm">
+                        <div class="w-8 h-8 bg-cyan-500 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-certificate text-sm"></i>
+                        </div>
+                        <span class="font-medium">Rasmiy sertifikat</span>
+                    </div>
+                    <div class="flex items-center bg-white bg-opacity-10 rounded-lg p-3 backdrop-blur-sm">
+                        <div class="w-8 h-8 bg-teal-500 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-clock text-sm"></i>
+                        </div>
+                        <span class="font-medium">24/7 dostup</span>
+                    </div>
+                    <div class="flex items-center bg-white bg-opacity-10 rounded-lg p-3 backdrop-blur-sm">
+                        <div class="w-8 h-8 bg-blue-500 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-user-md text-sm"></i>
+                        </div>
+                        <span class="font-medium">Mutaxassis shifokorlar</span>
+                    </div>
+                    <div class="flex items-center bg-white bg-opacity-10 rounded-lg p-3 backdrop-blur-sm">
+                        <div class="w-8 h-8 bg-indigo-500 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-language text-sm"></i>
+                        </div>
+                        <span class="font-medium">O'zbek tilida</span>
+                    </div>
+                </div>
+
                 <!-- CTA Buttons -->
-                <div class="flex flex-col sm:flex-row gap-4 mb-12">
-                    <a href="{% url 'courses:list' %}" 
-                       class="bg-white text-purple-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-                        <i class="fas fa-play mr-2"></i>
-                        Kurslarni Ko'rish
+                <div class="flex flex-col sm:flex-row gap-4">
+                    <a href="{% url 'courses:list' %}"
+                       class="group relative bg-white text-teal-700 px-8 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-r from-cyan-50 to-teal-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                        <div class="relative flex items-center justify-center">
+                            <i class="fas fa-play mr-2"></i>
+                            Kurslarni Ko'rish
+                        </div>
                     </a>
-                    
+
                     {% if not user.is_authenticated %}
-                        <a href="{% url 'accounts:register' %}" 
-                           class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-purple-600 transition-colors">
-                            <i class="fas fa-user-plus mr-2"></i>
-                            Bepul Ro'yxatdan O'tish
+                        <a href="{% url 'accounts:register' %}"
+                           class="group border-2 border-white text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-teal-700 transition-all duration-300 overflow-hidden relative">
+                            <div class="absolute inset-0 bg-white transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left"></div>
+                            <div class="relative flex items-center justify-center">
+                                <i class="fas fa-user-plus mr-2"></i>
+                                Bepul Ro'yxatdan O'tish
+                            </div>
                         </a>
                     {% endif %}
                 </div>
-                
-                <!-- Features List -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-white">
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-yellow-300 mr-3"></i>
-                        <span>Bepul sertifikat</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-yellow-300 mr-3"></i>
-                        <span>24/7 onlayn dostup</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-yellow-300 mr-3"></i>
-                        <span>Professional o'qituvchilar</span>
-                    </div>
-                    <div class="flex items-center">
-                        <i class="fas fa-check-circle text-yellow-300 mr-3"></i>
-                        <span>O'zbek tilida</span>
-                    </div>
-                </div>
             </div>
-            
-            <!-- Hero Image/Video -->
+
+            <!-- Hero Visual -->
             <div class="relative">
-                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-8 shadow-2xl">
-                    <!-- Video Preview or Image -->
-                    <div class="aspect-video bg-gray-800 rounded-lg overflow-hidden relative group cursor-pointer">
-                        <img src="{% static 'images/hero-video-preview.jpg' %}" 
-                             alt="Platform Preview" 
-                             class="w-full h-full object-cover">
-                        
-                        <!-- Play Button Overlay -->
-                        <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-40 group-hover:bg-opacity-60 transition-all">
-                            <div class="w-20 h-20 bg-white bg-opacity-90 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
-                                <i class="fas fa-play text-purple-600 text-2xl ml-1"></i>
+                <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-3xl p-8 shadow-2xl border border-white border-opacity-20">
+                    <!-- Medical Dashboard Preview -->
+                    <div class="video-preview aspect-video rounded-2xl overflow-hidden relative group cursor-pointer">
+                        <div class="w-full h-full flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <div class="w-24 h-24 bg-white bg-opacity-20 rounded-full flex items-center justify-center mx-auto mb-4 relative">
+                                    <div class="absolute inset-0 bg-white bg-opacity-20 rounded-full pulse-ring"></div>
+                                    <i class="fas fa-play text-3xl relative z-10"></i>
+                                </div>
+                                <h3 class="text-xl font-bold mb-2">Platformani Ko'ring</h3>
+                                <p class="text-cyan-100">2 daqiqalik demo video</p>
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Stats Cards -->
+
+                    <!-- Medical Stats Cards -->
                     <div class="grid grid-cols-3 gap-4 mt-6">
-                        <div class="text-center">
+                        <div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-4 text-center border border-white border-opacity-10">
+                            <div class="medical-icon w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-book-medical text-sm text-white"></i>
+                            </div>
                             <div class="text-2xl font-bold text-white">{{ counters.total_courses }}+</div>
-                            <div class="text-blue-200 text-sm">Kurslar</div>
+                            <div class="text-cyan-200 text-sm">Tibbiy Kurs</div>
                         </div>
-                        <div class="text-center">
+                        <div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-4 text-center border border-white border-opacity-10">
+                            <div class="medical-icon w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-users text-sm text-white"></i>
+                            </div>
                             <div class="text-2xl font-bold text-white">{{ counters.total_students }}+</div>
-                            <div class="text-blue-200 text-sm">Talabalar</div>
+                            <div class="text-cyan-200 text-sm">Talaba</div>
                         </div>
-                        <div class="text-center">
+                        <div class="bg-white bg-opacity-15 backdrop-blur-sm rounded-xl p-4 text-center border border-white border-opacity-10">
+                            <div class="medical-icon w-8 h-8 rounded-lg flex items-center justify-center mx-auto mb-2">
+                                <i class="fas fa-user-md text-sm text-white"></i>
+                            </div>
                             <div class="text-2xl font-bold text-white">{{ counters.total_teachers }}+</div>
-                            <div class="text-blue-200 text-sm">O'qituvchilar</div>
+                            <div class="text-cyan-200 text-sm">Shifokor</div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
-    <!-- Scroll Down Indicator -->
+
+    <!-- Scroll Indicator -->
     <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-        <i class="fas fa-chevron-down text-2xl"></i>
+        <div class="flex flex-col items-center">
+            <span class="text-sm text-cyan-200 mb-2">Pastga aylantiring</span>
+            <i class="fas fa-chevron-down text-2xl"></i>
+        </div>
     </div>
 </section>
 
-<!-- Featured Courses Section -->
-<section class="py-20 bg-gray-50">
+<!-- Featured Medical Courses -->
+<section class="py-20 bg-gradient-to-b from-gray-50 to-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Mashhur Kurslar
+            <div class="inline-flex items-center bg-teal-50 text-teal-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-stethoscope mr-2"></i>
+                Mashhur Tibbiy Kurslar
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Professional
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+                    Tibbiy Ta'lim
+                </span>
             </h2>
             <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Eng ko'p tanlanayotgan va yuqori baholangan kurslarimiz bilan tanishing
+                Tajribali shifokorlar va tibbiyot mutaxassislari tomonidan tayyorlangan yuqori sifatli kurslar
             </p>
         </div>
-        
+
         <!-- Courses Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12">
             {% for course in featured_courses %}
-                <div class="course-card bg-white rounded-xl shadow-lg overflow-hidden">
+                <div class="medical-card rounded-2xl shadow-lg overflow-hidden group">
                     <!-- Course Image -->
-                    <div class="relative h-48 bg-gradient-to-br from-blue-500 to-purple-600">
+                    <div class="relative h-52 bg-gradient-to-br from-teal-500 to-cyan-600">
                         {% if course.image %}
                             <img src="{{ course.image.url }}" alt="{{ course.title }}" class="w-full h-full object-cover">
+                            <div class="course-image-overlay absolute inset-0"></div>
+                        {% else %}
+                            <div class="w-full h-full flex items-center justify-center">
+                                <i class="fas fa-stethoscope text-6xl text-white opacity-50"></i>
+                            </div>
                         {% endif %}
-                        
-                        <!-- Level Badge -->
-                        <div class="absolute top-3 left-3">
-                            <span class="px-2 py-1 text-xs font-medium rounded-full 
-                                {% if course.level == 'beginner' %}bg-green-100 text-green-800
-                                {% elif course.level == 'intermediate' %}bg-yellow-100 text-yellow-800
-                                {% elif course.level == 'advanced' %}bg-red-100 text-red-800
-                                {% else %}bg-gray-100 text-gray-800{% endif %}">
-                                {% if course.level == 'beginner' %}Boshlang'ich
-                                {% elif course.level == 'intermediate' %}O'rta
-                                {% elif course.level == 'advanced' %}Yuqori
+
+                        <!-- Medical Level Badge -->
+                        <div class="absolute top-4 left-4">
+                            <span class="medical-badge px-3 py-1 text-xs font-bold rounded-full">
+                                {% if course.level == 'beginner' %}
+                                    <i class="fas fa-seedling mr-1"></i> Boshlang'ich
+                                {% elif course.level == 'intermediate' %}
+                                    <i class="fas fa-chart-line mr-1"></i> O'rta
+                                {% elif course.level == 'advanced' %}
+                                    <i class="fas fa-crown mr-1"></i> Yuqori
                                 {% else %}{{ course.level }}{% endif %}
                             </span>
                         </div>
-                        
+
                         <!-- Price Badge -->
-                        <div class="absolute top-3 right-3 bg-white text-gray-900 px-3 py-1 rounded-full font-semibold text-sm">
-                            {% if course.price == 0 %}Bepul
-                            {% else %}{{ course.price|floatformat:0 }} UZS{% endif %}
+                        <div class="absolute top-4 right-4 bg-white text-teal-700 px-3 py-1 rounded-full font-bold text-sm shadow-lg">
+                            {% if course.price == 0 %}
+                                <i class="fas fa-gift mr-1"></i>Bepul
+                            {% else %}
+                                {{ course.price|floatformat:0 }} UZS
+                            {% endif %}
+                        </div>
+
+                        <!-- Medical Specialty Icon -->
+                        <div class="absolute bottom-4 left-4">
+                            <div class="w-12 h-12 bg-white bg-opacity-20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                                <i class="fas fa-heartbeat text-white text-xl"></i>
+                            </div>
                         </div>
                     </div>
-                    
+
                     <!-- Course Content -->
                     <div class="p-6">
-                        <!-- Instructor -->
-                        <div class="flex items-center mb-3">
-                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                        <!-- Medical Instructor -->
+                        <div class="flex items-center mb-4">
+                            <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
                                 {{ course.instructor.first_name|first }}{{ course.instructor.last_name|first }}
                             </div>
                             <div class="ml-3">
-                                <p class="text-sm font-medium text-gray-900">{{ course.instructor.get_full_name }}</p>
-                                <p class="text-xs text-gray-500">O'qituvchi</p>
+                                <p class="text-sm font-bold text-gray-900">Dr. {{ course.instructor.get_full_name }}</p>
+                                <p class="text-xs text-teal-600 font-medium">Tibbiyot mutaxassisi</p>
+                            </div>
+                            <div class="ml-auto">
+                                <div class="flex text-yellow-400">
+                                    <i class="fas fa-star text-sm"></i>
+                                    <i class="fas fa-star text-sm"></i>
+                                    <i class="fas fa-star text-sm"></i>
+                                    <i class="fas fa-star text-sm"></i>
+                                    <i class="fas fa-star-half-alt text-sm"></i>
+                                </div>
                             </div>
                         </div>
-                        
+
                         <!-- Course Title -->
-                        <h3 class="text-xl font-bold text-gray-900 mb-2 line-clamp-2">
+                        <h3 class="text-xl font-bold text-gray-900 mb-3 line-clamp-2 group-hover:text-teal-700 transition-colors">
                             {{ course.title }}
                         </h3>
-                        
+
                         <!-- Course Description -->
-                        <p class="text-gray-600 mb-4 line-clamp-3">
-                            {{ course.description|truncatewords:20 }}
+                        <p class="text-gray-600 mb-4 line-clamp-3 text-sm leading-relaxed">
+                            {{ course.description|truncatewords:25 }}
                         </p>
-                        
-                        <!-- Course Meta -->
-                        <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
-                            <div class="flex items-center">
-                                <i class="fas fa-users mr-1"></i>
-                                <span>{{ course.enrollment_set.count }} talaba</span>
+
+                        <!-- Medical Course Meta -->
+                        <div class="flex items-center justify-between text-sm text-gray-500 mb-6">
+                            <div class="flex items-center bg-gray-50 px-3 py-1 rounded-lg">
+                                <i class="fas fa-users mr-1 text-teal-500"></i>
+                                <span class="font-medium">{{ course.enrollment_set.count }}</span>
                             </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-clock mr-1"></i>
-                                <span>{{ course.duration_weeks }} hafta</span>
+                            <div class="flex items-center bg-gray-50 px-3 py-1 rounded-lg">
+                                <i class="fas fa-clock mr-1 text-teal-500"></i>
+                                <span class="font-medium">{{ course.duration_weeks }} hafta</span>
                             </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-book mr-1"></i>
-                                <span>{{ course.lessons.count }} dars</span>
+                            <div class="flex items-center bg-gray-50 px-3 py-1 rounded-lg">
+                                <i class="fas fa-book-medical mr-1 text-teal-500"></i>
+                                <span class="font-medium">{{ course.lessons.count }} dars</span>
                             </div>
                         </div>
-                        
-                        <!-- Rating -->
-                        <div class="flex items-center mb-4">
-                            <div class="flex text-yellow-400 mr-2">
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star"></i>
-                                <i class="fas fa-star-half-alt"></i>
-                            </div>
-                            <span class="text-gray-600 text-sm">(4.5)</span>
-                        </div>
-                        
+
                         <!-- Action Button -->
-                        <a href="{% url 'courses:detail' course.id %}" 
-                           class="block w-full bg-blue-600 text-white text-center py-3 rounded-lg font-semibold hover:bg-blue-700 transition-colors">
-                            Batafsil Ko'rish
+                        <a href="{% url 'courses:detail' course.id %}"
+                           class="group block w-full bg-gradient-to-r from-teal-600 to-cyan-600 text-white text-center py-3 rounded-xl font-bold hover:from-teal-700 hover:to-cyan-700 transition-all duration-300 shadow-lg hover:shadow-xl">
+                            <span class="flex items-center justify-center">
+                                <i class="fas fa-stethoscope mr-2 group-hover:animate-pulse"></i>
+                                Kursni Boshlash
+                            </span>
                         </a>
                     </div>
                 </div>
             {% empty %}
-                <div class="col-span-full text-center py-12">
-                    <i class="fas fa-book text-6xl text-gray-300 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-600 mb-2">Hozircha kurslar mavjud emas</h3>
-                    <p class="text-gray-500">Tez orada yangi kurslar qo'shiladi</p>
+                <div class="col-span-full text-center py-16">
+                    <div class="w-24 h-24 bg-teal-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-stethoscope text-4xl text-teal-600"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-gray-600 mb-4">Tez orada yangi kurslar!</h3>
+                    <p class="text-gray-500 max-w-md mx-auto">Professional tibbiy kurslar tayyorlanmoqda. Bo'sh vaqtingizda qaytib ko'ring.</p>
                 </div>
             {% endfor %}
         </div>
-        
+
         <!-- View All Courses Button -->
         <div class="text-center">
-            <a href="{% url 'courses:list' %}" 
-               class="inline-flex items-center px-8 py-3 bg-white border border-gray-300 rounded-lg font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm">
-                <i class="fas fa-th-large mr-2"></i>
-                Barcha Kurslarni Ko'rish
+            <a href="{% url 'courses:list' %}"
+               class="group inline-flex items-center px-8 py-4 bg-white border-2 border-teal-200 rounded-xl font-bold text-teal-700 hover:bg-teal-50 hover:border-teal-300 transition-all duration-300 shadow-lg hover:shadow-xl">
+                <i class="fas fa-th-large mr-3 group-hover:scale-110 transition-transform"></i>
+                Barcha Tibbiy Kurslarni Ko'rish
             </a>
         </div>
     </div>
 </section>
 
-<!-- Features Section -->
+<!-- Medical Features Section -->
 <section class="py-20 bg-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            <div class="inline-flex items-center bg-cyan-50 text-cyan-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-heartbeat mr-2"></i>
                 Nima Uchun Bizni Tanlashadi?
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Tibbiy Ta'limda
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+                    Innovatsion Yondashuv
+                </span>
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Zamonaviy texnologiyalar va professional yondashuv bilan ta'lim olish
-            </p>
         </div>
-        
+
         <!-- Features Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             <!-- Feature 1 -->
-            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-graduation-cap text-2xl text-blue-600"></i>
+            <div class="medical-card text-center p-8 rounded-2xl group">
+                <div class="w-20 h-20 medical-icon rounded-2xl flex items-center justify-center mx-auto mb-6 feature-icon">
+                    <i class="fas fa-user-md text-3xl text-white"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Professional O'qituvchilar</h3>
-                <p class="text-gray-600">
-                    Soha mutaxassislari va tajribali shifokorlar tomonidan tayyorlangan kurslar
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Tajribali Shifokorlar</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    10+ yillik tajribaga ega shifokorlar va tibbiyot mutaxassislari tomonidan tayyorlangan kurslar
                 </p>
             </div>
-            
+
             <!-- Feature 2 -->
-            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-certificate text-2xl text-green-600"></i>
+            <div class="medical-card text-center p-8 rounded-2xl group">
+                <div class="w-20 h-20 medical-icon rounded-2xl flex items-center justify-center mx-auto mb-6 feature-icon">
+                    <i class="fas fa-certificate text-3xl text-white"></i>
                 </div>
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Rasmiy Sertifikat</h3>
-                <p class="text-gray-600">
-                    Kursni muvaffaqiyatli tugatganingizdan so'ng rasmiy sertifikat oling
+                <p class="text-gray-600 leading-relaxed">
+                    Kursni muvaffaqiyatli tugatgandan so'ng tibbiy soha bo'yicha rasmiy sertifikat oling
                 </p>
             </div>
-            
+
             <!-- Feature 3 -->
-            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-clock text-2xl text-purple-600"></i>
+            <div class="medical-card text-center p-8 rounded-2xl group">
+                <div class="w-20 h-20 medical-icon rounded-2xl flex items-center justify-center mx-auto mb-6 feature-icon">
+                    <i class="fas fa-microscope text-3xl text-white"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">24/7 Dostup</h3>
-                <p class="text-gray-600">
-                    Istalgan vaqtda, istalgan joydan darslarni ko'ring va o'rganing
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Amaliy Tajriba</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Nazariy bilimlar bilan birga amaliy ko'nikmalarni ham o'rganish imkoniyati
                 </p>
             </div>
-            
+
             <!-- Feature 4 -->
-            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-mobile-alt text-2xl text-yellow-600"></i>
+            <div class="medical-card text-center p-8 rounded-2xl group">
+                <div class="w-20 h-20 medical-icon rounded-2xl flex items-center justify-center mx-auto mb-6 feature-icon">
+                    <i class="fas fa-heartbeat text-3xl text-white"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Mobil Versiya</h3>
-                <p class="text-gray-600">
-                    Smartfon va planshetingizda ham qulay tarzda ta'lim oling
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Zamonaviy Usullar</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Eng so'nggi tibbiy texnologiyalar va davolash usullari bo'yicha bilimlar
                 </p>
             </div>
-            
+
             <!-- Feature 5 -->
-            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-comments text-2xl text-red-600"></i>
+            <div class="medical-card text-center p-8 rounded-2xl group">
+                <div class="w-20 h-20 medical-icon rounded-2xl flex items-center justify-center mx-auto mb-6 feature-icon">
+                    <i class="fas fa-comments text-3xl text-white"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Qo'llab-quvvatlash</h3>
-                <p class="text-gray-600">
-                    Savollaringiz bo'lsa, bizning jamoamiz doimo yordamga tayyor
+                <h3 class="text-xl font-bold text-gray-900 mb-4">24/7 Qo'llab-quvvatlash</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Tibbiy masalalar bo'yicha savollaringiz bo'lsa, mutaxassislarimiz doimo yordamga tayyor
                 </p>
             </div>
-            
+
             <!-- Feature 6 -->
-            <div class="feature-card text-center p-8 rounded-xl border border-gray-200 hover:shadow-lg transition-all duration-300">
-                <div class="w-16 h-16 bg-indigo-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                    <i class="fas fa-language text-2xl text-indigo-600"></i>
+            <div class="medical-card text-center p-8 rounded-2xl group">
+                <div class="w-20 h-20 medical-icon rounded-2xl flex items-center justify-center mx-auto mb-6 feature-icon">
+                    <i class="fas fa-mobile-alt text-3xl text-white"></i>
                 </div>
-                <h3 class="text-xl font-bold text-gray-900 mb-4">O'zbek Tilida</h3>
-                <p class="text-gray-600">
-                    Barcha darslar va materiallar ona tilingizda taqdim etiladi
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Mobil Ta'lim</h3>
+                <p class="text-gray-600 leading-relaxed">
+                    Smartfon va planshetingizda ham tibbiy bilimlarni o'rganish imkoniyati
                 </p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Statistics Section -->
-<section class="py-20 bg-gray-900 text-white">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<!-- Medical Statistics Section -->
+<section class="py-20 medical-gradient text-white relative overflow-hidden">
+    <!-- Medical Icons Background -->
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute top-10 left-10"><i class="fas fa-stethoscope text-6xl"></i></div>
+        <div class="absolute top-20 right-20"><i class="fas fa-heartbeat text-5xl"></i></div>
+        <div class="absolute bottom-20 left-20"><i class="fas fa-microscope text-4xl"></i></div>
+        <div class="absolute bottom-10 right-10"><i class="fas fa-user-md text-7xl"></i></div>
+    </div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl md:text-4xl font-bold mb-4">Tibbiy Ta'lim Statistikasi</h2>
+            <p class="text-cyan-200 text-lg">Professional tibbiy ta'lim sohasidagi yutuqlarimiz</p>
+        </div>
+
         <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-            <div class="stats-counter">
-                <div class="text-4xl md:text-5xl font-bold text-blue-400 mb-2" data-count="{{ counters.total_courses }}">0</div>
-                <div class="text-lg text-gray-300">Kurslar</div>
+            <div class="stats-counter bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 border border-white border-opacity-20">
+                <div class="medical-icon w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-book-medical text-2xl text-white"></i>
+                </div>
+                <div class="text-4xl md:text-5xl font-bold text-cyan-300 mb-2" data-count="{{ counters.total_courses }}">0</div>
+                <div class="text-lg text-cyan-100">Tibbiy Kurs</div>
             </div>
-            <div class="stats-counter">
-                <div class="text-4xl md:text-5xl font-bold text-green-400 mb-2" data-count="{{ counters.total_students }}">0</div>
-                <div class="text-lg text-gray-300">Talabalar</div>
+            <div class="stats-counter bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 border border-white border-opacity-20">
+                <div class="medical-icon w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-users text-2xl text-white"></i>
+                </div>
+                <div class="text-4xl md:text-5xl font-bold text-teal-300 mb-2" data-count="{{ counters.total_students }}">0</div>
+                <div class="text-lg text-teal-100">Tibbiyot Talabalari</div>
             </div>
-            <div class="stats-counter">
-                <div class="text-4xl md:text-5xl font-bold text-yellow-400 mb-2" data-count="{{ counters.total_teachers }}">0</div>
-                <div class="text-lg text-gray-300">O'qituvchilar</div>
+            <div class="stats-counter bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 border border-white border-opacity-20">
+                <div class="medical-icon w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-user-md text-2xl text-white"></i>
+                </div>
+                <div class="text-4xl md:text-5xl font-bold text-blue-300 mb-2" data-count="{{ counters.total_teachers }}">0</div>
+                <div class="text-lg text-blue-100">Mutaxassis Shifokor</div>
             </div>
-            <div class="stats-counter">
-                <div class="text-4xl md:text-5xl font-bold text-purple-400 mb-2" data-count="{{ counters.total_lessons }}">0</div>
-                <div class="text-lg text-gray-300">Darslar</div>
+            <div class="stats-counter bg-white bg-opacity-10 backdrop-blur-sm rounded-2xl p-6 border border-white border-opacity-20">
+                <div class="medical-icon w-16 h-16 rounded-xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-heartbeat text-2xl text-white"></i>
+                </div>
+                <div class="text-4xl md:text-5xl font-bold text-indigo-300 mb-2" data-count="{{ counters.total_lessons }}">0</div>
+                <div class="text-lg text-indigo-100">Tibbiy Dars</div>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Testimonials Section -->
+<!-- Medical Testimonials -->
 {% if testimonials %}
-<section class="py-20 bg-gray-50">
+<section class="py-20 bg-gradient-to-b from-gray-50 to-white">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Section Header -->
         <div class="text-center mb-16">
-            <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-                Talabalar Fikri
+            <div class="inline-flex items-center bg-teal-50 text-teal-700 px-4 py-2 rounded-full text-sm font-semibold mb-4">
+                <i class="fas fa-quote-left mr-2"></i>
+                Shifokorlar va Talabalar Fikri
+            </div>
+            <h2 class="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Bizning
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-cyan-600">
+                    Muvaffaqiyatlarimiz
+                </span>
             </h2>
-            <p class="text-xl text-gray-600 max-w-3xl mx-auto">
-                Bizning kurslarimizni tugatgan talabalar nima deyishadi
-            </p>
         </div>
-        
+
         <!-- Testimonials Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {% for testimonial in testimonials %}
-                <div class="testimonial-card bg-white rounded-xl p-8 shadow-lg">
-                    <!-- Rating -->
-                    <div class="flex items-center mb-4">
+                <div class="testimonial-card rounded-2xl p-8 shadow-lg">
+                    <!-- Medical Rating -->
+                    <div class="flex items-center mb-6">
                         {% for i in "12345" %}
                             {% if forloop.counter <= testimonial.rating %}
-                                <i class="fas fa-star text-yellow-400"></i>
+                                <i class="fas fa-star text-yellow-400 text-lg"></i>
                             {% else %}
-                                <i class="far fa-star text-gray-300"></i>
+                                <i class="far fa-star text-gray-300 text-lg"></i>
                             {% endif %}
                         {% endfor %}
+                        <span class="ml-2 text-sm text-gray-500 font-medium">{{ testimonial.rating }}/5</span>
                     </div>
-                    
+
                     <!-- Testimonial Content -->
-                    <blockquote class="text-gray-700 mb-6 leading-relaxed">
+                    <blockquote class="text-gray-700 mb-6 leading-relaxed text-lg">
                         "{{ testimonial.content }}"
                     </blockquote>
-                    
-                    <!-- Author -->
+
+                    <!-- Medical Professional Info -->
                     <div class="flex items-center">
                         {% if testimonial.avatar %}
-                            <img src="{{ testimonial.avatar.url }}" alt="{{ testimonial.name }}" class="w-12 h-12 rounded-full object-cover">
+                            <img src="{{ testimonial.avatar.url }}" alt="{{ testimonial.name }}" class="w-14 h-14 rounded-full object-cover border-2 border-teal-200">
                         {% else %}
-                            <div class="w-12 h-12 bg-gray-300 rounded-full flex items-center justify-center">
-                                <span class="text-white font-semibold">{{ testimonial.name|first }}</span>
+                            <div class="w-14 h-14 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-full flex items-center justify-center">
+                                <span class="text-white font-bold text-lg">{{ testimonial.name|first }}</span>
                             </div>
                         {% endif %}
-                        
+
                         <div class="ml-4">
-                            <div class="font-semibold text-gray-900">{{ testimonial.name }}</div>
+                            <div class="font-bold text-gray-900">{{ testimonial.name }}</div>
                             {% if testimonial.position %}
-                                <div class="text-sm text-gray-500">{{ testimonial.position }}</div>
+                                <div class="text-sm text-teal-600 font-medium">{{ testimonial.position }}</div>
+                            {% endif %}
+                            {% if testimonial.company %}
+                                <div class="text-xs text-gray-500">{{ testimonial.company }}</div>
                             {% endif %}
                         </div>
                     </div>
@@ -429,30 +604,63 @@
 </section>
 {% endif %}
 
-<!-- CTA Section -->
-<section class="py-20 bg-blue-600">
-    <div class="max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
-        <h2 class="text-3xl md:text-4xl font-bold text-white mb-6">
-            Bugun O'qishni Boshlang!
+<!-- Medical CTA Section -->
+<section class="py-20 medical-gradient relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-0 left-0 w-full h-full bg-gradient-to-r from-transparent via-white to-transparent animate-pulse"></div>
+    </div>
+
+    <div class="relative max-w-4xl mx-auto text-center px-4 sm:px-6 lg:px-8">
+        <div class="medical-icon w-20 h-20 rounded-2xl flex items-center justify-center mx-auto mb-8">
+            <i class="fas fa-stethoscope text-3xl text-white"></i>
+        </div>
+
+        <h2 class="text-4xl md:text-5xl font-bold text-white mb-6">
+            Tibbiy Karyerangizni
+            <span class="text-cyan-300">Bugun Boshlang!</span>
         </h2>
-        <p class="text-xl text-blue-100 mb-8">
-            Professional tibbiy ta'lim olish va karyerangizni rivojlantirish uchun bizga qo'shiling
+        <p class="text-xl text-blue-100 mb-10 leading-relaxed max-w-2xl mx-auto">
+            Professional tibbiy ta'lim oling, sertifikat qo'lga kiriting va tibbiyot sohasidagi karyerangizni yangi bosqichga olib chiqing
         </p>
-        
-        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+
+        <div class="flex flex-col sm:flex-row gap-6 justify-center">
             {% if not user.is_authenticated %}
-                <a href="{% url 'accounts:register' %}" 
-                   class="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold text-lg hover:bg-gray-100 transition-colors shadow-lg">
-                    <i class="fas fa-user-plus mr-2"></i>
-                    Bepul Ro'yxatdan O'tish
+                <a href="{% url 'accounts:register' %}"
+                   class="group bg-white text-teal-700 px-10 py-4 rounded-xl font-bold text-lg hover:bg-gray-50 transition-all duration-300 shadow-2xl">
+                    <span class="flex items-center justify-center">
+                        <i class="fas fa-user-plus mr-3 group-hover:animate-pulse"></i>
+                        Bepul Ro'yxatdan O'tish
+                    </span>
                 </a>
             {% endif %}
-            
-            <a href="{% url 'courses:list' %}" 
-               class="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-white hover:text-blue-600 transition-colors">
-                <i class="fas fa-search mr-2"></i>
-                Kurslarni Ko'rish
+
+            <a href="{% url 'courses:list' %}"
+               class="group border-2 border-white text-white px-10 py-4 rounded-xl font-bold text-lg hover:bg-white hover:text-teal-700 transition-all duration-300">
+                <span class="flex items-center justify-center">
+                    <i class="fas fa-stethoscope mr-3 group-hover:animate-pulse"></i>
+                    Tibbiy Kurslarni Ko'rish
+                </span>
             </a>
+        </div>
+
+        <!-- Medical Trust Badges -->
+        <div class="mt-12 grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div class="text-cyan-200">
+                <i class="fas fa-shield-alt text-2xl mb-2"></i>
+                <div class="text-sm font-medium">Xavfsiz Ta'lim</div>
+            </div>
+            <div class="text-teal-200">
+                <i class="fas fa-award text-2xl mb-2"></i>
+                <div class="text-sm font-medium">Sifat Kafolati</div>
+            </div>
+            <div class="text-blue-200">
+                <i class="fas fa-clock text-2xl mb-2"></i>
+                <div class="text-sm font-medium">24/7 Dostup</div>
+            </div>
+            <div class="text-indigo-200">
+                <i class="fas fa-certificate text-2xl mb-2"></i>
+                <div class="text-sm font-medium">Rasmiy Sertifikat</div>
+            </div>
         </div>
     </div>
 </section>
@@ -460,40 +668,71 @@
 
 {% block extra_js %}
 <script>
-// Animated counter for statistics
+// Medical-themed counter animation
 function animateCounters() {
     const counters = document.querySelectorAll('.stats-counter [data-count]');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const counter = entry.target;
                 const target = parseInt(counter.getAttribute('data-count'));
                 let current = 0;
-                const increment = target / 50;
-                
+                const increment = target / 60; // Slower animation for medical feel
+
                 const updateCounter = () => {
                     if (current < target) {
                         current += increment;
                         counter.textContent = Math.floor(current);
                         requestAnimationFrame(updateCounter);
                     } else {
-                        counter.textContent = target;
+                        counter.textContent = target + '+';
                     }
                 };
-                
+
+                // Add medical pulse effect
+                counter.classList.add('animate-pulse');
+                setTimeout(() => counter.classList.remove('animate-pulse'), 2000);
+
                 updateCounter();
                 observer.unobserve(counter);
             }
         });
     });
-    
+
     counters.forEach(counter => observer.observe(counter));
 }
 
-// Initialize animations when page loads
+// Medical card hover effects
+function initMedicalEffects() {
+    const medicalCards = document.querySelectorAll('.medical-card');
+
+    medicalCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-8px) scale(1.02)';
+        });
+
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0) scale(1)';
+        });
+    });
+}
+
+// Initialize medical-themed features
 document.addEventListener('DOMContentLoaded', function() {
     animateCounters();
+    initMedicalEffects();
+
+    // Add subtle heartbeat animation to medical icons
+    const medicalIcons = document.querySelectorAll('.fas.fa-heartbeat');
+    medicalIcons.forEach(icon => {
+        setInterval(() => {
+            icon.style.transform = 'scale(1.1)';
+            setTimeout(() => {
+                icon.style.transform = 'scale(1)';
+            }, 150);
+        }, 2000);
+    });
 });
 </script>
 {% endblock %}

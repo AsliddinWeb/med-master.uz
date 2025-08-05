@@ -1,362 +1,383 @@
 {% load static %}
 
-<footer class="bg-gray-900 text-white">
+<!-- Medical Footer -->
+<footer class="bg-slate-900 text-white relative overflow-hidden">
+    <!-- Medical Pattern Background -->
+    <div class="absolute inset-0 opacity-5">
+        <div class="absolute top-10 left-10"><i class="fas fa-stethoscope text-4xl"></i></div>
+        <div class="absolute top-20 right-20"><i class="fas fa-heartbeat text-3xl"></i></div>
+        <div class="absolute bottom-20 left-20"><i class="fas fa-microscope text-2xl"></i></div>
+        <div class="absolute bottom-10 right-10"><i class="fas fa-user-md text-5xl"></i></div>
+    </div>
+
     <!-- Newsletter Section -->
     {% if not footer_settings or footer_settings.newsletter_active %}
-    <div class="bg-gray-800 py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h3 class="text-2xl font-bold mb-2">
-                    {% if footer_settings.newsletter_title %}
-                        {{ footer_settings.newsletter_title }}
-                    {% else %}
-                        Yangiliklardan xabardor bo'ling
-                    {% endif %}
-                </h3>
-                <p class="text-gray-300 mb-6 max-w-2xl mx-auto">
-                    {% if footer_settings.newsletter_description %}
-                        {{ footer_settings.newsletter_description }}
-                    {% else %}
-                        Eng so'nggi kurslar, yangiliklar va maxsus takliflardan birinchi bo'lib xabardor bo'ling
-                    {% endif %}
-                </p>
-
-                <form id="newsletter-form" class="max-w-md mx-auto flex">
-                    {% csrf_token %}
-                    <input type="email" name="email" required
-                           placeholder="Email manzilingizni kiriting"
-                           class="flex-1 px-4 py-3 bg-white text-gray-900 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    <button type="submit"
-                            class="bg-blue-600 hover:bg-blue-700 px-6 py-3 rounded-r-lg font-medium transition-colors duration-200">
-                        <i class="fas fa-paper-plane mr-2"></i>
-                        Obuna bo'lish
-                    </button>
-                </form>
-
-                <p class="text-xs text-gray-400 mt-3">
-                    Sizning email manzilingiz xavfsiz va spam jo'natilmaydi
-                </p>
+    <div class="bg-gradient-to-r from-teal-600 to-cyan-600 py-16 relative">
+        <div class="absolute inset-0 bg-white opacity-5"></div>
+        <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <div class="w-16 h-16 bg-white bg-opacity-20 rounded-2xl flex items-center justify-center mx-auto mb-6">
+                <i class="fas fa-envelope-medical text-2xl text-white"></i>
             </div>
+
+            <h3 class="text-3xl font-bold mb-4">
+                {% if footer_settings.newsletter_title %}
+                    {{ footer_settings.newsletter_title }}
+                {% else %}
+                    Tibbiy Yangiliklardan Xabardor Bo'ling
+                {% endif %}
+            </h3>
+            <p class="text-cyan-100 mb-8 text-lg max-w-2xl mx-auto">
+                {% if footer_settings.newsletter_description %}
+                    {{ footer_settings.newsletter_description }}
+                {% else %}
+                    Eng so'nggi tibbiy kurslar, yangiliklar va professional takliflardan birinchi bo'lib xabardor bo'ling
+                {% endif %}
+            </p>
+
+            <form id="newsletter-form" class="max-w-lg mx-auto">
+                {% csrf_token %}
+                <div class="flex bg-white rounded-xl p-2 shadow-2xl">
+                    <input type="email" name="email" required
+                           placeholder="Tibbiy yangiliklarni qabul qilish uchun email"
+                           class="flex-1 px-4 py-3 bg-transparent text-gray-800 placeholder-gray-500 focus:outline-none">
+                    <button type="submit"
+                            class="bg-teal-600 hover:bg-teal-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-300 flex items-center">
+                        <i class="fas fa-stethoscope mr-2"></i>
+                        Obuna Bo'lish
+                    </button>
+                </div>
+            </form>
+
+            <p class="text-xs text-cyan-200 mt-4 flex items-center justify-center">
+                <i class="fas fa-shield-alt mr-2"></i>
+                Sizning email manzilingiz xavfsiz va spam jo'natilmaydi
+            </p>
         </div>
     </div>
     {% endif %}
 
     <!-- Main Footer Content -->
-    <div class="py-12">
+    <div class="relative py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
 
-                <!-- Company Info -->
-                <div class="lg:col-span-1">
-                    <!-- Logo -->
-                    <div class="mb-6">
+                <!-- Medical Brand Section -->
+                <div class="lg:col-span-5">
+                    <!-- Medical Logo -->
+                    <div class="flex items-center mb-6">
                         {% if footer_settings.footer_logo %}
-                            <img src="{{ footer_settings.footer_logo.url }}" alt="Logo" class="h-12 w-auto">
+                            <img src="{{ footer_settings.footer_logo.url }}" alt="Medical Logo" class="h-14 w-auto">
                         {% elif site_settings.site_logo %}
-                            <img src="{{ site_settings.site_logo.url }}" alt="Logo" class="h-12 w-auto">
+                            <img src="{{ site_settings.site_logo.url }}" alt="Medical Logo" class="h-14 w-auto">
                         {% else %}
                             <div class="flex items-center">
-                                <div class="bg-blue-600 text-white rounded-lg p-2 mr-3">
-                                    <i class="fas fa-graduation-cap text-xl"></i>
+                                <div class="bg-gradient-to-br from-teal-500 to-cyan-600 text-white rounded-xl p-3 mr-4 shadow-lg">
+                                    <i class="fas fa-user-md text-2xl"></i>
                                 </div>
-                                <span class="text-xl font-bold">
-                                    {% if site_settings.site_name %}{{ site_settings.site_name }}{% else %}Tibbiy Ta'lim Platformasi{% endif %}
-                                </span>
+                                <div>
+                                    <h3 class="text-2xl font-bold text-white">
+                                        {% if site_settings.site_name %}{{ site_settings.site_name }}{% else %}Tibbiy Ta'lim{% endif %}
+                                    </h3>
+                                    <p class="text-teal-300 text-sm font-medium">Professional Platform</p>
+                                </div>
                             </div>
                         {% endif %}
                     </div>
 
-                    <!-- Description -->
-                    <p class="text-gray-300 mb-6 leading-relaxed">
+                    <!-- Medical Description -->
+                    <p class="text-gray-300 mb-8 leading-relaxed text-lg">
                         {% if footer_settings.footer_description %}
                             {{ footer_settings.footer_description }}
                         {% elif site_settings.site_description %}
                             {{ site_settings.site_description }}
                         {% else %}
-                            Professional tibbiy ta'lim onlayn platformasi. Eng yaxshi o'qituvchilar bilan zamonaviy tibbiy bilimlarni o'rganing.
+                            Professional tibbiy ta'lim platformasi. Tajribali shifokorlar va mutaxassislar bilan zamonaviy tibbiy bilimlarni o'rganing, sertifikat oling.
                         {% endif %}
                     </p>
 
-                    <!-- Social Links -->
+                    <!-- Medical Trust Indicators -->
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <div class="flex items-center text-teal-300">
+                            <i class="fas fa-certificate text-xl mr-3"></i>
+                            <span class="font-medium">Rasmiy Sertifikat</span>
+                        </div>
+                        <div class="flex items-center text-cyan-300">
+                            <i class="fas fa-shield-alt text-xl mr-3"></i>
+                            <span class="font-medium">Xavfsiz Ta'lim</span>
+                        </div>
+                        <div class="flex items-center text-blue-300">
+                            <i class="fas fa-clock text-xl mr-3"></i>
+                            <span class="font-medium">24/7 Dostup</span>
+                        </div>
+                        <div class="flex items-center text-indigo-300">
+                            <i class="fas fa-award text-xl mr-3"></i>
+                            <span class="font-medium">Sifat Kafolati</span>
+                        </div>
+                    </div>
+
+                    <!-- Medical Social Links -->
                     {% if social_networks and social_networks.show_in_footer %}
                     <div class="flex space-x-4">
                         {% if social_networks.facebook_url %}
                             <a href="{{ social_networks.facebook_url }}" target="_blank"
-                               class="w-10 h-10 bg-gray-800 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors duration-200">
-                                <i class="fab fa-facebook-f"></i>
+                               class="w-12 h-12 bg-slate-800 hover:bg-blue-600 rounded-xl flex items-center justify-center transition-all duration-300 group border border-slate-700 hover:border-blue-500">
+                                <i class="fab fa-facebook-f text-lg group-hover:scale-110 transition-transform"></i>
                             </a>
                         {% endif %}
 
                         {% if social_networks.instagram_url %}
                             <a href="{{ social_networks.instagram_url }}" target="_blank"
-                               class="w-10 h-10 bg-gray-800 hover:bg-pink-600 rounded-full flex items-center justify-center transition-colors duration-200">
-                                <i class="fab fa-instagram"></i>
+                               class="w-12 h-12 bg-slate-800 hover:bg-pink-600 rounded-xl flex items-center justify-center transition-all duration-300 group border border-slate-700 hover:border-pink-500">
+                                <i class="fab fa-instagram text-lg group-hover:scale-110 transition-transform"></i>
                             </a>
                         {% endif %}
 
                         {% if social_networks.telegram_url %}
                             <a href="{{ social_networks.telegram_url }}" target="_blank"
-                               class="w-10 h-10 bg-gray-800 hover:bg-blue-500 rounded-full flex items-center justify-center transition-colors duration-200">
-                                <i class="fab fa-telegram"></i>
+                               class="w-12 h-12 bg-slate-800 hover:bg-blue-500 rounded-xl flex items-center justify-center transition-all duration-300 group border border-slate-700 hover:border-blue-400">
+                                <i class="fab fa-telegram text-lg group-hover:scale-110 transition-transform"></i>
                             </a>
                         {% endif %}
 
                         {% if social_networks.youtube_url %}
                             <a href="{{ social_networks.youtube_url }}" target="_blank"
-                               class="w-10 h-10 bg-gray-800 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors duration-200">
-                                <i class="fab fa-youtube"></i>
+                               class="w-12 h-12 bg-slate-800 hover:bg-red-600 rounded-xl flex items-center justify-center transition-all duration-300 group border border-slate-700 hover:border-red-500">
+                                <i class="fab fa-youtube text-lg group-hover:scale-110 transition-transform"></i>
                             </a>
                         {% endif %}
 
                         {% if social_networks.linkedin_url %}
                             <a href="{{ social_networks.linkedin_url }}" target="_blank"
-                               class="w-10 h-10 bg-gray-800 hover:bg-blue-700 rounded-full flex items-center justify-center transition-colors duration-200">
-                                <i class="fab fa-linkedin-in"></i>
-                            </a>
-                        {% endif %}
-
-                        {% if social_networks.twitter_url %}
-                            <a href="{{ social_networks.twitter_url }}" target="_blank"
-                               class="w-10 h-10 bg-gray-800 hover:bg-blue-400 rounded-full flex items-center justify-center transition-colors duration-200">
-                                <i class="fab fa-twitter"></i>
-                            </a>
-                        {% endif %}
-
-                        {% if social_networks.tiktok_url %}
-                            <a href="{{ social_networks.tiktok_url }}" target="_blank"
-                               class="w-10 h-10 bg-gray-800 hover:bg-gray-700 rounded-full flex items-center justify-center transition-colors duration-200">
-                                <i class="fab fa-tiktok"></i>
+                               class="w-12 h-12 bg-slate-800 hover:bg-blue-700 rounded-xl flex items-center justify-center transition-all duration-300 group border border-slate-700 hover:border-blue-600">
+                                <i class="fab fa-linkedin-in text-lg group-hover:scale-110 transition-transform"></i>
                             </a>
                         {% endif %}
                     </div>
                     {% endif %}
                 </div>
 
-                <!-- Courses Column -->
-                {% if not footer_settings or footer_settings.show_courses_column %}
-                <div>
-                    <h3 class="text-lg font-semibold mb-6">Kurslar</h3>
-                    <ul class="space-y-3">
-                        {% if footer_links.courses %}
-                            {% for link in footer_links.courses %}
+                <!-- Medical Navigation Links -->
+                <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-3 gap-8">
+
+                    <!-- Medical Courses -->
+                    {% if not footer_settings or footer_settings.show_courses_column %}
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-6 flex items-center">
+                            <i class="fas fa-stethoscope text-teal-400 mr-2"></i>
+                            Tibbiy Kurslar
+                        </h4>
+                        <ul class="space-y-3">
+                            {% if footer_links.courses %}
+                                {% for link in footer_links.courses %}
+                                    <li>
+                                        <a href="{{ link.url }}"
+                                           class="text-gray-300 hover:text-teal-400 transition-colors duration-200 flex items-center group"
+                                           {% if link.open_new_tab %}target="_blank"{% endif %}>
+                                            <i class="fas fa-chevron-right mr-2 text-teal-500 group-hover:translate-x-1 transition-transform"></i>
+                                            {{ link.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
                                 <li>
-                                    <a href="{{ link.url }}"
-                                       class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center"
-                                       {% if link.open_new_tab %}target="_blank"{% endif %}>
-                                        <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                        {{ link.title }}
+                                    <a href="{% url 'courses:list' %}" class="text-gray-300 hover:text-teal-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-teal-500 group-hover:translate-x-1 transition-transform"></i>
+                                        Barcha Tibbiy Kurslar
                                     </a>
                                 </li>
-                            {% endfor %}
-                        {% else %}
-                            <li>
-                                <a href="{% url 'courses:list' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    Barcha kurslar
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    Boshlang'ich
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    O'rta daraja
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    Yuqori daraja
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                <!-- Company Column -->
-                {% if not footer_settings or footer_settings.show_company_column %}
-                <div>
-                    <h3 class="text-lg font-semibold mb-6">Kompaniya</h3>
-                    <ul class="space-y-3">
-                        {% if footer_links.company %}
-                            {% for link in footer_links.company %}
                                 <li>
-                                    <a href="{{ link.url }}"
-                                       class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center"
-                                       {% if link.open_new_tab %}target="_blank"{% endif %}>
-                                        <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                        {{ link.title }}
+                                    <a href="{% url 'courses:category' 'beginner' %}" class="text-gray-300 hover:text-teal-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-teal-500 group-hover:translate-x-1 transition-transform"></i>
+                                        Boshlang'ich Daraja
                                     </a>
                                 </li>
-                            {% endfor %}
-                        {% else %}
-                            <li>
-                                <a href="{% url 'core:about' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    Biz haqimizda
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'core:contact' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    Aloqa
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    O'qituvchi bo'lish
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                <!-- Support Column -->
-                {% if not footer_settings or footer_settings.show_support_column %}
-                <div>
-                    <h3 class="text-lg font-semibold mb-6">Yordam</h3>
-                    <ul class="space-y-3">
-                        {% if footer_links.support %}
-                            {% for link in footer_links.support %}
                                 <li>
-                                    <a href="{{ link.url }}"
-                                       class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center"
-                                       {% if link.open_new_tab %}target="_blank"{% endif %}>
-                                        <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                        {{ link.title }}
+                                    <a href="{% url 'courses:category' 'intermediate' %}" class="text-gray-300 hover:text-teal-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-teal-500 group-hover:translate-x-1 transition-transform"></i>
+                                        O'rta Daraja
                                     </a>
                                 </li>
-                            {% endfor %}
-                        {% else %}
-                            <li>
-                                <a href="{% url 'core:faq' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    FAQ
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'core:privacy_policy' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    Maxfiylik siyosati
-                                </a>
-                            </li>
-                            <li>
-                                <a href="{% url 'core:terms_of_service' %}" class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center">
-                                    <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                    Foydalanish shartlari
-                                </a>
-                            </li>
-                        {% endif %}
-                    </ul>
-                </div>
-                {% endif %}
-
-                <!-- Contact Column -->
-                {% if not footer_settings or footer_settings.show_contact_column %}
-                <div>
-                    <h3 class="text-lg font-semibold mb-6">Aloqa</h3>
-                    <ul class="space-y-4">
-                        <!-- Custom Contact Links -->
-                        {% if footer_links.contact %}
-                            {% for link in footer_links.contact %}
                                 <li>
-                                    <a href="{{ link.url }}"
-                                       class="text-gray-300 hover:text-white transition-colors duration-200 flex items-center"
-                                       {% if link.open_new_tab %}target="_blank"{% endif %}>
-                                        <i class="fas fa-angle-right mr-2 text-blue-500"></i>
-                                        {{ link.title }}
+                                    <a href="{% url 'courses:category' 'advanced' %}" class="text-gray-300 hover:text-teal-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-teal-500 group-hover:translate-x-1 transition-transform"></i>
+                                        Yuqori Daraja
                                     </a>
                                 </li>
-                            {% endfor %}
-                        {% endif %}
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
 
-                        <!-- Default Contact Info -->
-                        {% if site_settings.phone %}
-                            <li class="flex items-start">
-                                <i class="fas fa-phone text-blue-500 mt-1 mr-3"></i>
-                                <div>
-                                    <p class="text-gray-300">Telefon:</p>
-                                    <a href="tel:{{ site_settings.phone }}" class="text-white hover:text-blue-400 transition-colors">
-                                        {{ site_settings.phone }}
+                    <!-- Medical Platform -->
+                    {% if not footer_settings or footer_settings.show_company_column %}
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-6 flex items-center">
+                            <i class="fas fa-hospital text-cyan-400 mr-2"></i>
+                            Platforma
+                        </h4>
+                        <ul class="space-y-3">
+                            {% if footer_links.company %}
+                                {% for link in footer_links.company %}
+                                    <li>
+                                        <a href="{{ link.url }}"
+                                           class="text-gray-300 hover:text-cyan-400 transition-colors duration-200 flex items-center group"
+                                           {% if link.open_new_tab %}target="_blank"{% endif %}>
+                                            <i class="fas fa-chevron-right mr-2 text-cyan-500 group-hover:translate-x-1 transition-transform"></i>
+                                            {{ link.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li>
+                                    <a href="{% url 'core:about' %}" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-cyan-500 group-hover:translate-x-1 transition-transform"></i>
+                                        Biz Haqimizda
                                     </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'core:contact' %}" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-cyan-500 group-hover:translate-x-1 transition-transform"></i>
+                                        Aloqa
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'accounts:become_teacher' %}" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-cyan-500 group-hover:translate-x-1 transition-transform"></i>
+                                        Shifokor Bo'ling
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    {% endif %}
+
+                    <!-- Medical Support & Contact -->
+                    <div>
+                        <h4 class="text-lg font-bold text-white mb-6 flex items-center">
+                            <i class="fas fa-headset text-blue-400 mr-2"></i>
+                            Yordam va Aloqa
+                        </h4>
+
+                        <!-- Contact Info -->
+                        <div class="space-y-4 mb-6">
+                            {% if site_settings.phone %}
+                                <div class="flex items-center text-gray-300">
+                                    <div class="w-10 h-10 bg-teal-600 bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
+                                        <i class="fas fa-phone text-teal-400"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">Telefon</p>
+                                        <a href="tel:{{ site_settings.phone }}" class="text-white hover:text-teal-400 transition-colors font-medium">
+                                            {{ site_settings.phone }}
+                                        </a>
+                                    </div>
                                 </div>
-                            </li>
-                        {% endif %}
+                            {% endif %}
 
-                        {% if site_settings.email %}
-                            <li class="flex items-start">
-                                <i class="fas fa-envelope text-blue-500 mt-1 mr-3"></i>
-                                <div>
-                                    <p class="text-gray-300">Email:</p>
-                                    <a href="mailto:{{ site_settings.email }}" class="text-white hover:text-blue-400 transition-colors break-all">
-                                        {{ site_settings.email }}
-                                    </a>
+                            {% if site_settings.email %}
+                                <div class="flex items-center text-gray-300">
+                                    <div class="w-10 h-10 bg-cyan-600 bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
+                                        <i class="fas fa-envelope text-cyan-400"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs text-gray-400">Email</p>
+                                        <a href="mailto:{{ site_settings.email }}" class="text-white hover:text-cyan-400 transition-colors font-medium break-all">
+                                            {{ site_settings.email }}
+                                        </a>
+                                    </div>
                                 </div>
-                            </li>
-                        {% endif %}
+                            {% endif %}
 
-                        {% if site_settings.address %}
-                            <li class="flex items-start">
-                                <i class="fas fa-map-marker-alt text-blue-500 mt-1 mr-3"></i>
-                                <div>
-                                    <p class="text-gray-300">Manzil:</p>
-                                    <p class="text-white">{{ site_settings.address }}</p>
+                            <div class="flex items-center text-gray-300">
+                                <div class="w-10 h-10 bg-blue-600 bg-opacity-20 rounded-lg flex items-center justify-center mr-3">
+                                    <i class="fas fa-clock text-blue-400"></i>
                                 </div>
-                            </li>
-                        {% endif %}
-
-                        <!-- Working Hours -->
-                        <li class="flex items-start">
-                            <i class="fas fa-clock text-blue-500 mt-1 mr-3"></i>
-                            <div>
-                                <p class="text-gray-300">Ish vaqti:</p>
-                                <p class="text-white">24/7 onlayn</p>
+                                <div>
+                                    <p class="text-xs text-gray-400">Ish Vaqti</p>
+                                    <p class="text-white font-medium">24/7 Onlayn Dostup</p>
+                                </div>
                             </div>
-                        </li>
-                    </ul>
+                        </div>
+
+                        <!-- Support Links -->
+                        <ul class="space-y-3">
+                            {% if footer_links.support %}
+                                {% for link in footer_links.support %}
+                                    <li>
+                                        <a href="{{ link.url }}"
+                                           class="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group"
+                                           {% if link.open_new_tab %}target="_blank"{% endif %}>
+                                            <i class="fas fa-chevron-right mr-2 text-blue-500 group-hover:translate-x-1 transition-transform"></i>
+                                            {{ link.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li>
+                                    <a href="{% url 'core:faq' %}" class="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-blue-500 group-hover:translate-x-1 transition-transform"></i>
+                                        Tez-tez So'raladigan Savollar
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{% url 'core:privacy_policy' %}" class="text-gray-300 hover:text-blue-400 transition-colors duration-200 flex items-center group">
+                                        <i class="fas fa-chevron-right mr-2 text-blue-500 group-hover:translate-x-1 transition-transform"></i>
+                                        Maxfiylik Siyosati
+                                    </a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    </div>
                 </div>
-                {% endif %}
             </div>
         </div>
     </div>
 
-    <!-- Statistics Section -->
-    <div class="bg-gray-800 py-8">
+    <!-- Medical Statistics Section -->
+    <div class="bg-slate-800 py-12 border-t border-slate-700">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-                <div>
-                    <div class="text-3xl font-bold text-blue-400 mb-2">{% if counters.total_courses %}{{ counters.total_courses }}{% else %}50{% endif %}+</div>
-                    <div class="text-gray-300">Kurslar</div>
+                <div class="group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-book-medical text-2xl text-white"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-teal-400 mb-2">{{ counters.total_courses|default:"50" }}+</div>
+                    <div class="text-gray-300 font-medium">Tibbiy Kurs</div>
                 </div>
-                <div>
-                    <div class="text-3xl font-bold text-green-400 mb-2">{% if counters.total_students %}{{ counters.total_students }}{% else %}1000{% endif %}+</div>
-                    <div class="text-gray-300">Talabalar</div>
+                <div class="group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-users text-2xl text-white"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-cyan-400 mb-2">{{ counters.total_students|default:"1000" }}+</div>
+                    <div class="text-gray-300 font-medium">Tibbiyot Talabalari</div>
                 </div>
-                <div>
-                    <div class="text-3xl font-bold text-yellow-400 mb-2">{% if counters.total_teachers %}{{ counters.total_teachers }}{% else %}25{% endif %}+</div>
-                    <div class="text-gray-300">O'qituvchilar</div>
+                <div class="group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-user-md text-2xl text-white"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-blue-400 mb-2">{{ counters.total_teachers|default:"25" }}+</div>
+                    <div class="text-gray-300 font-medium">Mutaxassis Shifokor</div>
                 </div>
-                <div>
-                    <div class="text-3xl font-bold text-purple-400 mb-2">{% if counters.total_lessons %}{{ counters.total_lessons }}{% else %}500{% endif %}+</div>
-                    <div class="text-gray-300">Darslar</div>
+                <div class="group">
+                    <div class="w-16 h-16 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300">
+                        <i class="fas fa-heartbeat text-2xl text-white"></i>
+                    </div>
+                    <div class="text-3xl font-bold text-indigo-400 mb-2">{{ counters.total_lessons|default:"500" }}+</div>
+                    <div class="text-gray-300 font-medium">Tibbiy Dars</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- Bottom Bar -->
-    <div class="bg-gray-950 py-6">
+    <!-- Medical Bottom Bar -->
+    <div class="bg-slate-950 py-6 border-t border-slate-800">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="md:flex md:items-center md:justify-between">
-                <!-- Copyright -->
-                <div class="text-center md:text-left">
+                <!-- Medical Copyright -->
+                <div class="text-center md:text-left flex items-center">
+                    <div class="w-8 h-8 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fas fa-copyright text-white text-sm"></i>
+                    </div>
                     <p class="text-gray-400 text-sm">
                         {% if footer_settings.copyright_text %}
                             {{ footer_settings.copyright_text }}
@@ -366,31 +387,38 @@
                     </p>
                 </div>
 
-                <!-- Bottom Links -->
+                <!-- Medical Bottom Links -->
                 <div class="mt-4 md:mt-0">
-                    <div class="flex flex-wrap justify-center md:justify-end space-x-6 text-sm">
-                        <a href="{% url 'core:privacy_policy' %}" class="text-gray-400 hover:text-white transition-colors">
+                    <div class="flex flex-wrap justify-center md:justify-end items-center space-x-6 text-sm">
+                        <a href="{% url 'core:privacy_policy' %}" class="text-gray-400 hover:text-teal-400 transition-colors flex items-center">
+                            <i class="fas fa-shield-alt mr-1"></i>
                             Maxfiylik
                         </a>
-                        <a href="{% url 'core:terms_of_service' %}" class="text-gray-400 hover:text-white transition-colors">
+                        <a href="{% url 'core:terms_of_service' %}" class="text-gray-400 hover:text-cyan-400 transition-colors flex items-center">
+                            <i class="fas fa-file-contract mr-1"></i>
                             Shartlar
                         </a>
-                        <a href="{% url 'core:contact' %}" class="text-gray-400 hover:text-white transition-colors">
+                        <a href="{% url 'core:contact' %}" class="text-gray-400 hover:text-blue-400 transition-colors flex items-center">
+                            <i class="fas fa-envelope mr-1"></i>
                             Aloqa
                         </a>
-                        <span class="text-gray-400">
+                        <div class="flex items-center text-gray-500">
+                            <i class="fas fa-calendar-alt mr-1"></i>
                             {% now "Y" %}
-                        </span>
+                        </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Built with love -->
-            <div class="text-center mt-4 pt-4 border-t border-gray-800">
-                <p class="text-gray-500 text-xs">
-                    ❤️ bilan yaratildi - Professional ta'lim uchun
-                </p>
+            <!-- Medical Trust Badge -->
+            <div class="text-center mt-6 pt-6 border-t border-slate-800">
+                <div class="flex items-center justify-center space-x-2 text-xs text-gray-500">
+                    <i class="fas fa-heartbeat text-red-400"></i>
+                    <span>Professional tibbiy ta'lim uchun ishonch bilan yaratildi</span>
+                    <i class="fas fa-stethoscope text-teal-400"></i>
+                </div>
             </div>
         </div>
     </div>
 </footer>
+
