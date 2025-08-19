@@ -3,6 +3,7 @@ from decouple import config
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
+# ALLOWED_HOSTS = ['*']
 ALLOWED_HOSTS = ['*']
 
 SECRET_KEY = config('SECRET_KEY', default='django-insecure-fallback-key')
