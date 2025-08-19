@@ -33,11 +33,12 @@ class UserRegistrationForm(UserCreationForm):
     )
 
     phone = forms.CharField(
-        max_length=15,
+        max_length=15,  # +998XXXXXXXXX = 13 characters max
         required=False,
         widget=forms.TextInput(attrs={
             'class': 'w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent',
-            'placeholder': '+998 XX XXX XX XX'
+            'placeholder': '+998XXXXXXXXX',
+            'maxlength': '13'  # Enforce max length in HTML
         })
     )
 
@@ -82,17 +83,42 @@ class UserRegistrationForm(UserCreationForm):
 
     def clean_phone(self):
         phone = self.cleaned_data.get('phone')
-        if phone and not phone.startswith('+998'):
-            raise ValidationError('Telefon raqami +998 bilan boshlanishi kerak!')
+        if phone:
+            # Remove all spaces and non-digit characters except +
+            phone = ''.join(filter(lambda x: x.isdigit() or x == '+', phone))
+            
+            # Ensure it starts with +998
+            if not phone.startswith('+998'):
+                if phone.startswith('998'):
+                    phone = '+' + phone
+                else:
+                    raise forms.ValidationError('Telefon raqami +998 bilan boshlanishi kerak!')
+            
+            # Check length (should be exactly 13 characters: +998XXXXXXXXX)
+            if len(phone) != 13:
+                raise forms.ValidationError('Telefon raqami noto\'g\'ri formatda! (+998XXXXXXXXX)')
+            
+            # Check if rest are digits
+            if not phone[1:].isdigit():
+                raise forms.ValidationError('Telefon raqami faqat raqamlardan iborat bo\'lishi kerak!')
+                
         return phone
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.email = self.cleaned_data['email']
-        user.username = self.cleaned_data['email']  # Email ni username sifatida ishlatamiz
+        user.username = self.cleaned_data['email']
         user.first_name = self.cleaned_data['first_name']
         user.last_name = self.cleaned_data['last_name']
-        user.phone = self.cleaned_data['phone']
+        
+        # Clean phone before saving
+        phone = self.cleaned_data.get('phone', '')
+        if phone:
+            # Remove spaces for database storage
+            user.phone = phone.replace(' ', '')
+        else:
+            user.phone = ''
+            
         user.role = self.cleaned_data['role']
 
         if commit:

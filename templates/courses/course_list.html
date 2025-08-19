@@ -1,0 +1,447 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load course_tags %}
+{% load user_tags %}
+
+{% block title %}Barcha Kurslar - Tibbiy Ta'lim Platformasi{% endblock %}
+
+{% block content %}
+<!-- Medical Courses Hero Section -->
+<div class="bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600 relative overflow-hidden">
+    <!-- Medical Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-10 right-10">
+            <i class="fas fa-heartbeat text-white text-9xl transform rotate-12"></i>
+        </div>
+        <div class="absolute bottom-10 left-10">
+            <i class="fas fa-stethoscope text-white text-8xl transform -rotate-12"></i>
+        </div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <i class="fas fa-dna text-white text-9xl opacity-20"></i>
+        </div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="text-center text-white">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
+                <i class="fas fa-graduation-cap mr-3"></i>
+                Professional Tibbiy Kurslar
+            </h1>
+            <p class="text-xl text-cyan-100 mb-8">
+                Eng yaxshi shifokor-o'qituvchilardan o'rganing va malakangizni oshiring
+            </p>
+
+            <!-- Search Bar -->
+            <div class="max-w-2xl mx-auto">
+                <form method="GET" action="{% url 'courses:list' %}" class="relative">
+                    <input type="text" 
+                           name="q" 
+                           value="{{ request.GET.q }}"
+                           placeholder="Kurs nomi, mavzu yoki o'qituvchi bo'yicha qidiring..."
+                           class="w-full px-6 py-4 pl-14 pr-32 rounded-2xl text-gray-800 placeholder-gray-500 shadow-2xl focus:outline-none focus:ring-4 focus:ring-white focus:ring-opacity-50 transition-all">
+                    <i class="fas fa-search absolute left-5 top-1/2 transform -translate-y-1/2 text-gray-400 text-xl"></i>
+                    <button type="submit" class="absolute right-2 top-1/2 transform -translate-y-1/2 px-6 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                        Qidirish
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Bar -->
+<div class="bg-white border-b border-gray-100 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div class="flex flex-wrap items-center justify-between gap-4">
+            <div class="flex items-center space-x-6">
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mr-2">
+                        <i class="fas fa-book-medical text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-gray-800">{{ stats.total_courses|default:0 }}</p>
+                        <p class="text-xs text-gray-500">Umumiy kurslar</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <div class="w-10 h-10 bg-gradient-to-br from-green-500 to-emerald-600 rounded-lg flex items-center justify-center mr-2">
+                        <i class="fas fa-user-md text-white"></i>
+                    </div>
+                    <div>
+                        <p class="text-2xl font-bold text-gray-800">{{ stats.total_instructors|default:0 }}</p>
+                        <p class="text-xs text-gray-500">O'qituvchilar</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sort Options -->
+            <div class="flex items-center space-x-4">
+                <label class="text-sm text-gray-600">Saralash:</label>
+                <select name="sort" 
+                        onchange="window.location.href='?sort=' + this.value + '{{ request.GET|urlencode }}'"
+                        class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                    <option value="newest" {% if current_sort == 'newest' %}selected{% endif %}>Eng yangi</option>
+                    <option value="popular" {% if current_sort == 'popular' %}selected{% endif %}>Mashhur</option>
+                    <option value="alphabetical" {% if current_sort == 'alphabetical' %}selected{% endif %}>Alifbo bo'yicha</option>
+                </select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="min-h-screen bg-gray-50 py-8">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+            
+            <!-- Sidebar Filters -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-lg p-6 sticky top-24">
+                    <h3 class="text-lg font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fas fa-filter mr-2 text-teal-600"></i>
+                        Filterlar
+                    </h3>
+
+                    <form method="GET" action="{% url 'courses:list' %}">
+                        <!-- Level Filter -->
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-3">Daraja</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all">
+                                    <input type="radio" name="level" value="" 
+                                           {% if not form.level.value %}checked{% endif %}
+                                           class="text-teal-600 focus:ring-teal-500">
+                                    <span class="ml-2 text-gray-700">Barchasi</span>
+                                </label>
+                                {% for value, label in form.fields.level.choices %}
+                                    {% if value %}
+                                    <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all">
+                                        <input type="radio" name="level" value="{{ value }}" 
+                                               {% if form.level.value == value %}checked{% endif %}
+                                               class="text-teal-600 focus:ring-teal-500">
+                                        <span class="ml-2 text-gray-700">{{ label }}</span>
+                                    </label>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+
+                        <!-- Instructor Filter -->
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-3">O'qituvchi</h4>
+                            <select name="instructor" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500">
+                                <option value="">Barcha o'qituvchilar</option>
+                                {% for instructor in form.fields.instructor.queryset %}
+                                    <option value="{{ instructor.id }}" {% if form.instructor.value == instructor.id|stringformat:"s" %}selected{% endif %}>
+                                        {{ instructor.get_full_name|default:instructor.username }}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Price Range -->
+                        <div class="mb-6">
+                            <h4 class="font-semibold text-gray-700 mb-3">Narx</h4>
+                            <div class="space-y-2">
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all">
+                                    <input type="checkbox" name="free" value="1"
+                                           {% if request.GET.free %}checked{% endif %}
+                                           class="text-teal-600 focus:ring-teal-500 rounded">
+                                    <span class="ml-2 text-gray-700">Bepul kurslar</span>
+                                </label>
+                                <label class="flex items-center cursor-pointer hover:bg-gray-50 p-2 rounded-lg transition-all">
+                                    <input type="checkbox" name="paid" value="1"
+                                           {% if request.GET.paid %}checked{% endif %}
+                                           class="text-teal-600 focus:ring-teal-500 rounded">
+                                    <span class="ml-2 text-gray-700">Pullik kurslar</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Apply Filters Button -->
+                        <button type="submit" class="w-full py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                            <i class="fas fa-check mr-2"></i>
+                            Qo'llash
+                        </button>
+
+                        <!-- Clear Filters -->
+                        {% if request.GET %}
+                        <a href="{% url 'courses:list' %}" class="block text-center mt-3 text-gray-600 hover:text-teal-600 transition-colors">
+                            <i class="fas fa-times mr-1"></i>
+                            Tozalash
+                        </a>
+                        {% endif %}
+                    </form>
+                </div>
+
+                <!-- Medical Tips -->
+                <div class="bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl p-6 mt-6 text-white">
+                    <h4 class="font-bold mb-3 flex items-center">
+                        <i class="fas fa-lightbulb mr-2"></i>
+                        Maslahat
+                    </h4>
+                    <p class="text-sm opacity-90">
+                        Professional tibbiy ta'lim olish uchun o'zingizga mos darajadagi kurslarni tanlang va muntazam ravishda o'rganing.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Course Grid -->
+            <div class="lg:col-span-3">
+                
+                <!-- Active Filters Display -->
+                {% if form.level.value or form.instructor.value or request.GET.q %}
+                <div class="mb-6 flex flex-wrap items-center gap-2">
+                    <span class="text-sm text-gray-600">Faol filterlar:</span>
+                    
+                    {% if request.GET.q %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-blue-100 text-blue-800">
+                        <i class="fas fa-search mr-1"></i>
+                        {{ request.GET.q }}
+                        <a href="?{% for key, value in request.GET.items %}{% if key != 'q' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="ml-2">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </span>
+                    {% endif %}
+                    
+                    {% if form.level.value %}
+                    <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                        <i class="fas fa-layer-group mr-1"></i>
+                        {{ form.level.value|title }}
+                        <a href="?{% for key, value in request.GET.items %}{% if key != 'level' %}{{ key }}={{ value }}&{% endif %}{% endfor %}" class="ml-2">
+                            <i class="fas fa-times"></i>
+                        </a>
+                    </span>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <!-- Courses Grid -->
+                {% if courses %}
+                <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+                    {% for course in courses %}
+                    <div class="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group cursor-pointer"
+                         onclick="window.location.href='{% url 'courses:detail' course.id %}'">
+                        
+                        <!-- Course Image -->
+                        <div class="relative h-48 bg-gradient-to-br from-teal-500 to-cyan-600 overflow-hidden">
+                            <!-- Medical Pattern Background -->
+                            <div class="absolute inset-0 opacity-20">
+                                <i class="fas fa-heartbeat text-white text-6xl absolute top-4 right-4 transform rotate-12"></i>
+                                <i class="fas fa-stethoscope text-white text-5xl absolute bottom-4 left-4 transform -rotate-12"></i>
+                            </div>
+                            
+                            <!-- Level Badge -->
+                            <div class="absolute top-4 left-4 z-10">
+                                {{ course.level|course_level_badge|safe }}
+                            </div>
+                            
+                            <!-- Price Badge -->
+                            <div class="absolute top-4 right-4 z-10">
+                                <span class="px-3 py-1 bg-white bg-opacity-90 rounded-lg font-bold text-gray-800">
+                                    {{ course.price|format_price }}
+                                </span>
+                            </div>
+
+                            <!-- Course Title Overlay -->
+                            <div class="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black via-black/70 to-transparent p-4">
+                                <h3 class="text-white font-bold text-lg line-clamp-2 group-hover:text-cyan-300 transition-colors">
+                                    {{ course.title }}
+                                </h3>
+                            </div>
+                        </div>
+
+                        <!-- Course Details -->
+                        <div class="p-5">
+                            <!-- Instructor -->
+                            <div class="flex items-center mb-3">
+                                {% user_avatar course.instructor 'w-8 h-8' %}
+                                <div class="ml-2">
+                                    <p class="text-sm font-medium text-gray-800">{{ course.instructor.get_full_name|default:course.instructor.username }}</p>
+                                    <p class="text-xs text-gray-500">O'qituvchi</p>
+                                </div>
+                            </div>
+
+                            <!-- Description -->
+                            <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                                {{ course.description|truncatewords:20 }}
+                            </p>
+
+                            <!-- Stats -->
+                            <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                                <div class="flex items-center">
+                                    <i class="fas fa-users mr-1"></i>
+                                    <span>{{ course.student_count|default:0 }} talaba</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <i class="fas fa-video mr-1"></i>
+                                    <span>{{ course.lesson_count|default:0 }} dars</span>
+                                </div>
+                            </div>
+
+                            <!-- Duration & Rating -->
+                            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                                <div class="flex items-center text-sm text-gray-600">
+                                    <i class="fas fa-clock mr-1"></i>
+                                    <span>{{ course.duration_weeks }} hafta</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <div class="flex text-yellow-400 text-sm">
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star"></i>
+                                        <i class="fas fa-star-half-alt"></i>
+                                    </div>
+                                    <span class="ml-1 text-sm text-gray-600">4.5</span>
+                                </div>
+                            </div>
+
+                            <!-- Action Button -->
+                            <div class="mt-4">
+                                {% if user.is_authenticated %}
+                                    {% if user|is_enrolled:course %}
+                                        <a href="{% url 'lessons:list' course.id %}" 
+                                           class="block w-full text-center py-3 bg-green-100 text-green-700 rounded-xl font-semibold hover:bg-green-200 transition-all">
+                                            <i class="fas fa-play-circle mr-2"></i>
+                                            Davom ettirish
+                                        </a>
+                                    {% else %}
+                                        <button onclick="event.stopPropagation(); window.location.href='{% url 'courses:detail' course.id %}'"
+                                                class="w-full py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all group-hover:scale-105">
+                                            <i class="fas fa-eye mr-2"></i>
+                                            Ko'rish
+                                        </button>
+                                    {% endif %}
+                                {% else %}
+                                    <a href="{% url 'accounts:login' %}?next={% url 'courses:detail' course.id %}" 
+                                       class="block w-full text-center py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                                        <i class="fas fa-lock mr-2"></i>
+                                        Kirish
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination -->
+                {% if courses.has_other_pages %}
+                <div class="mt-12 flex justify-center">
+                    <nav class="flex items-center space-x-2">
+                        {% if courses.has_previous %}
+                        <a href="?page={{ courses.previous_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                           class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">
+                            <i class="fas fa-chevron-left"></i>
+                        </a>
+                        {% endif %}
+
+                        {% for num in courses.paginator.page_range %}
+                            {% if courses.number == num %}
+                            <span class="px-4 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg font-semibold">
+                                {{ num }}
+                            </span>
+                            {% elif num > courses.number|add:'-3' and num < courses.number|add:'3' %}
+                            <a href="?page={{ num }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                               class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">
+                                {{ num }}
+                            </a>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if courses.has_next %}
+                        <a href="?page={{ courses.next_page_number }}{% for key, value in request.GET.items %}{% if key != 'page' %}&{{ key }}={{ value }}{% endif %}{% endfor %}"
+                           class="px-4 py-2 bg-white border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">
+                            <i class="fas fa-chevron-right"></i>
+                        </a>
+                        {% endif %}
+                    </nav>
+                </div>
+                {% endif %}
+
+                {% else %}
+                <!-- No Courses Found -->
+                <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+                    <div class="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+                        <i class="fas fa-search text-4xl text-gray-400"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-800 mb-2">Kurslar topilmadi</h3>
+                    <p class="text-gray-600 mb-6">
+                        {% if request.GET.q %}
+                            "{{ request.GET.q }}" so'rovi bo'yicha natija topilmadi.
+                        {% else %}
+                            Hozircha bu kategoriyada kurslar mavjud emas.
+                        {% endif %}
+                    </p>
+                    <a href="{% url 'courses:list' %}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Barcha Kurslar
+                    </a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Medical CTA Section -->
+<div class="bg-gradient-to-r from-indigo-600 to-purple-600 py-16 mt-16">
+    <div class="max-w-4xl mx-auto px-4 text-center text-white">
+        <h2 class="text-3xl font-bold mb-4">
+            <i class="fas fa-user-md mr-3"></i>
+            O'qituvchi Bo'lmoqchimisiz?
+        </h2>
+        <p class="text-lg mb-8 opacity-90">
+            O'z bilim va tajribangizni minglab talabalarga ulashing. Professional tibbiy ta'lim berishda bizga qo'shiling!
+        </p>
+        {% if user.is_authenticated %}
+            {% if user.role == 'teacher' %}
+                <a href="{% url 'courses:create' %}" class="inline-flex items-center px-8 py-4 bg-white text-indigo-600 rounded-xl font-bold hover:shadow-2xl transition-all transform hover:scale-105">
+                    <i class="fas fa-plus-circle mr-2"></i>
+                    Yangi Kurs Yaratish
+                </a>
+            {% else %}
+                <a href="{% url 'accounts:become_teacher' %}" class="inline-flex items-center px-8 py-4 bg-white text-indigo-600 rounded-xl font-bold hover:shadow-2xl transition-all transform hover:scale-105">
+                    <i class="fas fa-chalkboard-teacher mr-2"></i>
+                    O'qituvchi Bo'lish
+                </a>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'accounts:register' %}" class="inline-flex items-center px-8 py-4 bg-white text-indigo-600 rounded-xl font-bold hover:shadow-2xl transition-all transform hover:scale-105">
+                <i class="fas fa-user-plus mr-2"></i>
+                Ro'yxatdan O'tish
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+<!-- JavaScript for Filters -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Auto-submit form on filter change
+    const filterInputs = document.querySelectorAll('input[type="radio"], input[type="checkbox"], select');
+    filterInputs.forEach(input => {
+        input.addEventListener('change', function() {
+            // Small delay for better UX
+            setTimeout(() => {
+                this.form.submit();
+            }, 300);
+        });
+    });
+
+    // Course card hover effects
+    const courseCards = document.querySelectorAll('.group');
+    courseCards.forEach(card => {
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-4px)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+});
+</script>
+
+{% endblock %}

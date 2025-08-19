@@ -1,5 +1,6 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.core.validators import RegexValidator
 
 
 class User(AbstractUser):
@@ -10,7 +11,16 @@ class User(AbstractUser):
     ]
 
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='student')
-    phone = models.CharField(max_length=15, blank=True)
+    phone = models.CharField(
+        max_length=15,  # Changed from 15 to 13 for +998XXXXXXXXX format
+        blank=True,
+        validators=[
+            RegexValidator(
+                regex=r'^\+998\d{9}$',
+                message='Telefon raqami +998XXXXXXXXX formatida bo\'lishi kerak'
+            )
+        ]
+    )
     birth_date = models.DateField(null=True, blank=True)
 
     def __str__(self):

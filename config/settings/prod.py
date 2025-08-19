@@ -1,7 +1,7 @@
 from .base import *
 import os
 
-ALLOWED_HOSTS = ['yourdomain.com', 'www.yourdomain.com']
+ALLOWED_HOSTS = ['med-master.uz', 'www.med-master.uz']
 
 # Database (production uchun PostgreSQL)
 DATABASES = {

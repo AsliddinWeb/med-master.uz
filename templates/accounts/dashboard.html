@@ -1,0 +1,682 @@
+{% extends 'base/dashboard.html' %}
+{% load static %}
+{% load user_tags %}
+{% load course_tags %}
+
+{% block dashboard_title %}
+    {% if user.role == 'student' %}
+        Talaba Kabineti
+    {% elif user.role == 'teacher' %}
+        O'qituvchi Paneli
+    {% else %}
+        Administrator Paneli
+    {% endif %}
+{% endblock %}
+
+{% block dashboard_subtitle %}
+    Xush kelibsiz, {{ user.get_full_name|default:user.username }}! 
+{% endblock %}
+
+{% block dashboard_content %}
+
+<!-- Medical Dashboard Welcome Section -->
+<div class="bg-gradient-to-r from-teal-500 to-cyan-600 rounded-3xl p-8 text-white shadow-2xl mb-8 relative overflow-hidden">
+    <!-- Medical Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-4 right-4">
+            <i class="fas fa-heartbeat text-8xl transform rotate-12"></i>
+        </div>
+        <div class="absolute bottom-4 left-4">
+            <i class="fas fa-stethoscope text-6xl transform -rotate-12"></i>
+        </div>
+    </div>
+    
+    <!-- Welcome Content -->
+    <div class="relative z-10">
+        <div class="flex items-center justify-between">
+            <div>
+                <h1 class="text-3xl font-bold mb-2 flex items-center">
+                    <span class="animate-pulse mr-3">👋</span>
+                    Xush kelibsiz, {{ user.first_name|default:user.username }}!
+                </h1>
+                <p class="text-cyan-100 text-lg">
+                    {% if user.role == 'student' %}
+                        Bugun nimani o'rganmoqchisiz? Tibbiy bilimlaringizni oshiring!
+                    {% elif user.role == 'teacher' %}
+                        Talabalaringizni kutmoqda. Bilim ulashing!
+                    {% else %}
+                        Platformani boshqarish paneli
+                    {% endif %}
+                </p>
+                <div class="mt-4 flex items-center space-x-4">
+                    <div class="flex items-center">
+                        <i class="fas fa-calendar-day mr-2"></i>
+                        <span>{{ current_date|date:"j F, Y" }}</span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-clock mr-2"></i>
+                        <span id="currentTime">{{ current_time|time:"H:i" }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Quick Action Buttons -->
+            <div class="hidden lg:flex space-x-3">
+                {% if user.role == 'student' %}
+                    <a href="{% url 'courses:list' %}" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-3 rounded-xl font-semibold transition-all flex items-center">
+                        <i class="fas fa-search mr-2"></i>
+                        Kurs Qidirish
+                    </a>
+                {% elif user.role == 'teacher' %}
+                    <a href="{% url 'courses:create' %}" class="bg-white bg-opacity-20 hover:bg-opacity-30 px-6 py-3 rounded-xl font-semibold transition-all flex items-center">
+                        <i class="fas fa-plus-circle mr-2"></i>
+                        Yangi Kurs
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Medical Statistics Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    {% if user.role == 'student' %}
+        <!-- Student Stats -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all medical-stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-book-medical text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-800">{{ stats.total_courses|default:0 }}</span>
+            </div>
+            <h3 class="text-gray-600 font-medium">Umumiy Kurslar</h3>
+            <p class="text-sm text-gray-400 mt-1">Ro'yxatdan o'tgan</p>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="text-green-500 font-medium flex items-center">
+                    <i class="fas fa-arrow-up mr-1"></i>
+                    {{ stats.active_courses|default:0 }} faol
+                </span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all medical-stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-emerald-500 to-green-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-check-circle text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-800">{{ stats.completed_courses|default:0 }}</span>
+            </div>
+            <h3 class="text-gray-600 font-medium">Tugallangan</h3>
+            <p class="text-sm text-gray-400 mt-1">Kurslar soni</p>
+            <div class="mt-4">
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div class="bg-gradient-to-r from-emerald-500 to-green-600 h-2 rounded-full" 
+                         style="width: {% if stats.total_courses %}{{ stats.completed_courses|default:0|mul:100|div:stats.total_courses }}%{% else %}0%{% endif %}">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all medical-stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-purple-500 to-pink-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-video text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-800">{{ stats.completed_lessons|default:0 }}</span>
+            </div>
+            <h3 class="text-gray-600 font-medium">Darslar</h3>
+            <p class="text-sm text-gray-400 mt-1">Ko'rilgan</p>
+            <div class="mt-4 flex items-center text-sm">
+                <i class="fas fa-fire text-orange-500 mr-1"></i>
+                <span class="text-gray-600">{{ stats.quiz_attempts|default:0 }} test topshirilgan</span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all medical-stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-yellow-500 to-orange-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-trophy text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-800">{{ stats.average_score|default:0 }}%</span>
+            </div>
+            <h3 class="text-gray-600 font-medium">O'rtacha Ball</h3>
+            <p class="text-sm text-gray-400 mt-1">Test natijalari</p>
+            <div class="mt-4">
+                <div class="flex items-center justify-between text-xs">
+                    <span class="text-gray-500">Reyting</span>
+                    <div class="flex text-yellow-400">
+                        {% if stats.average_score >= 20 %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                        {% if stats.average_score >= 40 %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                        {% if stats.average_score >= 60 %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                        {% if stats.average_score >= 80 %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                        {% if stats.average_score >= 95 %}
+                            <i class="fas fa-star"></i>
+                        {% else %}
+                            <i class="far fa-star"></i>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    {% elif user.role == 'teacher' %}
+        <!-- Teacher Stats -->
+        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all medical-stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-graduation-cap text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-800">{{ stats.total_courses|default:0 }}</span>
+            </div>
+            <h3 class="text-gray-600 font-medium">Kurslarim</h3>
+            <p class="text-sm text-gray-400 mt-1">Jami yaratilgan</p>
+            <div class="mt-4 flex items-center text-sm">
+                <span class="text-green-500 font-medium">
+                    <i class="fas fa-circle text-xs mr-1"></i>
+                    {{ stats.active_courses|default:0 }} faol
+                </span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all medical-stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-users text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-800">{{ stats.total_students|default:0 }}</span>
+            </div>
+            <h3 class="text-gray-600 font-medium">Talabalar</h3>
+            <p class="text-sm text-gray-400 mt-1">Umumiy soni</p>
+            <div class="mt-4">
+                <div class="flex -space-x-2">
+                    {% for i in "12345"|make_list %}
+                        <div class="w-8 h-8 bg-gradient-to-br from-gray-300 to-gray-400 rounded-full border-2 border-white"></div>
+                    {% endfor %}
+                    {% if stats.total_students > 5 %}
+                        <div class="w-8 h-8 bg-gray-100 rounded-full border-2 border-white flex items-center justify-center">
+                            <span class="text-xs font-bold text-gray-600">+{{ stats.total_students|add:"-5" }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all medical-stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-pink-500 to-rose-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-play-circle text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-800">{{ stats.total_lessons|default:0 }}</span>
+            </div>
+            <h3 class="text-gray-600 font-medium">Darslar</h3>
+            <p class="text-sm text-gray-400 mt-1">Jami yaratilgan</p>
+            <div class="mt-4 flex items-center text-sm">
+                <i class="fas fa-clock text-blue-500 mr-1"></i>
+                <span class="text-gray-600">120+ soat kontent</span>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all medical-stat-card">
+            <div class="flex items-center justify-between mb-4">
+                <div class="w-14 h-14 bg-gradient-to-br from-green-500 to-emerald-600 rounded-xl flex items-center justify-center">
+                    <i class="fas fa-star text-white text-xl"></i>
+                </div>
+                <span class="text-2xl font-bold text-gray-800">4.8</span>
+            </div>
+            <h3 class="text-gray-600 font-medium">Reyting</h3>
+            <p class="text-sm text-gray-400 mt-1">O'rtacha baho</p>
+            <div class="mt-4">
+                <div class="flex text-yellow-400 text-sm">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Main Dashboard Content Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+    
+    <!-- Left Column - Recent Activities -->
+    <div class="lg:col-span-2 space-y-6">
+        
+        {% if user.role == 'student' %}
+            <!-- Continue Learning Section -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-play text-white text-sm"></i>
+                        </div>
+                        Davom Ettirish
+                    </h2>
+                </div>
+                
+                <div class="p-6">
+                    {% if recent_enrollments %}
+                        <div class="space-y-4">
+                            {% for enrollment in recent_enrollments|slice:":3" %}
+                                <div class="bg-gradient-to-r from-gray-50 to-blue-50 rounded-xl p-4 hover:shadow-md transition-all">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center flex-1">
+                                            <div class="w-16 h-16 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-xl flex items-center justify-center mr-4">
+                                                <i class="fas fa-book-medical text-white text-xl"></i>
+                                            </div>
+                                            <div class="flex-1">
+                                                <h4 class="font-semibold text-gray-800">{{ enrollment.course.title|truncatechars:40 }}</h4>
+                                                <p class="text-sm text-gray-600">{{ enrollment.course.instructor.get_full_name }}</p>
+                                                <div class="mt-2">
+                                                    <div class="flex items-center justify-between text-xs text-gray-500 mb-1">
+                                                        <span>Progress</span>
+                                                        <span class="font-semibold">{{ enrollment.progress }}%</span>
+                                                    </div>
+                                                    <div class="w-full bg-gray-200 rounded-full h-2">
+                                                        <div class="bg-gradient-to-r from-teal-500 to-cyan-600 h-2 rounded-full transition-all duration-500" 
+                                                             style="width: {{ enrollment.progress }}%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <a href="{% url 'lessons:list' enrollment.course.id %}" 
+                                           class="ml-4 px-4 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg font-medium hover:shadow-lg transition-all flex items-center">
+                                            <span>Davom</span>
+                                            <i class="fas fa-arrow-right ml-2"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-12">
+                            <div class="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-book-open text-3xl text-gray-400"></i>
+                            </div>
+                            <p class="text-gray-500 mb-4">Hali kursga yozilmagansiz</p>
+                            <a href="{% url 'courses:list' %}" class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-medium hover:shadow-lg transition-all">
+                                <i class="fas fa-search mr-2"></i>
+                                Kurslarni Ko'rish
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Quiz Results -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-500 to-pink-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-clipboard-check text-white text-sm"></i>
+                        </div>
+                        So'nggi Test Natijalari
+                    </h2>
+                </div>
+                
+                <div class="p-6">
+                    {% if recent_quiz_attempts %}
+                        <div class="space-y-3">
+                            {% for attempt in recent_quiz_attempts|slice:":5" %}
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all">
+                                    <div class="flex items-center">
+                                        <div class="w-10 h-10 rounded-lg flex items-center justify-center mr-3
+                                                   {% if attempt.is_passed %}bg-green-100{% else %}bg-red-100{% endif %}">
+                                            {% if attempt.is_passed %}
+                                                <i class="fas fa-check-circle text-green-600"></i>
+                                            {% else %}
+                                                <i class="fas fa-times-circle text-red-600"></i>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <p class="font-medium text-gray-800">{{ attempt.quiz.title|truncatechars:30 }}</p>
+                                            <p class="text-xs text-gray-500">{{ attempt.started_at|timesince }} oldin</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <span class="text-2xl font-bold 
+                                                    {% if attempt.score >= 80 %}text-green-600
+                                                    {% elif attempt.score >= 60 %}text-yellow-600
+                                                    {% else %}text-red-600{% endif %}">
+                                            {{ attempt.score }}%
+                                        </span>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-4 text-center">
+                            <a href="{% url 'quizzes:my_results' %}" class="text-teal-600 hover:text-teal-700 font-medium text-sm">
+                                Barcha Natijalar →
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-clipboard-list text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-gray-500">Test natijalari mavjud emas</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% elif user.role == 'teacher' %}
+            <!-- Teacher's Courses -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-100 flex items-center justify-between">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                        <div class="w-8 h-8 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-chalkboard-teacher text-white text-sm"></i>
+                        </div>
+                        Mening Kurslarim
+                    </h2>
+                    <a href="{% url 'courses:create' %}" class="text-teal-600 hover:text-teal-700 font-medium text-sm">
+                        + Yangi Kurs
+                    </a>
+                </div>
+                
+                <div class="p-6">
+                    {% if my_courses %}
+                        <div class="space-y-4">
+                            {% for course in my_courses|slice:":4" %}
+                                <div class="border border-gray-100 rounded-xl p-4 hover:shadow-md transition-all">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <h4 class="font-semibold text-gray-800 mb-1">{{ course.title|truncatechars:40 }}</h4>
+                                            <div class="flex items-center space-x-4 text-sm text-gray-500">
+                                                <span class="flex items-center">
+                                                    <i class="fas fa-users mr-1"></i>
+                                                    {{ course.student_count|default:0 }} talaba
+                                                </span>
+                                                <span class="flex items-center">
+                                                    <i class="fas fa-video mr-1"></i>
+                                                    {{ course.lesson_count|default:0 }} dars
+                                                </span>
+                                                <span class="px-2 py-1 rounded-full text-xs font-medium
+                                                            {% if course.is_active %}bg-green-100 text-green-700{% else %}bg-gray-100 text-gray-700{% endif %}">
+                                                    {% if course.is_active %}Faol{% else %}Nofaol{% endif %}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="flex space-x-2">
+                                            <a href="{% url 'courses:detail' course.id %}" 
+                                               class="p-2 text-gray-600 hover:text-teal-600 hover:bg-teal-50 rounded-lg transition-all">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            <a href="{% url 'courses:edit' course.id %}" 
+                                               class="p-2 text-gray-600 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-all">
+                                                <i class="fas fa-edit"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                        <div class="mt-4 text-center">
+                            <a href="{% url 'courses:instructor_courses' %}" class="text-teal-600 hover:text-teal-700 font-medium text-sm">
+                                Barcha Kurslar →
+                            </a>
+                        </div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-folder-open text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-gray-500 mb-4">Hali kurs yaratmagansiz</p>
+                            <a href="{% url 'courses:create' %}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-lg font-medium hover:shadow-lg transition-all">
+                                <i class="fas fa-plus mr-2"></i>
+                                Birinchi Kursni Yaratish
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Recent Student Enrollments -->
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div class="p-6 border-b border-gray-100">
+                    <h2 class="text-xl font-bold text-gray-800 flex items-center">
+                        <div class="w-8 h-8 bg-gradient-to-br from-cyan-500 to-teal-600 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fas fa-user-graduate text-white text-sm"></i>
+                        </div>
+                        So'nggi Ro'yxatdan O'tganlar
+                    </h2>
+                </div>
+                
+                <div class="p-6">
+                    {% if recent_enrollments %}
+                        <div class="space-y-3">
+                            {% for enrollment in recent_enrollments|slice:":8" %}
+                                <div class="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg transition-all">
+                                    <div class="flex items-center">
+                                        {% user_avatar enrollment.student 'w-10 h-10' %}
+                                        <div class="ml-3">
+                                            <p class="font-medium text-gray-800">{{ enrollment.student.get_full_name|default:enrollment.student.username }}</p>
+                                            <p class="text-xs text-gray-500">{{ enrollment.course.title|truncatechars:30 }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-xs text-gray-500">{{ enrollment.enrolled_at|timesince }} oldin</p>
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-user-friends text-4xl text-gray-300 mb-3"></i>
+                            <p class="text-gray-500">Hali talabalar yo'q</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <!-- Right Column - Sidebar Content -->
+    <div class="space-y-6">
+        
+        <!-- Quick Actions Card -->
+        <div class="bg-gradient-to-br from-indigo-500 to-purple-600 rounded-2xl p-6 text-white shadow-lg">
+            <h3 class="text-lg font-bold mb-4 flex items-center">
+                <i class="fas fa-bolt mr-2"></i>
+                Tezkor Harakatlar
+            </h3>
+            <div class="space-y-3">
+                {% if user.role == 'student' %}
+                    <a href="{% url 'courses:list' %}" class="flex items-center justify-between p-3 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all">
+                        <span class="flex items-center">
+                            <i class="fas fa-search mr-2"></i>
+                            Kurs Qidirish
+                        </span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'accounts:my_courses' %}" class="flex items-center justify-between p-3 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all">
+                        <span class="flex items-center">
+                            <i class="fas fa-book mr-2"></i>
+                            Mening Kurslarim
+                        </span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'quizzes:my_results' %}" class="flex items-center justify-between p-3 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all">
+                        <span class="flex items-center">
+                            <i class="fas fa-chart-bar mr-2"></i>
+                            Test Natijalari
+                        </span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                {% elif user.role == 'teacher' %}
+                    <a href="{% url 'courses:create' %}" class="flex items-center justify-between p-3 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all">
+                        <span class="flex items-center">
+                            <i class="fas fa-plus-circle mr-2"></i>
+                            Yangi Kurs
+                        </span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                    <a href="{% url 'courses:instructor_courses' %}" class="flex items-center justify-between p-3 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-all">
+                        <span class="flex items-center">
+                            <i class="fas fa-list mr-2"></i>
+                            Kurslarim
+                        </span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Medical Tip of the Day -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div class="bg-gradient-to-r from-green-500 to-emerald-600 p-4 text-white">
+                <h3 class="font-bold flex items-center">
+                    <i class="fas fa-lightbulb mr-2"></i>
+                    Kunning Maslahati
+                </h3>
+            </div>
+            <div class="p-6">
+                <p class="text-gray-700 mb-3">
+                    💡 <strong>Tibbiy ta'lim sirlari:</strong> Har kuni kamida 30 daqiqa yangi materialni o'rganing va 15 daqiqa takrorlang. Muntazamlik - muvaffaqiyat kaliti!
+                </p>
+                <div class="flex items-center text-sm text-gray-500">
+                    <i class="fas fa-info-circle mr-1"></i>
+                    <span>Professional maslahat</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Achievement Badges -->
+        <div class="bg-white rounded-2xl shadow-lg p-6">
+            <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
+                <i class="fas fa-medal mr-2 text-yellow-500"></i>
+                Yutuqlar
+            </h3>
+            <div class="grid grid-cols-3 gap-3">
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-star text-yellow-500"></i>
+                    </div>
+                    <p class="text-xs text-gray-600">Yangi Boshlovchi</p>
+                </div>
+                <div class="text-center">
+                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-book text-blue-500"></i>
+                    </div>
+                    <p class="text-xs text-gray-600">5 Kurs</p>
+                </div>
+                <div class="text-center opacity-50">
+                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-trophy text-gray-400"></i>
+                    </div>
+                    <p class="text-xs text-gray-400">10 Kurs</p>
+                </div>
+                <div class="text-center opacity-50">
+                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-graduation-cap text-gray-400"></i>
+                    </div>
+                    <p class="text-xs text-gray-400">Expert</p>
+                </div>
+                <div class="text-center opacity-50">
+                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-award text-gray-400"></i>
+                    </div>
+                    <p class="text-xs text-gray-400">Master</p>
+                </div>
+                <div class="text-center opacity-50">
+                    <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-2">
+                        <i class="fas fa-crown text-gray-400"></i>
+                    </div>
+                    <p class="text-xs text-gray-400">Legend</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Learning Streak -->
+        <div class="bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl p-6 text-white shadow-lg">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold flex items-center">
+                    <i class="fas fa-fire mr-2"></i>
+                    O'qish Ketma-ketligi
+                </h3>
+                <span class="text-3xl font-bold">7</span>
+            </div>
+            <div class="flex justify-between text-xs mb-3">
+                <span>D</span><span>S</span><span>CH</span><span>P</span><span>J</span><span>SH</span><span>Y</span>
+            </div>
+            <div class="flex justify-between">
+                {% for day in "1234567"|make_list %}
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center 
+                               {% if forloop.counter <= 5 %}bg-white bg-opacity-30{% else %}bg-white bg-opacity-10{% endif %}">
+                        {% if forloop.counter <= 5 %}
+                            <i class="fas fa-check text-xs"></i>
+                        {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <p class="text-xs mt-3 opacity-90">Har kuni o'qishni davom ettiring!</p>
+        </div>
+    </div>
+</div>
+
+<!-- Medical Dashboard JavaScript -->
+<script>
+// Update current time
+function updateTime() {
+    const now = new Date();
+    const timeString = now.toLocaleTimeString('uz-UZ', { 
+        hour: '2-digit', 
+        minute: '2-digit' 
+    });
+    document.getElementById('currentTime').textContent = timeString;
+}
+
+// Initialize dashboard
+document.addEventListener('DOMContentLoaded', function() {
+    // Update time every minute
+    updateTime();
+    setInterval(updateTime, 60000);
+
+    // Animate statistics cards
+    const statCards = document.querySelectorAll('.medical-stat-card');
+    statCards.forEach((card, index) => {
+        setTimeout(() => {
+            card.style.animation = 'slideUp 0.5s ease-out';
+        }, index * 100);
+    });
+
+    // Animate progress bars
+    const progressBars = document.querySelectorAll('[style*="width"]');
+    progressBars.forEach(bar => {
+        const width = bar.style.width;
+        bar.style.width = '0%';
+        setTimeout(() => {
+            bar.style.width = width;
+        }, 500);
+    });
+});
+
+// Medical animations
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+</script>
+
+{% endblock %}
