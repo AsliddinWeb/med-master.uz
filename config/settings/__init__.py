@@ -1,7 +1,7 @@
-import os
+from decouple import config
 
 # Environment variable orqali settings tanlash
-environment = os.environ.get('DJANGO_ENV', 'dev')
+environment = config('DJANGO_ENV', default='dev')
 
 if environment == 'prod':
     from .prod import *
