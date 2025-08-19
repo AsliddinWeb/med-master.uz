@@ -1,0 +1,534 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load course_tags %}
+{% load user_tags %}
+{% load lesson_tags %}
+
+{% block title %}{{ course.title }} - Tibbiy Ta'lim Platformasi{% endblock %}
+
+{% block meta_description %}{{ course.description|truncatewords:30 }}{% endblock %}
+
+{% block content %}
+<!-- Medical Course Hero Section -->
+<div class="bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600 relative overflow-hidden">
+    <!-- Medical Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-10 right-10 animate-pulse">
+            <i class="fas fa-heartbeat text-white text-9xl transform rotate-12"></i>
+        </div>
+        <div class="absolute bottom-10 left-10 animate-pulse" style="animation-delay: 1s;">
+            <i class="fas fa-stethoscope text-white text-8xl transform -rotate-12"></i>
+        </div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <i class="fas fa-dna text-white text-9xl opacity-20"></i>
+        </div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- Course Main Info -->
+            <div class="lg:col-span-2 text-white">
+                <!-- Level Badge -->
+                <div class="mb-4">
+                    {{ course.level|course_level_badge|safe }}
+                </div>
+
+                <!-- Title -->
+                <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
+                    {{ course.title }}
+                </h1>
+
+                <!-- Description -->
+                <p class="text-xl text-cyan-100 mb-6 leading-relaxed">
+                    {{ course.description|linebreaks }}
+                </p>
+
+                <!-- Instructor Info -->
+                <div class="flex items-center mb-6">
+                    {% user_avatar course.instructor 'w-16 h-16 border-4 border-white' %}
+                    <div class="ml-4">
+                        <p class="text-sm text-cyan-100">O'qituvchi</p>
+                        <p class="text-xl font-bold">{{ course.instructor.get_full_name|default:course.instructor.username }}</p>
+                        {% user_role_badge course.instructor %}
+                    </div>
+                </div>
+
+                <!-- Course Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm">
+                        <i class="fas fa-users text-2xl mb-2"></i>
+                        <p class="text-2xl font-bold">{{ total_students }}</p>
+                        <p class="text-sm text-cyan-100">Talaba</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm">
+                        <i class="fas fa-video text-2xl mb-2"></i>
+                        <p class="text-2xl font-bold">{{ total_lessons }}</p>
+                        <p class="text-sm text-cyan-100">Dars</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm">
+                        <i class="fas fa-clock text-2xl mb-2"></i>
+                        <p class="text-2xl font-bold">{{ total_duration|format_duration }}</p>
+                        <p class="text-sm text-cyan-100">Davomiylik</p>
+                    </div>
+                    <div class="bg-white bg-opacity-20 rounded-xl p-4 backdrop-blur-sm">
+                        <i class="fas fa-calendar text-2xl mb-2"></i>
+                        <p class="text-2xl font-bold">{{ course.duration_weeks }}</p>
+                        <p class="text-sm text-cyan-100">Hafta</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Course Action Card -->
+            <div class="lg:col-span-1">
+                <div class="bg-white rounded-2xl shadow-2xl p-6">
+                    <!-- Price -->
+                    <div class="text-center mb-6">
+                        <p class="text-sm text-gray-600 mb-2">Kurs narxi</p>
+                        <p class="text-4xl font-bold text-gray-900">
+                            {{ course.price|format_price }}
+                        </p>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    {% if user.is_authenticated %}
+                        {% if user == course.instructor %}
+                            <!-- Instructor Actions -->
+                            <a href="{% url 'courses:edit' course.id %}" 
+                               class="block w-full text-center py-3 bg-gradient-to-r from-indigo-600 to-purple-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all mb-3">
+                                <i class="fas fa-edit mr-2"></i>
+                                Kursni Tahrirlash
+                            </a>
+                            <a href="{% url 'lessons:create' course.id %}" 
+                               class="block w-full text-center py-3 bg-gradient-to-r from-green-600 to-emerald-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all mb-3">
+                                <i class="fas fa-plus-circle mr-2"></i>
+                                Dars Qo'shish
+                            </a>
+                            <a href="{% url 'courses:instructor_courses' %}" 
+                               class="block w-full text-center py-3 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all">
+                                <i class="fas fa-list mr-2"></i>
+                                Mening Kurslarim
+                            </a>
+                        {% elif is_enrolled %}
+                            <!-- Enrolled Student Actions -->
+                            <div class="mb-4">
+                                <div class="flex justify-between text-sm text-gray-600 mb-2">
+                                    <span>Progress</span>
+                                    <span class="font-bold">{{ enrollment.progress }}%</span>
+                                </div>
+                                <div class="w-full bg-gray-200 rounded-full h-3">
+                                    <div class="bg-gradient-to-r from-teal-500 to-cyan-600 h-3 rounded-full transition-all duration-500"
+                                         style="width: {{ enrollment.progress }}%"></div>
+                                </div>
+                            </div>
+                            <a href="{% url 'lessons:list' course.id %}" 
+                               class="block w-full text-center py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all mb-3">
+                                <i class="fas fa-play-circle mr-2"></i>
+                                Davom Ettirish
+                            </a>
+                            {% if enrollment.is_completed %}
+                                <div class="text-center py-3 bg-green-100 text-green-700 rounded-xl font-semibold">
+                                    <i class="fas fa-check-circle mr-2"></i>
+                                    Kurs Tugallangan
+                                </div>
+                            {% endif %}
+                        {% else %}
+                            <!-- Not Enrolled Actions -->
+                            <form method="POST" action="{% url 'courses:enroll' course.id %}">
+                                {% csrf_token %}
+                                <button type="submit" 
+                                        class="w-full py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all transform hover:scale-105">
+                                    <i class="fas fa-user-plus mr-2"></i>
+                                    Kursga Yozilish
+                                </button>
+                            </form>
+                        {% endif %}
+                    {% else %}
+                        <!-- Guest Actions -->
+                        <a href="{% url 'accounts:login' %}?next={% url 'courses:detail' course.id %}" 
+                           class="block w-full text-center py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all mb-3">
+                            <i class="fas fa-lock mr-2"></i>
+                            Kirish va Yozilish
+                        </a>
+                        <a href="{% url 'accounts:register' %}" 
+                           class="block w-full text-center py-3 border-2 border-teal-600 text-teal-600 rounded-xl font-semibold hover:bg-teal-50 transition-all">
+                            <i class="fas fa-user-plus mr-2"></i>
+                            Ro'yxatdan O'tish
+                        </a>
+                    {% endif %}
+
+                    <!-- Course Features -->
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h4 class="font-bold text-gray-900 mb-4">Kurs Imkoniyatlari:</h4>
+                        <ul class="space-y-3">
+                            <li class="flex items-center text-gray-700">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span class="text-sm">Umrbod foydalanish</span>
+                            </li>
+                            <li class="flex items-center text-gray-700">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span class="text-sm">Sertifikat beriladi</span>
+                            </li>
+                            <li class="flex items-center text-gray-700">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span class="text-sm">Mobil qurilmalarda ko'rish</span>
+                            </li>
+                            <li class="flex items-center text-gray-700">
+                                <i class="fas fa-check-circle text-green-500 mr-3"></i>
+                                <span class="text-sm">Amaliy topshiriqlar</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Share Buttons -->
+                    <div class="mt-6 pt-6 border-t border-gray-200">
+                        <h4 className="font-bold text-gray-900 mb-4">Ulashish:</h4>
+                        <div class="flex space-x-3">
+                            <a href="https://t.me/share/url?url={{ request.build_absolute_uri }}&text={{ course.title }}" 
+                               target="_blank"
+                               class="flex-1 text-center py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-all">
+                                <i class="fab fa-telegram"></i>
+                            </a>
+                            <a href="https://www.facebook.com/sharer/sharer.php?u={{ request.build_absolute_uri }}" 
+                               target="_blank"
+                               class="flex-1 text-center py-2 bg-blue-700 text-white rounded-lg hover:bg-blue-800 transition-all">
+                                <i class="fab fa-facebook"></i>
+                            </a>
+                            <a href="https://twitter.com/intent/tweet?url={{ request.build_absolute_uri }}&text={{ course.title }}" 
+                               target="_blank"
+                               class="flex-1 text-center py-2 bg-sky-500 text-white rounded-lg hover:bg-sky-600 transition-all">
+                                <i class="fab fa-twitter"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Course Content Section -->
+<div class="bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+            <!-- Main Content -->
+            <div class="lg:col-span-2">
+                
+                <!-- Course Curriculum -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-list-alt mr-3 text-teal-600"></i>
+                        Kurs Dasturi
+                    </h2>
+
+                    {% if lessons %}
+                        <div class="space-y-4">
+                            {% for lesson in lessons %}
+                                <div class="border border-gray-200 rounded-xl p-4 hover:border-teal-300 transition-all">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex items-center flex-1">
+                                            <div class="w-10 h-10 bg-gradient-to-br from-teal-500 to-cyan-600 rounded-lg flex items-center justify-center text-white font-bold mr-4">
+                                                {{ lesson.order }}
+                                            </div>
+                                            <div class="flex-1">
+                                                <h3 class="font-semibold text-gray-900">
+                                                    {{ lesson.title }}
+                                                    {% if lesson.is_free %}
+                                                        <span class="ml-2 px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full">Bepul</span>
+                                                    {% endif %}
+                                                </h3>
+                                                {% if lesson.description %}
+                                                    <p class="text-sm text-gray-600 mt-1">{{ lesson.description|truncatewords:20 }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="flex items-center space-x-4">
+                                            <span class="text-sm text-gray-500">
+                                                <i class="fas fa-clock mr-1"></i>
+                                                {{ lesson.duration_minutes }} daq
+                                            </span>
+                                            {% if user.is_authenticated %}
+                                                {% if is_enrolled or user == course.instructor or lesson.is_free %}
+                                                    <a href="{% url 'lessons:detail' course.id lesson.id %}" 
+                                                       class="text-teal-600 hover:text-teal-700">
+                                                        <i class="fas fa-play-circle text-xl"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <i class="fas fa-lock text-gray-400"></i>
+                                                {% endif %}
+                                            {% else %}
+                                                {% if lesson.is_free %}
+                                                    <a href="{% url 'lessons:detail' course.id lesson.id %}" 
+                                                       class="text-teal-600 hover:text-teal-700">
+                                                        <i class="fas fa-play-circle text-xl"></i>
+                                                    </a>
+                                                {% else %}
+                                                    <i class="fas fa-lock text-gray-400"></i>
+                                                {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
+
+                                    <!-- Lesson Progress (if enrolled) -->
+                                    {% if is_enrolled %}
+                                        {% with user|lesson_progress:lesson as progress %}
+                                            {% if progress %}
+                                                <div class="mt-3 pt-3 border-t border-gray-100">
+                                                    {% if progress.is_completed %}
+                                                        <div class="flex items-center text-green-600">
+                                                            <i class="fas fa-check-circle mr-2"></i>
+                                                            <span class="text-sm font-medium">Tugallangan</span>
+                                                        </div>
+                                                    {% else %}
+                                                        <div class="flex items-center justify-between text-sm">
+                                                            <span class="text-gray-600">Ko'rilgan: {{ user|lesson_watched_percentage:lesson }}%</span>
+                                                            <div class="w-32 bg-gray-200 rounded-full h-2">
+                                                                <div class="bg-teal-500 h-2 rounded-full" style="width: {{ user|lesson_watched_percentage:lesson }}%"></div>
+                                                            </div>
+                                                        </div>
+                                                    {% endif %}
+                                                </div>
+                                            {% endif %}
+                                        {% endwith %}
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center py-8">
+                            <i class="fas fa-folder-open text-4xl text-gray-400 mb-4"></i>
+                            <p class="text-gray-600">Hozircha darslar mavjud emas</p>
+                            {% if user == course.instructor %}
+                                <a href="{% url 'lessons:create' course.id %}" 
+                                   class="inline-flex items-center mt-4 px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                                    <i class="fas fa-plus-circle mr-2"></i>
+                                    Dars Qo'shish
+                                </a>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Course Requirements -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-clipboard-check mr-3 text-blue-600"></i>
+                        Kurs Talablari
+                    </h2>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Tibbiyot sohasida asosiy bilimlar</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Internet va kompyuterdan foydalanish ko'nikmalari</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-check text-green-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">O'rganishga ishtiyoq va vaqt ajratish</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- What You'll Learn -->
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h2 class="text-2xl font-bold text-gray-900 mb-6 flex items-center">
+                        <i class="fas fa-graduation-cap mr-3 text-purple-600"></i>
+                        Nimalarni O'rganasiz
+                    </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="flex items-start">
+                            <i class="fas fa-star text-yellow-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Nazariy bilimlarni amaliyotda qo'llash</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-star text-yellow-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Zamonaviy tibbiy texnologiyalar</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-star text-yellow-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Bemorlar bilan ishlash metodikasi</span>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-star text-yellow-500 mt-1 mr-3"></i>
+                            <span class="text-gray-700">Professional ko'nikmalarni rivojlantirish</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                
+                <!-- Instructor Card -->
+                <div class="bg-white rounded-2xl shadow-lg p-6 mb-8">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">O'qituvchi Haqida</h3>
+                    <div class="text-center">
+                        {% user_avatar course.instructor 'w-24 h-24 mx-auto mb-4' %}
+                        <h4 class="text-xl font-bold text-gray-900">{{ course.instructor.get_full_name|default:course.instructor.username }}</h4>
+                        {% user_role_badge course.instructor %}
+                        
+                        {% if course.instructor.profile %}
+                            <p class="text-gray-600 mt-4 text-sm">{{ course.instructor.profile.bio|default:"Professional tibbiyot mutaxassisi"|truncatewords:20 }}</p>
+                        {% endif %}
+
+                        <div class="mt-6 pt-6 border-t border-gray-200">
+                            <div class="grid grid-cols-2 gap-4 text-center">
+                                <div>
+                                    <p class="text-2xl font-bold text-gray-900">{{ instructor_other_courses.count|add:1 }}</p>
+                                    <p class="text-xs text-gray-600">Kurslar</p>
+                                </div>
+                                <div>
+                                    <p class="text-2xl font-bold text-gray-900">1000+</p>
+                                    <p class="text-xs text-gray-600">Talabalar</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <a href="{% url 'accounts:public_profile' course.instructor.id %}" 
+                           class="block w-full mt-6 py-2 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:bg-gray-50 transition-all">
+                            <i class="fas fa-user mr-2"></i>
+                            Profilni Ko'rish
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Other Courses by Instructor -->
+                {% if instructor_other_courses %}
+                <div class="bg-white rounded-2xl shadow-lg p-6">
+                    <h3 class="text-lg font-bold text-gray-900 mb-4">O'qituvchining Boshqa Kurslari</h3>
+                    <div class="space-y-4">
+                        {% for other_course in instructor_other_courses %}
+                        <a href="{% url 'courses:detail' other_course.id %}" 
+                           class="block border border-gray-200 rounded-lg p-3 hover:border-teal-300 hover:bg-teal-50 transition-all">
+                            <h4 class="font-semibold text-gray-900 mb-1">{{ other_course.title|truncatewords:8 }}</h4>
+                            <div class="flex items-center justify-between text-xs text-gray-600">
+                                <span>{{ other_course.level|title }}</span>
+                                <span class="font-bold text-teal-600">{{ other_course.price|format_price }}</span>
+                            </div>
+                        </a>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reviews Section (placeholder) -->
+<div class="bg-white py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8 text-center">Talabalar Fikrlari</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Sample Review 1 -->
+            <div class="bg-gray-50 rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                        AS
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-900">Aziz Saidov</p>
+                        <div class="flex text-yellow-400 text-sm">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-sm">Juda zo'r kurs! O'qituvchi hamma narsani tushunarli qilib tushuntiradi. Tavsiya qilaman!</p>
+            </div>
+
+            <!-- Sample Review 2 -->
+            <div class="bg-gray-50 rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-green-500 to-emerald-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                        MK
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-900">Malika Karimova</p>
+                        <div class="flex text-yellow-400 text-sm">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-sm">Professional darajada tayyorlangan kurs. Amaliy mashg'ulotlar juda foydali.</p>
+            </div>
+
+            <!-- Sample Review 3 -->
+            <div class="bg-gray-50 rounded-xl p-6">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                        JR
+                    </div>
+                    <div>
+                        <p class="font-semibold text-gray-900">Jasur Raximov</p>
+                        <div class="flex text-yellow-400 text-sm">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-700 text-sm">Kurs materiallari juda boy. Har bir dars yangi bilimlar beradi. Rahmat!</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+{% if not is_enrolled and user != course.instructor %}
+<div class="bg-gradient-to-r from-teal-600 to-cyan-600 py-12">
+    <div class="max-w-4xl mx-auto px-4 text-center text-white">
+        <h2 class="text-3xl font-bold mb-4">Kursni Boshlashga Tayyormisiz?</h2>
+        <p class="text-lg mb-8 opacity-90">
+            Professional tibbiy bilimlarni egallang va malakangizni oshiring!
+        </p>
+        {% if user.is_authenticated %}
+            <form method="POST" action="{% url 'courses:enroll' course.id %}" class="inline-block">
+                {% csrf_token %}
+                <button type="submit" 
+                        class="inline-flex items-center px-8 py-4 bg-white text-teal-600 rounded-xl font-bold hover:shadow-2xl transition-all transform hover:scale-105">
+                    <i class="fas fa-rocket mr-2"></i>
+                    Hozir Boshlash
+                </button>
+            </form>
+        {% else %}
+            <a href="{% url 'accounts:register' %}" 
+               class="inline-flex items-center px-8 py-4 bg-white text-teal-600 rounded-xl font-bold hover:shadow-2xl transition-all transform hover:scale-105">
+                <i class="fas fa-user-plus mr-2"></i>
+                Ro'yxatdan O'tish va Boshlash
+            </a>
+        {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Smooth scroll for curriculum items
+    const lessonItems = document.querySelectorAll('.border');
+    lessonItems.forEach(item => {
+        item.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateX(4px)';
+        });
+        item.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateX(0)';
+        });
+    });
+});
+</script>
+{% endblock %}
