@@ -1,0 +1,476 @@
+{% extends 'base/base.html' %}
+{% load static %}
+{% load lesson_tags %}
+{% load user_tags %}
+{% load course_tags %}
+
+{% block title %}{{ course.title }} - Darslar{% endblock %}
+
+{% block meta_description %}{{ course.title }} kursi darslari. {{ lessons.count }} ta dars mavjud.{% endblock %}
+
+{% block content %}
+<!-- Medical Lessons Header -->
+<div class="bg-gradient-to-br from-teal-600 via-cyan-600 to-blue-600 relative overflow-hidden">
+    <!-- Medical Background Pattern -->
+    <div class="absolute inset-0 opacity-10">
+        <div class="absolute top-20 left-20 animate-pulse">
+            <i class="fas fa-stethoscope text-white text-9xl transform rotate-45"></i>
+        </div>
+        <div class="absolute bottom-10 right-20 animate-pulse" style="animation-delay: 1.5s;">
+            <i class="fas fa-heartbeat text-white text-8xl transform -rotate-12"></i>
+        </div>
+        <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 animate-pulse" style="animation-delay: 0.8s;">
+            <i class="fas fa-dna text-white text-7xl opacity-50"></i>
+        </div>
+    </div>
+
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div class="text-white">
+            <!-- Breadcrumb -->
+            <nav class="flex items-center space-x-2 text-sm mb-6 text-cyan-100">
+                <a href="{% url 'core:home' %}" class="hover:text-white transition-colors">
+                    <i class="fas fa-home"></i>
+                </a>
+                <i class="fas fa-chevron-right text-xs"></i>
+                <a href="{% url 'courses:list' %}" class="hover:text-white transition-colors">
+                    Kurslar
+                </a>
+                <i class="fas fa-chevron-right text-xs"></i>
+                <a href="{% url 'courses:detail' course.id %}" class="hover:text-white transition-colors">
+                    {{ course.title|truncatewords:3 }}
+                </a>
+                <i class="fas fa-chevron-right text-xs"></i>
+                <span class="text-white font-semibold">Darslar</span>
+            </nav>
+
+            <!-- Course Title -->
+            <h1 class="text-4xl md:text-5xl font-bold mb-4 animate-fade-in">
+                <i class="fas fa-book-medical mr-3"></i>
+                {{ course.title }}
+            </h1>
+
+            <!-- Course Meta Info -->
+            <div class="flex flex-wrap items-center gap-6 text-cyan-100">
+                <div class="flex items-center">
+                    {% user_avatar course.instructor 'w-10 h-10 border-2 border-white' %}
+                    <div class="ml-3">
+                        <p class="text-xs uppercase tracking-wide opacity-80">O'qituvchi</p>
+                        <p class="font-semibold">{{ course.instructor.get_full_name|default:course.instructor.username }}</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-layer-group mr-2 text-xl"></i>
+                    <div>
+                        <p class="text-xs uppercase tracking-wide opacity-80">Darslar</p>
+                        <p class="font-semibold">{{ lessons.count }} ta</p>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <i class="fas fa-clock mr-2 text-xl"></i>
+                    <div>
+                        <p class="text-xs uppercase tracking-wide opacity-80">Davomiylik</p>
+                        <p class="font-semibold">{{ course.duration_weeks }} hafta</p>
+                    </div>
+                </div>
+                {% if is_enrolled %}
+                <div class="flex items-center">
+                    <i class="fas fa-chart-line mr-2 text-xl"></i>
+                    <div>
+                        <p class="text-xs uppercase tracking-wide opacity-80">Progress</p>
+                        <p class="font-semibold">{{ lesson_progress|length }}/{{ lessons.count }} tugallangan</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Course Progress Bar -->
+            {% if is_enrolled %}
+            <div class="mt-6">
+                <div class="w-full bg-white bg-opacity-20 rounded-full h-3">
+                    {% with completed=lesson_progress|length total=lessons.count %}
+                    <div class="bg-gradient-to-r from-green-400 to-emerald-500 h-3 rounded-full transition-all duration-500 relative"
+                         style="width: {% if total > 0 %}{{ completed|mul:100|div:total }}{% else %}0{% endif %}%">
+                        <span class="absolute right-2 top-1/2 transform -translate-y-1/2 text-xs font-bold text-white">
+                            {% if total > 0 %}{{ completed|mul:100|div:total|floatformat:0 }}%{% else %}0%{% endif %}
+                        </span>
+                    </div>
+                    {% endwith %}
+                </div>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Main Content -->
+<div class="bg-gray-50 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Action Buttons -->
+        <div class="mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div class="flex items-center gap-4">
+                {% if not is_enrolled and not can_view %}
+                    <a href="{% url 'courses:enroll' course.id %}"
+                       class="px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                        <i class="fas fa-user-plus mr-2"></i>
+                        Kursga Yozilish
+                    </a>
+                {% elif is_enrolled %}
+                    <div class="px-4 py-2 bg-green-100 text-green-700 rounded-lg font-semibold">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        Siz kursga yozilgansiz
+                    </div>
+                {% endif %}
+
+                <a href="{% url 'courses:detail' course.id %}"
+                   class="px-4 py-2 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:border-teal-500 hover:text-teal-600 transition-all">
+                    <i class="fas fa-arrow-left mr-2"></i>
+                    Kursga Qaytish
+                </a>
+            </div>
+
+            <!-- Filter/Sort Options -->
+            <div class="flex items-center gap-2">
+                <button class="px-4 py-2 bg-white rounded-lg border border-gray-300 hover:border-teal-500 transition-all">
+                    <i class="fas fa-filter mr-2"></i>
+                    Filter
+                </button>
+                <button class="px-4 py-2 bg-white rounded-lg border border-gray-300 hover:border-teal-500 transition-all">
+                    <i class="fas fa-sort mr-2"></i>
+                    Saralash
+                </button>
+            </div>
+        </div>
+
+        <!-- Lessons Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+            {% for lesson in lessons %}
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 group">
+                <!-- Lesson Header -->
+                <div class="relative h-48 bg-gradient-to-br from-teal-500 to-cyan-600 p-6">
+                    <!-- Background Pattern -->
+                    <div class="absolute inset-0 opacity-10">
+                        <i class="fas fa-microscope text-white text-9xl absolute -right-8 -top-8 transform rotate-12"></i>
+                    </div>
+                    
+                    <!-- Lesson Number Badge -->
+                    <div class="absolute top-4 left-4 w-12 h-12 bg-white bg-opacity-20 backdrop-blur-sm rounded-xl flex items-center justify-center">
+                        <span class="text-white font-bold text-lg">{{ lesson.order }}</span>
+                    </div>
+
+                    <!-- Free Badge -->
+                    {% if lesson.is_free %}
+                    <div class="absolute top-4 right-4 px-3 py-1 bg-green-500 bg-opacity-90 rounded-full">
+                        <span class="text-white text-xs font-semibold">
+                            <i class="fas fa-unlock mr-1"></i>BEPUL
+                        </span>
+                    </div>
+                    {% endif %}
+
+                    <!-- Lesson Title -->
+                    <div class="relative z-10 h-full flex items-end">
+                        <h3 class="text-xl font-bold text-white line-clamp-2 group-hover:line-clamp-none transition-all">
+                            {{ lesson.title }}
+                        </h3>
+                    </div>
+
+                    <!-- Progress Indicator -->
+                    {% if is_enrolled %}
+                        {% with progress=lesson_progress|get_item:lesson.id %}
+                            {% if progress and progress.is_completed %}
+                            <div class="absolute bottom-4 right-4">
+                                <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center animate-pulse">
+                                    <i class="fas fa-check text-white"></i>
+                                </div>
+                            </div>
+                            {% elif progress and progress.watched_duration > 0 %}
+                            <div class="absolute bottom-4 right-4">
+                                <div class="w-10 h-10 bg-yellow-500 rounded-full flex items-center justify-center">
+                                    <span class="text-white text-xs font-bold">{{ user|lesson_watched_percentage:lesson }}%</span>
+                                </div>
+                            </div>
+                            {% endif %}
+                        {% endwith %}
+                    {% endif %}
+                </div>
+
+                <!-- Lesson Content -->
+                <div class="p-6">
+                    <!-- Description -->
+                    {% if lesson.description %}
+                    <p class="text-gray-600 text-sm mb-4 line-clamp-2">
+                        {{ lesson.description }}
+                    </p>
+                    {% endif %}
+
+                    <!-- Lesson Stats -->
+                    <div class="flex items-center justify-between text-sm text-gray-500 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-clock mr-1"></i>
+                            <span>{{ lesson.duration_minutes }} daqiqa</span>
+                        </div>
+                        {% if lesson.video_url %}
+                        <div class="flex items-center">
+                            <i class="fas fa-video mr-1"></i>
+                            <span>Video mavjud</span>
+                        </div>
+                        {% endif %}
+                        <div class="flex items-center">
+                            <i class="fas fa-clipboard-check mr-1"></i>
+                            <span>{{ lesson.quizzes.count }} test</span>
+                        </div>
+                    </div>
+
+                    <!-- Action Button -->
+                    {% if can_view or lesson.is_free %}
+                        <a href="{% url 'lessons:detail' course.id lesson.id %}"
+                           class="block w-full px-4 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white text-center rounded-xl font-semibold hover:shadow-lg transition-all group-hover:scale-105">
+                            {% if is_enrolled %}
+                                {% with progress=lesson_progress|get_item:lesson.id %}
+                                    {% if progress and progress.is_completed %}
+                                        <i class="fas fa-redo mr-2"></i>
+                                        Qayta Ko'rish
+                                    {% elif progress and progress.watched_duration > 0 %}
+                                        <i class="fas fa-play-circle mr-2"></i>
+                                        Davom Etish
+                                    {% else %}
+                                        <i class="fas fa-play mr-2"></i>
+                                        Boshlash
+                                    {% endif %}
+                                {% endwith %}
+                            {% else %}
+                                <i class="fas fa-eye mr-2"></i>
+                                Ko'rish
+                            {% endif %}
+                        </a>
+                    {% else %}
+                        <button disabled
+                                class="block w-full px-4 py-3 bg-gray-300 text-gray-500 text-center rounded-xl font-semibold cursor-not-allowed">
+                            <i class="fas fa-lock mr-2"></i>
+                            Yopiq Dars
+                        </button>
+                    {% endif %}
+                </div>
+            </div>
+            {% empty %}
+            <!-- No Lessons Message -->
+            <div class="col-span-full">
+                <div class="bg-white rounded-2xl shadow-lg p-12 text-center">
+                    <i class="fas fa-book-open text-6xl text-gray-300 mb-4"></i>
+                    <h3 class="text-2xl font-bold text-gray-800 mb-2">Darslar Mavjud Emas</h3>
+                    <p class="text-gray-600 mb-6">Bu kurs uchun hali darslar qo'shilmagan</p>
+                    {% if request.user == course.instructor %}
+                    <a href="{% url 'lessons:create' course.id %}"
+                       class="inline-block px-6 py-3 bg-gradient-to-r from-teal-600 to-cyan-600 text-white rounded-xl font-semibold hover:shadow-lg transition-all">
+                        <i class="fas fa-plus mr-2"></i>
+                        Dars Qo'shish
+                    </a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Course Summary Card -->
+        {% if lessons %}
+        <div class="mt-12 bg-white rounded-2xl shadow-lg p-8">
+            <h3 class="text-2xl font-bold text-gray-900 mb-6">
+                <i class="fas fa-chart-bar mr-3 text-teal-600"></i>
+                Kurs Statistikasi
+            </h3>
+            
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- Total Lessons -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-book text-white text-2xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-900">{{ lessons.count }}</p>
+                    <p class="text-gray-600">Jami Darslar</p>
+                </div>
+
+                <!-- Total Duration -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-clock text-white text-2xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-900">
+                        {% with total_minutes=lessons|sum_attribute:'duration_minutes' %}
+                            {{ total_minutes|format_duration }}
+                        {% endwith %}
+                    </p>
+                    <p class="text-gray-600">Umumiy Davomiylik</p>
+                </div>
+
+                <!-- Completed Lessons -->
+                {% if is_enrolled %}
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-check-double text-white text-2xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-900">{{ lesson_progress|length }}</p>
+                    <p class="text-gray-600">Tugallangan</p>
+                </div>
+
+                <!-- Remaining -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-hourglass-half text-white text-2xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-900">
+                        {{ lessons.count|add:"-"|add:lesson_progress|length }}
+                    </p>
+                    <p class="text-gray-600">Qolgan Darslar</p>
+                </div>
+                {% else %}
+                <!-- Free Lessons -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-green-500 to-emerald-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-gift text-white text-2xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-900">
+                        {{ lessons|filter_attribute:'is_free'|length }}
+                    </p>
+                    <p class="text-gray-600">Bepul Darslar</p>
+                </div>
+
+                <!-- Total Quizzes -->
+                <div class="text-center">
+                    <div class="w-20 h-20 bg-gradient-to-br from-orange-500 to-red-600 rounded-2xl flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-clipboard-list text-white text-2xl"></i>
+                    </div>
+                    <p class="text-3xl font-bold text-gray-900">
+                        {% with total_quizzes=lessons|sum_related:'quizzes' %}
+                            {{ total_quizzes }}
+                        {% endwith %}
+                    </p>
+                    <p class="text-gray-600">Jami Testlar</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Learning Path -->
+        {% if lessons and is_enrolled %}
+        <div class="mt-8 bg-gradient-to-r from-teal-50 to-cyan-50 rounded-2xl p-8">
+            <h3 class="text-xl font-bold text-gray-900 mb-6">
+                <i class="fas fa-route mr-3 text-teal-600"></i>
+                O'quv Yo'nalishi
+            </h3>
+            
+            <div class="relative">
+                <!-- Progress Line -->
+                <div class="absolute left-8 top-0 bottom-0 w-1 bg-gray-300"></div>
+                
+                <!-- Lesson Steps -->
+                <div class="space-y-6">
+                    {% for lesson in lessons|slice:":5" %}
+                    <div class="relative flex items-center">
+                        <!-- Step Circle -->
+                        <div class="relative z-10 w-16 h-16 rounded-full flex items-center justify-center
+                                    {% with progress=lesson_progress|get_item:lesson.id %}
+                                        {% if progress and progress.is_completed %}
+                                            bg-green-500 text-white
+                                        {% elif progress and progress.watched_duration > 0 %}
+                                            bg-yellow-500 text-white
+                                        {% else %}
+                                            bg-white border-2 border-gray-300 text-gray-500
+                                        {% endif %}
+                                    {% endwith %}">
+                            <span class="font-bold">{{ lesson.order }}</span>
+                        </div>
+                        
+                        <!-- Lesson Info -->
+                        <div class="ml-6 flex-1 bg-white rounded-lg p-4 shadow">
+                            <h4 class="font-semibold text-gray-900">{{ lesson.title }}</h4>
+                            <p class="text-sm text-gray-600 mt-1">
+                                <i class="fas fa-clock mr-1"></i>
+                                {{ lesson.duration_minutes }} daqiqa
+                            </p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    
+                    {% if lessons.count > 5 %}
+                    <div class="relative flex items-center">
+                        <div class="relative z-10 w-16 h-16 bg-gray-200 rounded-full flex items-center justify-center">
+                            <i class="fas fa-ellipsis-h text-gray-500"></i>
+                        </div>
+                        <div class="ml-6 text-gray-600">
+                            Va yana {{ lessons.count|add:"-5" }} ta dars...
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Medical CTA Section -->
+{% if not is_enrolled and not can_view %}
+<div class="bg-gradient-to-r from-teal-600 to-cyan-600 py-12">
+    <div class="max-w-4xl mx-auto px-4 text-center">
+        <i class="fas fa-graduation-cap text-6xl text-white opacity-20 mb-6"></i>
+        <h2 class="text-3xl font-bold text-white mb-4">
+            Professional Tibbiy Ta'limni Boshlang!
+        </h2>
+        <p class="text-xl text-cyan-100 mb-8">
+            Barcha darslar va materiallardan foydalanish uchun kursga yoziling
+        </p>
+        <a href="{% url 'courses:enroll' course.id %}"
+           class="inline-block px-8 py-4 bg-white text-teal-600 rounded-xl font-bold text-lg hover:shadow-2xl transition-all transform hover:scale-105">
+            <i class="fas fa-rocket mr-3"></i>
+            Hoziroq Boshlash
+        </a>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Medical animations for lesson cards
+document.addEventListener('DOMContentLoaded', function() {
+    // Animate lesson cards on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry, index) => {
+            if (entry.isIntersecting) {
+                setTimeout(() => {
+                    entry.target.classList.add('animate-fade-in');
+                }, index * 100);
+            }
+        });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.grid > div').forEach(card => {
+        observer.observe(card);
+    });
+
+    // Medical heartbeat animation
+    const medicalIcons = document.querySelectorAll('.fa-heartbeat, .fa-stethoscope');
+    medicalIcons.forEach(icon => {
+        setInterval(() => {
+            icon.classList.add('animate-pulse');
+            setTimeout(() => {
+                icon.classList.remove('animate-pulse');
+            }, 1000);
+        }, 3000);
+    });
+});
+
+// Filter functionality
+function filterLessons(type) {
+    // Implementation for filtering lessons
+    console.log('Filtering by:', type);
+}
+
+// Sort functionality
+function sortLessons(order) {
+    // Implementation for sorting lessons
+    console.log('Sorting by:', order);
+}
+</script>
+{% endblock %}

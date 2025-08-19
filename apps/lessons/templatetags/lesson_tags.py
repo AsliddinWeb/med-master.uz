@@ -136,3 +136,74 @@ def prev_lesson_url(lesson):
             'lesson_id': prev_lesson.id
         })
     return None
+
+
+@register.filter
+def get_item(dictionary, key):
+    """Dictionary'dan item olish"""
+    if dictionary is None:
+        return None
+    return dictionary.get(key)
+
+
+@register.filter
+def sum_attribute(queryset, attribute):
+    """Queryset elementlarining attributini yig'ish"""
+    if not queryset:
+        return 0
+    total = 0
+    for item in queryset:
+        value = getattr(item, attribute, 0)
+        if value:
+            total += value
+    return total
+
+
+@register.filter
+def filter_attribute(queryset, attribute):
+    """Queryset'ni attribute bo'yicha filtrlash"""
+    if not queryset:
+        return []
+    return [item for item in queryset if getattr(item, attribute, False)]
+
+
+@register.filter
+def sum_related(queryset, related_name):
+    """Related objectlarni sanash"""
+    if not queryset:
+        return 0
+    total = 0
+    for item in queryset:
+        related = getattr(item, related_name, None)
+        if related:
+            total += related.count()
+    return total
+
+
+@register.filter
+def mul(value, arg):
+    """Ko'paytirish"""
+    try:
+        return float(value) * float(arg)
+    except (ValueError, TypeError):
+        return 0
+
+
+@register.filter
+def div(value, arg):
+    """Bo'lish"""
+    try:
+        if float(arg) == 0:
+            return 0
+        return float(value) / float(arg)
+    except (ValueError, TypeError, ZeroDivisionError):
+        return 0
+
+
+@register.filter
+def add(value, arg):
+    """Qo'shish"""
+    try:
+        return float(value) + float(arg)
+    except (ValueError, TypeError):
+        return 0
