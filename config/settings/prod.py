@@ -1,7 +1,8 @@
 from .base import *
 import os
 
-ALLOWED_HOSTS = ['med-master.uz', 'www.med-master.uz', '164.92.240.184', 'localhost']
+# ALLOWED_HOSTS = ['med-master.uz', 'www.med-master.uz', '164.92.240.184', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 # Database (production uchun PostgreSQL)
 DATABASES = {
