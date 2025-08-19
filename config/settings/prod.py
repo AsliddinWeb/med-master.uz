@@ -1,7 +1,8 @@
 from .base import *
 from decouple import config
 
-ALLOWED_HOSTS = ['med-master.uz', 'www.med-master.uz', '164.92.240.184', 'localhost']
+# ALLOWED_HOSTS = ['med-master.uz', 'www.med-master.uz', '164.92.240.184', 'localhost']
+ALLOWED_HOSTS = ['*']
 
 # Database (production uchun PostgreSQL)
 DATABASES = {
